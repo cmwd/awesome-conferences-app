@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-const markdownParser = require('../parser/markdown-document');
+const markdownParser = require('../parser/markdown-parser');
 const info = require('debug')('app:info:data-source');
 const error = require('debug')('app:error:data-source');
 

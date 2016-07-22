@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "inspector": "node --debug-brk --inspect index.js",
-    "test": "./node_modules/.bin/tape -r ./tests/config ./tests/**/*.spec.js | faucet",
-    "test-inspector": "node --debug-brk --inspect ./node_modules/.bin/tape -r ./tests/config ./tests/**/*.spec.js | faucet"
+    "test": "./node_modules/.bin/tape -r ./tests/config ./tests/**/*.test.js | faucet",
+    "test-inspector": "node --debug-brk --inspect ./node_modules/.bin/tape -r ./tests/config ./tests/**/*.test.js | faucet"
   },
   "author": "",
   "license": "MIT",
@@ -31,6 +31,7 @@
     "faucet": "0.0.1",
     "path-alias": "0.0.7",
     "proxyquire": "^1.7.10",
+    "sinon": "^1.17.4",
     "tape": "^4.6.0"
   },
   "engines": {

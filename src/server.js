@@ -1,3 +1,4 @@
+require('./database');
 const express = require('express');
 const info = require('debug')('data-sources:info:server');
 const router = require('./router');
