@@ -1,9 +1,11 @@
 {
-  "name": "awesome-conferences-data-sources",
+  "name": "awesome-conferences-app",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "start": "echo 'start'"
+  },
   "author": "",
   "license": "MIT",
   "dependencies": {

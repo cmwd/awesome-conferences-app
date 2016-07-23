@@ -1,9 +1,0 @@
-const C_COLLECT = 'CMD_COLLECT_DATA_SOURCE';
-const S_GITHUB = 'SERVICE_GITHUB';
-const S_TWITTER = 'SERVICE_TWITTER';
-
-module.exports = {
-  C_COLLECT,
-  S_GITHUB,
-  S_TWITTER,
-};

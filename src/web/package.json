@@ -1,5 +1,5 @@
 {
-  "name": "awesome-conferences-app",
+  "name": "web",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -12,8 +12,27 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "debug": "^2.2.0",
+    "dotenv": "^2.0.0",
+    "express": "^4.14.0",
+    "global": "^4.3.0",
+    "lodash": "^4.13.1",
+    "mongoose": "^4.5.4",
+    "node-fetch": "^1.5.3",
+    "seneca": "^2.1.0"
   },
   "devDependencies": {
+    "babel-eslint": "^6.1.2",
+    "eslint": "^3.1.0",
+    "eslint-config-airbnb": "^9.0.1",
+    "eslint-plugin-import": "^1.10.3",
+    "eslint-plugin-jsx-a11y": "^2.0.1",
+    "eslint-plugin-react": "^5.2.2",
+    "faucet": "0.0.1",
+    "path-alias": "0.0.7",
+    "proxyquire": "^1.7.10",
+    "sinon": "^1.17.4",
+    "tape": "^4.6.0"
   },
   "engines": {
     "node": "6.3.0"

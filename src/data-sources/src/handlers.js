@@ -1,11 +1,9 @@
-const { resolve: pathResolve } = require('path-alias');
 const collector = require('./service/collector');
 const store = require('./service/store');
-const {
-  C_COLLECT,
-  S_GITHUB,
-  S_TWITTER,
-} = require(pathResolve('@root/ms-constants'));
+
+const C_COLLECT = 'CMD_COLLECT_DATA_SOURCE';
+const S_GITHUB = 'SERVICE_GITHUB';
+const S_TWITTER = 'SERVICE_TWITTER';
 
 const success = (req, res) =>
   () => {
