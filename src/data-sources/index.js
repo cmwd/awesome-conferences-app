@@ -1,2 +1,4 @@
 require('dotenv').config();
-require('./src/server');
+require('./config');
+require('./src/database');
+require('seneca')().use(require('./src/handlers'));
