@@ -1,0 +1,36 @@
+version: "2"
+services:
+  web-app:
+    build: ./awesome-conferences-web-app
+    volumes:
+      - ./:/usr/src/app
+    ports:
+      - "8000:8000"
+    links:
+      - mongo
+    environment:
+      - NODE_DB_ADDRESS=mongodb://mongo:27017
+      - NODE_PORT=8000
+      - DEBUG=*
+  data-sources:
+    build: ./awesome-conferences-data-sources
+    volumes:
+      - ./:/usr/src/app
+    ports:
+      - "8001:8001"
+    links:
+      - mongo
+    environment:
+      - NODE_DB_ADDRESS=mongodb://mongo:27017
+      - NODE_PORT=8001
+      - DEBUG=*
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes_from:
+      - mongodata
+  mongodata:
+      image: tianon/true
+      volumes:
+        - /data/db
