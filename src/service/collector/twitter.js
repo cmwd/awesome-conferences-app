@@ -1,3 +1,4 @@
+const { responseParser } = require('../../parser/twitter-parser');
 const Twitter = require('twitter');
 const { process } = require('global');
 
@@ -15,16 +16,17 @@ const client = new Twitter({
   access_token_secret,
 });
 
-module.exports = {
-  details({ id }) {
-    return new Promise((resolve, reject) => {
-      client.get('users/show', { screen_name: id }, (err, data) => {
+function twitter({ twitterScreenName }) {
+  return new Promise((resolve, reject) => {
+    client
+      .get('users/show', { screen_name: twitterScreenName }, (err, data) => {
         if (err) {
           reject(err);
         } else {
-          resolve(data);
+          resolve(responseParser(data));
         }
       });
-    });
-  },
-};
+  });
+}
+
+module.exports = twitter;

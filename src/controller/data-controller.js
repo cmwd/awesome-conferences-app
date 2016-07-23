@@ -1,7 +1,7 @@
-const dataSource = require('../service/data-source');
+const collector = require('../service/collector');
 const store = require('../service/store');
 
-const error = res =>
+const error = (reg, res) =>
   err => {
     const statusCode = 500;
     const status = 'ERROR';
@@ -11,16 +11,31 @@ const error = res =>
       .json({ status, error: err });
   };
 
+const success = (req, res) =>
+  () => {
+    const status = 'OK';
+
+    res.json({ status });
+  };
+
 function github(req, res) {
-  dataSource.github()
+  collector
+    .github()
     .then(store.list)
-    .catch(error(res))
-    .then(() => res.json({ status: 'OK' }))
-    .catch(error(res));
+    .catch(error(req, res))
+    .then(success(req, res))
+    .catch(error(req, res));
 }
 
 function twitter(req, res) {
-  res.send({ params: req.params });
+  const { twitterScreenName } = req.params;
+
+  collector
+    .twitter({ twitterScreenName })
+    .then(result => store.twitter({ twitterScreenName, result }))
+    .catch(error(req, res))
+    .then(success(req, res))
+    .catch(error(req, res));
 }
 
 module.exports = { github, twitter };

@@ -1,4 +1,9 @@
-const conferenceModel = require('./conference-model');
-const regionModel = require('./region-model');
+const ConferenceModel = require('./conference-model');
+const RegionModel = require('./region-model');
+const LocationModel = require('./location-model');
 
-module.exports = { conferenceModel, regionModel };
+module.exports = {
+  ConferenceModel,
+  RegionModel,
+  LocationModel,
+};

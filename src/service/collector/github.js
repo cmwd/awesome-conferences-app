@@ -1,14 +1,14 @@
 const fetch = require('node-fetch');
-const markdownParser = require('../parser/markdown-parser');
-const info = require('debug')('app:info:data-source');
-const error = require('debug')('app:error:data-source');
+const markdownParser = require('../../parser/markdown-parser');
+const info = require('debug')('data-sources:info:collector:github');
+const error = require('debug')('data-sources:error:collector:github');
 
 /* eslint-disable max-len */
 const AWESOME_LIST_URL = 'https://raw.githubusercontent.com/RichardLitt/awesome-conferences/master/README.md';
 /* eslint-enable max-len */
 
 function github() {
-  info('Fetching document from Github.');
+  info('collector job start');
 
   return fetch(AWESOME_LIST_URL)
     .then(request => request.text())
@@ -17,4 +17,4 @@ function github() {
     .catch(err => error(err));
 }
 
-module.exports = { github };
+module.exports = github;

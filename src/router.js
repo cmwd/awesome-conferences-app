@@ -10,7 +10,7 @@ const notFound = (req, res) => {
 
 function Router(app) {
   app.get('/data/github', dataController.github);
-  app.get('/data/twitter/:id', dataController.twitter);
+  app.get('/data/twitter/:twitterScreenName', dataController.twitter);
 }
 
 module.exports = Router;
