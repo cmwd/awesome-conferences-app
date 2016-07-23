@@ -4,10 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "inspector": "node --debug-brk --inspect index.js",
-    "test": "./node_modules/.bin/tape -r ./tests/config ./tests/**/*.test.js | faucet",
-    "test-inspector": "node --debug-brk --inspect ./node_modules/.bin/tape -r ./tests/config ./tests/**/*.test.js | faucet"
   },
   "author": "",
   "license": "MIT",
