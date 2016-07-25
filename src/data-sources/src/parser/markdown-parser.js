@@ -18,9 +18,9 @@ const extractConferences = (region, regionData) => {
   let conf = DETAILS_MATCHER.exec(regionData);
 
   while (conf) {
-    const [, name, url, twitterScreenName] = conf;
+    const [, name, url, twitterId] = conf;
 
-    result.push({ name, url, twitterScreenName, region });
+    result.push({ name, url, twitterId, region });
     conf = DETAILS_MATCHER.exec(regionData);
   }
 
@@ -31,9 +31,7 @@ const extractRegion = (conferences, res) => {
   const regionData = res.trim();
   const region = getRegionName(regionData);
 
-  conferences.push(extractConferences(region, regionData));
-
-  return conferences;
+  return conferences.concat(extractConferences(region, regionData));
 };
 
 const matchBody = data => data.match(CONFERENCES_EXTRACTOR)[1];

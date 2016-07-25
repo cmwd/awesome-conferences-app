@@ -7,7 +7,7 @@ const error = require('debug')('data-sources:error:collector:github');
 const AWESOME_LIST_URL = 'https://raw.githubusercontent.com/RichardLitt/awesome-conferences/master/README.md';
 /* eslint-enable max-len */
 
-function github() {
+function awesomeList() {
   info('collector job start');
 
   return fetch(AWESOME_LIST_URL)
@@ -17,4 +17,4 @@ function github() {
     .catch(err => error(err));
 }
 
-module.exports = github;
+module.exports = { awesomeList };

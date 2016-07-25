@@ -24,6 +24,18 @@ services:
       - NODE_DB_ADDRESS=mongodb://mongo:27017
       - NODE_PORT=8001
       - DEBUG=*
+  api:
+    build: ./src/api/
+    volumes:
+      - ./src/api/:/usr/src/app/
+    ports:
+      - "8002:8002"
+    links:
+      - mongo
+    environment:
+      - NODE_DB_ADDRESS=mongodb://mongo:27017
+      - NODE_PORT=8002
+      - DEBUG=*
   mongo:
     image: mongo
     ports:
