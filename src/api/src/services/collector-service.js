@@ -6,7 +6,10 @@ const P_TIMEOUT = 5000;
 const C_URL = 'http://localhost:8001/collector/awesomeList';
 
 function storeEntry(result, entry) {
-  const twitterAccount = new TwitterAccountModel(entry.twitterAccount);
+  const twitterAccount = new TwitterAccountModel({
+    screen_name: entry.twitterAccount.screen_name,
+    accont_info: entry.twitterAccount
+  });
   const conferenceData = _.assign({}, entry, { twitterAccount });
   const conferenceModel = new ConferenceModel(conferenceData);
 

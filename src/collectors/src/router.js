@@ -6,7 +6,6 @@ function notSupported(req, res, next) {
   next(new Error(E_NOT_SUPPORTED));
 }
 
-
 function router(app) {
   app
     .route('/collector/awesomeList/')

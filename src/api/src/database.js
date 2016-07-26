@@ -19,8 +19,8 @@ process.on('SIGINT', () => {
   });
 });
 
-function Database() {
+function database() {
   return connection;
 }
 
-module.exports = Database;
+module.exports = database;
