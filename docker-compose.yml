@@ -12,10 +12,10 @@ services:
       - NODE_DB_ADDRESS=mongodb://mongo:27017
       - NODE_PORT=8000
       - DEBUG=*
-  data-sources:
-    build: ./src/data-sources/
+  collectors:
+    build: ./src/collectors/
     volumes:
-      - ./src/data-sources/:/usr/src/app/
+      - ./src/collectors/:/usr/src/app/
     ports:
       - "8001:8001"
     links:

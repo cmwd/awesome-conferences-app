@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 const markdownParser = require('../../parser/markdown-parser');
-const info = require('debug')('data-sources:info:collector:github');
-const error = require('debug')('data-sources:error:collector:github');
+const info = require('debug')('collectors:info:collector:github');
+const error = require('debug')('collectors:error:collector:github');
 
 /* eslint-disable max-len */
 const AWESOME_LIST_URL = 'https://raw.githubusercontent.com/RichardLitt/awesome-conferences/master/README.md';

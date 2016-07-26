@@ -4,12 +4,12 @@ const twitter = require('./collector/twitter');
 
 function appendTwitterData(conferences) {
   const ids = conferences.map(({ twitterId }) => twitterId);
-  const mergeFn = (result, twitterData) => {
-    const { screen_name: twitterId } = twitterData;
+  const mergeFn = (result, twitterAccount) => {
+    const { screen_name: twitterId } = twitterAccount;
     const entry = _.find(conferences, { twitterId });
 
     return result.concat(
-      _.assign({}, _.omit(entry, 'twitterId'), { twitterData }));
+      _.assign({}, _.omit(entry, 'twitterId'), { twitterAccount }));
   };
 
   return twitter

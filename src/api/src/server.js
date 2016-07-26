@@ -1,5 +1,3 @@
-const seneca = require('seneca')();
-const sedneca = require('seneca');
 const express = require('express');
 const Router = require('./router');
 const Database = require('./database');

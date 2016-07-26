@@ -1,7 +1,7 @@
 const { Promise, process } = require('global');
 const mongoose = require('mongoose');
-const info = require('debug')('data-sources:info:database');
-const error = require('debug')('data-sources:error:database');
+const info = require('debug')('collectors:info:database');
+const error = require('debug')('collectors:error:database');
 
 const DB_NAME = 'acl';
 const DB_ADDRESS = `${process.env.NODE_DB_ADDRESS}/${DB_NAME}`;
