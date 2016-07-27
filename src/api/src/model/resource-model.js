@@ -9,7 +9,4 @@ const schema = mongoose.Schema({
 });
 const ResourceModel = mongoose.model('Resource', schema);
 
-module.exports = {
-  ResourceModel,
-  RESOURCE: { R_YOUTUBE, R_VIMEO },
-};
+module.exports = { ResourceModel };

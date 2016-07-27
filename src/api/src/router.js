@@ -7,6 +7,13 @@ function notSupported(message = E_NOT_SUPPORTED) {
   return (req, res, next) => next(new Error(message));
 }
 
+function notFound(req, res, next) {
+  res.status(404).json({
+    status: 404,
+    statusMessage: `Not found: ${req.url}`
+  });
+}
+
 function router(app) {
   routerParams(app);
 
@@ -18,6 +25,8 @@ function router(app) {
 
   app.route('/resources/:conference_id')
     .get(resourcesController.show);
+
+  app.use(notFound);
 }
 
 module.exports = router;
