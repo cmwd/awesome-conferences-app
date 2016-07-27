@@ -1,17 +1,16 @@
 const { routerParams, PARAM } = require('./router-params');
 const { conferencesController, resourcesController } = require('./controller/index');
 
-const E_NOT_SUPPORTED = 'Method is not supported';
+const H_E_NOT_ALLOWED = 405;
+const H_E_NOT_FOUND = 405;
+const M_NOT_SUPPORTED = 'Method is not supported.';
 
-function notSupported(message = E_NOT_SUPPORTED) {
-  return (req, res, next) => next(new Error(message));
-}
-
-function notFound(req, res, next) {
-  res.status(404).json({
-    status: 404,
-    statusMessage: `Not found: ${req.url}`
-  });
+function errorHandler({ code, message = M_NOT_SUPPORTED}) {
+  return ({ url }, res) => {
+    res
+      .status(code)
+      .json({ code, message, url });
+  }
 }
 
 function router(app) {
@@ -19,14 +18,14 @@ function router(app) {
 
   app.route('/conferences/')
     .get(conferencesController.show)
-    .put(notSupported())
-    .post(notSupported())
-    .delete(notSupported());
+    .put(errorHandler({ code: H_E_NOT_ALLOWED }))
+    .post(errorHandler({ code: H_E_NOT_ALLOWED }))
+    .delete(errorHandler({ code: H_E_NOT_ALLOWED }));
 
   app.route('/resources/:conference_id')
     .get(resourcesController.show);
 
-  app.use(notFound);
+  app.use(errorHandler({ code: H_E_NOT_ALLOWED, message: 'Not found.' }));
 }
 
 module.exports = router;
