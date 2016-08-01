@@ -12,5 +12,6 @@
         'comma-dangle': [1],
         'guard-for-in': [0],
         'new-cap': [0],
+        'no-confusing-arrow': [1]
     }
 }

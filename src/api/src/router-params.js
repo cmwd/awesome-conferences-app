@@ -7,7 +7,7 @@ const getConferenceId = (req, res, next, id) =>
     .catch(next)
     .then(model => {
       if (!model) {
-        next(notFound())
+        next(notFound());
       } else {
         req.pocket.set('conferenceModel', model);
         next();
@@ -16,7 +16,7 @@ const getConferenceId = (req, res, next, id) =>
 
 
 function routerParams(app) {
-  app.param('conference_id', getConferenceId)
+  app.param('conference_id', getConferenceId);
 }
 
 module.exports = { routerParams };

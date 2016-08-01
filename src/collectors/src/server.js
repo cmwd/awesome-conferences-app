@@ -1,7 +1,6 @@
 const express = require('express');
 const router = require('./router');
 const info = require('debug')('collectors:info:server');
-require('./database');
 
 const app = express();
 const { NODE_PORT } = process.env;

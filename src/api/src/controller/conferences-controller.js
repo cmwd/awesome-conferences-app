@@ -5,7 +5,7 @@ const collectorService = require('../services/collector-service');
 function show(req, res, next) {
   ConferenceModel
     .find({})
-    .then(d => !_.isEmpty(d) ? d : collectorService.getList() )
+    .then(models => !_.isEmpty(models) ? models : collectorService.getList())
     .then(data => res.json(data))
     .catch(next);
 }

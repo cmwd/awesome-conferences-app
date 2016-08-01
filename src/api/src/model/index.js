@@ -5,4 +5,5 @@ const { ResourceModel } = require('./resource-model');
 module.exports = {
   ConferenceModel,
   TwitterAccountModel,
+  ResourceModel,
 };
