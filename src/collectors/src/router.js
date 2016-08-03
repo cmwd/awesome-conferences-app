@@ -1,4 +1,4 @@
-const collectorController = require('./controller/collector-controller');
+const { resourceController } = require('./controller/index');
 
 const E_NOT_SUPPORTED = 'Method is not supported';
 
@@ -8,11 +8,9 @@ function notSupported(req, res, next) {
 
 function router(app) {
   app
-    .route('/collector/awesomeList/')
-    .get(collectorController.awesomeList)
-    .put(notSupported)
-    .post(notSupported)
-    .delete(notSupported);
+    .route('/resource/:resourceName/:resourceMethod')
+    .get(resourceController.get)
+    .all(notSupported);
 }
 
 module.exports = router;

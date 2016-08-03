@@ -1,6 +1,6 @@
-const _ = require('lodash');
 const Twitter = require('twitter');
 const { process } = require('global');
+const { resourceFactory } = require('./resource-factory');
 
 const {
   TWITTER_CONSUMER_KEY: consumer_key,
@@ -16,23 +16,26 @@ const client = new Twitter({
   access_token_secret,
 });
 
+
 const handler = (resolve, reject) =>
   (err, data) => {
     if (err) reject(err);
     else resolve(data);
   };
 
-function usersLookup({ screen_name }) {
-  if (!_.isArray(screen_name)) {
-    throw new Error('argument screen_name must be type of array');
-  }
+const methods = {
+  lookup({ screenName }) {
+    if (!Array.isArray(screenName) && screenName.length > 100) {
+      return Promise.reject(
+        new Error(
+          'Parameter screenName must be an array with less than 100 items'));
+    }
 
-  return Promise.all(_.chunk(screen_name, 99)
-    .map(chunk => new Promise((resolve, reject) => {
-      const sn = chunk.join();
+    return new Promise((resolve, reject) => {
+      client.get('users/lookup',
+        { screen_name: screenName }, handler(resolve, reject));
+    });
+  },
+};
 
-      client.get('users/lookup', { screen_name: sn }, handler(resolve, reject));
-    })));
-}
-
-module.exports = { usersLookup };
+module.exports = resourceFactory(methods);

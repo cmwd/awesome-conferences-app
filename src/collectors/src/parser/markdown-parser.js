@@ -1,6 +1,6 @@
 const flow = require('lodash/fp/flow');
-const { GLOBAL_CONFERENCE_NAME } = require('./constants');
 
+const GLOBAL_CONFERENCE_NAME = 'Global';
 const CONFERENCES_EXTRACTOR = /##.+?Conferences([\s\S]+?)##\sCall/;
 const REGIONS_SPLITTER = /#{3}/g;
 const SUBREGION_MATCHER = /#{4,}.+/g;
