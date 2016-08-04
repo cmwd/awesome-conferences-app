@@ -17,7 +17,7 @@ function errorHandler({ code, message = M_NOT_SUPPORTED }) {
 }
 
 function router(app) {
-  routerParams(app);
+  // routerParams(app);
 
   app.route('/conferences/')
     .get(conferencesController.show)
@@ -27,7 +27,7 @@ function router(app) {
 
   app.route('/resources/:conference_id')
     .get(resourcesController.show)
-    .put(resourcesController.add);
+    .post(resourcesController.add);
 
   app.use(errorHandler({ code: H_E_NOT_FOUND, message: 'Not found.' }));
 }

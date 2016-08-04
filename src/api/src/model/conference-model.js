@@ -1,13 +1,47 @@
 const mongoose = require('mongoose');
+const { resourceModel } = require('./resource-model');
 
 const { Schema } = mongoose;
-const schema = Schema({
+const schema = new Schema({
   name: String,
   url: String,
   region: String,
   resources: [{ type: Schema.Types.ObjectId, ref: 'Resource' }],
-  twitterAccount: { type: Schema.Types.ObjectId, ref: 'TwitterAccount' },
 });
-const ConferenceModel = mongoose.model('Conference', schema);
 
-module.exports = { ConferenceModel };
+function createTwitterResources(conferences) {
+  const resourceName = 'twitter';
+  const resources = conferences.map(({ twitterId: userId }) =>
+    ({ resourceName, userId }));
+
+  return resourceModel.insertMany(resources);
+}
+
+function createAwesomeListResources(conferences) {
+  const resourceName = 'awesomelist';
+  const resources = conferences.map(data => ({ resourceName, data }));
+
+  return resourceModel.insertMany(resources);
+}
+
+function insertFromAWSL(conferences) {
+  const model = this;
+
+  return Promise
+    .all([
+      createTwitterResources(conferences),
+      createAwesomeListResources(conferences),
+    ])
+    .then(([twitter, awesomeList]) => awesomeList
+      .map((resource, index) => ({
+        name: resource.name,
+        url: resource.url,
+        resources: [twitter[index], resource],
+      })))
+    .then(data => model.insertMany(data));
+}
+
+schema.static('insertFromAWSL', insertFromAWSL);
+const conferenceModel = mongoose.model('Conference', schema);
+
+module.exports = { conferenceModel };

@@ -2,12 +2,25 @@ const mongoose = require('mongoose');
 
 const R_YOUTUBE = 'YOUTUBE';
 const R_VIMEO = 'VIMEO';
+const R_TWITTER = 'TWITTER';
+const R_AWESOMELIST = 'AWESOMELIST';
 
-const resources = [R_YOUTUBE, R_VIMEO];
+const toUpperCase = str => str.toUpperCase();
+
+const resources = [R_YOUTUBE, R_VIMEO, R_TWITTER, R_AWESOMELIST];
 const schema = mongoose.Schema({
-  resourceName: { type: String, enum: resources },
-  userName: String,
+  resourceName: {
+    type: String,
+    enum: resources,
+    set: toUpperCase,
+  },
+  userId: {
+    type: String,
+    required: false,
+    index: { unique: true, dropDups: true },
+  },
+  data: mongoose.Schema.Types.Mixed,
 });
-const ResourceModel = mongoose.model('Resource', schema);
+const resourceModel = mongoose.model('Resource', schema);
 
-module.exports = { ResourceModel };
+module.exports = { resourceModel };

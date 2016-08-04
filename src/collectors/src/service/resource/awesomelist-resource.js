@@ -7,7 +7,7 @@ const AWESOME_LIST_URL = 'https://raw.githubusercontent.com/RichardLitt/awesome-
 /* eslint-enable max-len */
 
 const methods = {
-  awesomeList() {
+  get() {
     return fetch(AWESOME_LIST_URL)
       .then(request => request.text())
       .then(markdownParser);
