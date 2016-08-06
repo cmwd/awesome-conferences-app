@@ -1,4 +1,3 @@
-const { routerParams } = require('./router-params');
 const {
   conferencesController,
   resourcesController,

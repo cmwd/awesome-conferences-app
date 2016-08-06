@@ -3,9 +3,8 @@ const { resourceModel } = require('./resource-model');
 
 const { Schema } = mongoose;
 const schema = new Schema({
-  name: String,
-  url: String,
-  region: String,
+  name: { type: String, index: { unique: true, dropDups: true } },
+  url: { type: String, index: { unique: true, dropDups: true } },
   resources: [{ type: Schema.Types.ObjectId, ref: 'Resource' }],
 });
 
@@ -34,8 +33,8 @@ function insertFromAWSL(conferences) {
     ])
     .then(([twitter, awesomeList]) => awesomeList
       .map((resource, index) => ({
-        name: resource.name,
-        url: resource.url,
+        name: resource.data.name,
+        url: resource.data.url,
         resources: [twitter[index], resource],
       })))
     .then(data => model.insertMany(data));

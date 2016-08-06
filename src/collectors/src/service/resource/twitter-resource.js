@@ -33,7 +33,10 @@ const methods = {
 
     return new Promise((resolve, reject) => {
       client.get('users/lookup',
-        { screen_name: screenName }, handler(resolve, reject));
+        {
+          screen_name: screenName.join(','),
+          include_entities: false,
+        }, handler(resolve, reject));
     });
   },
 };
