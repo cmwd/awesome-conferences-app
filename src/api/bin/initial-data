@@ -1,0 +1,101 @@
+#!/usr/bin/env node
+
+require('dotenv').config();
+require('../src/database');
+const urlHelper = require('url');
+const _ = require('lodash');
+const fetch = require('node-fetch');
+const { conferenceModel, resourceModel } = require('../src/model/index');
+
+const C_URL = process.env.COLLECTORS_ADDRESS;
+const FETCH_SETTINGS = {
+  timeout: 10000,
+};
+
+const composeUrl = ({ pathname, query }) =>
+  urlHelper.format({ host: C_URL, pathname, query });
+
+const createRequest = requestUrl =>
+  fetch(requestUrl, FETCH_SETTINGS)
+    .then(response => response.json());
+
+function storeTwitterResources(twitterData) {
+  const resourceName = 'TWITTER';
+  const resources = twitterData.map(data => {
+    const { screen_name: userId } = data;
+    return { resourceName, userId, data };
+  });
+
+  return resourceModel.insertMany(resources);
+}
+
+function storeAwesomeListResources(awesomeResources) {
+  const resourceName = 'AWESOMELIST';
+  const resources = awesomeResources.map(data => {
+    const { twitterId: userId } = data;
+    return { resourceName, userId, data };
+  });
+
+  return resourceModel.insertMany(resources);
+}
+
+function getTwitterData(users) {
+  const pathname = '/resource/twitter/lookup';
+  const requests = _.chunk(users, 100)
+    .map(screenName =>
+      createRequest(composeUrl({ pathname, query: { screenName } })));
+
+  return Promise
+    .all(requests)
+    .then(data => [].concat(...data));
+}
+
+function getAwesomeList() {
+  const pathname = '/resource/awesomelist/get';
+
+  return createRequest(composeUrl({ pathname }))
+    .then(storeAwesomeListResources)
+    .then(awesomeResources => {
+      const twitterUsers = awesomeResources
+        .map(({ data: { twitterId } }) => twitterId);
+
+      return getTwitterData(twitterUsers)
+        .then(storeTwitterResources)
+        .then(twitterResources => [awesomeResources, twitterResources]);
+    });
+}
+
+function findTwitterResoure(twitterId, twitterResources) {
+  const resource = twitterResources
+    .find(({ data: { screen_name: id } }) => id === twitterId);
+  return resource || { data: {} };
+}
+
+function createConferenceData([awesomeList, twitter]) {
+  return awesomeList
+    .map(awesomeResource => {
+      const { region, url, name, twitterId } = awesomeResource.data;
+      const twitterResource = findTwitterResoure(twitterId, twitter);
+      const {
+        description = '',
+        location = '',
+        profile_banner_url: banner = '',
+      } = twitterResource.data;
+      const resources = [awesomeResource, twitterResource];
+
+      return { name, url, description, region, location, banner, resources };
+    });
+}
+
+getAwesomeList()
+  .then(createConferenceData)
+  .then(data => conferenceModel.insertMany(data))
+  .then(data => {
+    console.log(`Filled with ${data.length} items.`);
+    process.exit(0);
+  })
+  .catch(err => {
+    console.error(err);
+    process.exit(1);
+  });
+

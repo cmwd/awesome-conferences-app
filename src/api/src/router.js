@@ -16,17 +16,15 @@ function errorHandler({ code, message = M_NOT_SUPPORTED }) {
 }
 
 function router(app) {
-  // routerParams(app);
-
   app.route('/conferences/')
-    .get(conferencesController.show)
+    .get(conferencesController.getConferences)
     .put(errorHandler({ code: H_E_NOT_ALLOWED }))
     .post(errorHandler({ code: H_E_NOT_ALLOWED }))
     .delete(errorHandler({ code: H_E_NOT_ALLOWED }));
 
-  app.route('/resources/:conference_id')
-    .get(resourcesController.show)
-    .post(resourcesController.add);
+  app.route('/resources/:conferenceId')
+    .get(resourcesController.showResources)
+    .post(resourcesController.addResource);
 
   app.use(errorHandler({ code: H_E_NOT_FOUND, message: 'Not found.' }));
 }
