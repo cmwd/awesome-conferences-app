@@ -2,6 +2,7 @@
 
 require('dotenv').config();
 require('../src/database');
+const co = require('co');
 const urlHelper = require('url');
 const _ = require('lodash');
 const fetch = require('node-fetch');
@@ -19,9 +20,9 @@ const createRequest = requestUrl =>
   fetch(requestUrl, FETCH_SETTINGS)
     .then(response => response.json());
 
-function storeTwitterResources(twitterData) {
+function storeTwitterResources(twitterResources) {
   const resourceName = 'TWITTER';
-  const resources = twitterData.map(data => {
+  const resources = twitterResources.map(data => {
     const { screen_name: userId } = data;
     return { resourceName, userId, data };
   });
@@ -39,10 +40,10 @@ function storeAwesomeListResources(awesomeResources) {
   return resourceModel.insertMany(resources);
 }
 
-function getTwitterData(users) {
+function getTwitterData(awesomeResources) {
   const pathname = '/resource/twitter/lookup';
-  const requests = _.chunk(users, 100)
-    .map(screenName =>
+  const users = awesomeResources.map(({ twitterId }) => twitterId);
+  const requests = _.chunk(users, 100).map(screenName =>
       createRequest(composeUrl({ pathname, query: { screenName } })));
 
   return Promise
@@ -53,43 +54,47 @@ function getTwitterData(users) {
 function getAwesomeList() {
   const pathname = '/resource/awesomelist/get';
 
-  return createRequest(composeUrl({ pathname }))
-    .then(storeAwesomeListResources)
-    .then(awesomeResources => {
-      const twitterUsers = awesomeResources
-        .map(({ data: { twitterId } }) => twitterId);
-
-      return getTwitterData(twitterUsers)
-        .then(storeTwitterResources)
-        .then(twitterResources => [awesomeResources, twitterResources]);
-    });
+  return createRequest(composeUrl({ pathname }));
 }
 
 function findTwitterResoure(twitterId, twitterResources) {
   const resource = twitterResources
-    .find(({ data: { screen_name: id } }) => id === twitterId);
+    .find(({ screen_name: id }) => id === twitterId);
   return resource || { data: {} };
 }
 
 function createConferenceData([awesomeList, twitter]) {
-  return awesomeList
-    .map(awesomeResource => {
-      const { region, url, name, twitterId } = awesomeResource.data;
-      const twitterResource = findTwitterResoure(twitterId, twitter);
-      const {
-        description = '',
-        location = '',
-        profile_banner_url: banner = '',
-      } = twitterResource.data;
-      const resources = [awesomeResource, twitterResource];
+  return awesomeList.map(awesomeResource => {
+    const { region, url, name, twitterId } = awesomeResource.data;
+    const twitterResource = findTwitterResoure(twitterId, twitter);
+    const {
+      description = '',
+      location = '',
+      profile_banner_url: banner = '',
+    } = twitterResource.data;
+    const resources = [awesomeResource, twitterResource];
 
-      return { name, url, description, region, location, banner, resources };
-    });
+    return { name, url, description, region, location, banner, resources };
+  });
 }
 
-getAwesomeList()
-  .then(createConferenceData)
-  .then(data => conferenceModel.insertMany(data))
+function *getData() {
+  const awesomeListResources = yield getAwesomeList();
+  const twitterResources = yield getTwitterData(awesomeListResources);
+
+  return [awesomeListResources, twitterResources];
+}
+
+function *storeData([awesomeListResources, twitterResources]) {
+  const awesomeList = yield storeAwesomeListResources(awesomeListResources);
+  const twitter = yield storeTwitterResources(twitterResources);
+  const data = createConferenceData([awesomeList, twitter]);
+
+  return conferenceModel.insertMany(data);
+}
+
+co(getData)
+  .then(co.wrap(storeData))
   .then(data => {
     console.log(`Filled with ${data.length} items.`);
     process.exit(0);
@@ -98,4 +103,3 @@ getAwesomeList()
     console.error(err);
     process.exit(1);
   });
-
