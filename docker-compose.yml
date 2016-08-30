@@ -3,11 +3,11 @@ services:
   web:
     build: ./src/web/
     volumes:
-      - ./src/web/:/usr/src/app/
+      - ./src/web/:/usr/src/web/
     ports:
-      - "8000:8000"
+      - "8000:80"
     links:
-      - mongo
+      - api
     environment:
       - NODE_DB_ADDRESS=mongodb://mongo:27017
       - NODE_PORT=8000
@@ -15,21 +15,20 @@ services:
   collectors:
     build: ./src/collectors/
     volumes:
-      - ./src/collectors/:/usr/src/app/
+      - ./src/collectors/:/usr/src/collectors/
     ports:
-      - "8001:8001"
+      - "8001:80"
     links:
       - mongo
     environment:
-      - NODE_DB_ADDRESS=mongodb://mongo:27017
       - NODE_PORT=8001
       - DEBUG=*
   api:
     build: ./src/api/
     volumes:
-      - ./src/api/:/usr/src/app/
+      - ./src/api/:/usr/src/api/
     ports:
-      - "8002:8002"
+      - "8002:80"
     links:
       - mongo
     environment:
@@ -46,3 +45,13 @@ services:
       image: tianon/true
       volumes:
         - /data/db
+  ngnix:
+    build: ./src/ngnix/
+    ports:
+      - "80:80"
+    volumes:
+      - /www/public
+    volumes_from:
+      - web
+    links:
+      - api
