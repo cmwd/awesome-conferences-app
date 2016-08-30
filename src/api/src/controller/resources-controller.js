@@ -1,3 +1,4 @@
+const co = require('co');
 const { conferenceModel, resourceModel } = require('../model/index');
 
 function showResources({ params }, res, next) {
@@ -11,13 +12,13 @@ function showResources({ params }, res, next) {
 function addResource({ params, query }, res, next) {
   const { resourceName, userName } = query;
 
-  resourceModel
-    .create({ resourceName, userName })
-    .then(model =>
-      conferenceModel
-        .update(params.conferenceId, { $addToSet: { resources: model } }))
-    .then(model => res.json(model))
-    .catch(next);
+  co(function *() {
+    const resource = yield resourceModel.create({ resourceName, userName });
+    yield conferenceModel
+      .update(params.conferenceId, { $addToSet: { resources: resource } });
+
+    res.json(resource);
+  }).catch(next);
 }
 
 module.exports = { showResources, addResource };

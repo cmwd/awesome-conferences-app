@@ -9,8 +9,7 @@ const M_NOT_SUPPORTED = 'Method is not supported.';
 
 function errorHandler({ code, message = M_NOT_SUPPORTED }) {
   return ({ url }, res) => {
-    res
-      .status(code)
+    res.status(code)
       .json({ code, message, url });
   };
 }

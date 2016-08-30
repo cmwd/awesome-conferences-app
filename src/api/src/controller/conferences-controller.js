@@ -3,10 +3,7 @@ const paginator = require('../utils/paginator');
 const { conferenceModel } = require('../model/index');
 
 function *getConferencesList(offset, limit) {
-  const conferences = yield conferenceModel
-    .find()
-    .skip(offset)
-    .limit(limit);
+  const conferences = yield conferenceModel.find().skip(offset).limit(limit);
   const count = yield conferenceModel.count();
   const pages = paginator.generate(count, offset, limit);
 
@@ -23,8 +20,8 @@ function getConferences(req, res, next) {
   limit = parseInt(limit, 10);
 
   co(getConferencesList(offset, limit))
-  .then(data => res.json(data))
-  .catch(next);
+    .then(data => res.json(data))
+    .catch(next);
 }
 
 module.exports = { getConferences };

@@ -22,14 +22,6 @@ const schema = mongoose.Schema({
   data: mongoose.Schema.Types.Mixed,
 });
 
-function getTwitterUsers() {
-  return this
-    .find({ resourceName: R_TWITTER })
-    .then(models => models.map(({ userId }) => userId));
-}
-
-schema.static('getTwitterUsers', getTwitterUsers);
-
 const resourceModel = mongoose.model('Resource', schema);
 
 module.exports = { resourceModel };
