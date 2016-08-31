@@ -1,8 +1,5 @@
-const express = require('express');
+import dotenv from 'dotenv';
+import server from './src/server/server';
 
-const app = express();
-
-app.listen(process.env.NODE_PORT);
-app.get('/', (req, res) => {
-  res.send('Soon!');
-});
+dotenv.config();
+server.init();
