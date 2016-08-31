@@ -9,7 +9,7 @@ services:
     links:
       - api
     environment:
-      - NODE_DB_ADDRESS=mongodb://mongo:27017
+      - NODE_API_URL=http://api:8002
       - NODE_PORT=8000
       - DEBUG=*
   collectors:
