@@ -1,12 +1,17 @@
 import React from 'react';
+import { Grid, Row, Col } from './Bootstrap';
 import Header from './Header';
-import { VisibleConferencesList } from '../containers';
+import { VisibleConferences } from '../containers';
 
 const App = () => (
-  <div className="container">
-    <Header />
-    <VisibleConferencesList />
-  </div>
+  <Grid fluid>
+    <Row>
+      <Col xs={12}>
+        <Header />
+      </Col>
+    </Row>
+    <VisibleConferences />
+  </Grid>
 );
 
 export default App;

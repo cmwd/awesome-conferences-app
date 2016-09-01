@@ -1,9 +1,10 @@
 import React from 'react';
+import PageHeader from 'react-bootstrap/lib/PageHeader';
 
 const Header = () => (
-  <header>
-    <h2>Awesome conferences app</h2>
-  </header>
+  <PageHeader>
+    Awesome conferences <small>app</small>
+  </PageHeader>
 );
 
 export default Header;

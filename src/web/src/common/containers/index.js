@@ -1,1 +1,1 @@
-export { default as VisibleConferencesList } from './VisibleConferencesList';
+export { default as VisibleConferences } from './VisibleConferences';

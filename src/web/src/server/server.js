@@ -37,6 +37,7 @@ function init() {
       .catch(next);
   }
 
+  app.use('/public', Express.static('./public'));
   app.use(handleRender);
   app.set('view engine', 'pug');
   app.set('views', './src/server/views');

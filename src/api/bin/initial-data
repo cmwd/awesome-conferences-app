@@ -59,7 +59,7 @@ function getAwesomeList() {
 
 function findTwitterResoure(twitterId, twitterResources) {
   const resource = twitterResources
-    .find(({ screen_name: id }) => id === twitterId);
+    .find(({ data: { screen_name: id } }) => id === twitterId);
   return resource || { data: {} };
 }
 
