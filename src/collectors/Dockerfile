@@ -8,7 +8,7 @@ WORKDIR /usr/src/collectors
 
 # Install app dependencies
 COPY package.json /usr/src/collectors/
-RUN npm install
+RUN npm install --production
 
 # Bundle app source
 COPY . /usr/src/collectors

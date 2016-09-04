@@ -9,9 +9,10 @@ services:
     links:
       - api
     environment:
-      - NODE_API_URL=http://api:8002
+      - NODE_API_URL=http://${EXTERNAL_IP}/api
       - NODE_PORT=8000
-      - DEBUG=*
+      - NODE_ENV=production
+      - DEBUG=
   collectors:
     build: ./src/collectors/
     volumes:
@@ -22,7 +23,8 @@ services:
       - mongo
     environment:
       - NODE_PORT=8001
-      - DEBUG=*
+      - NODE_ENV=production
+      - DEBUG=
   api:
     build: ./src/api/
     volumes:
@@ -34,7 +36,8 @@ services:
     environment:
       - NODE_DB_ADDRESS=mongodb://mongo:27017
       - NODE_PORT=8002
-      - DEBUG=*
+      - NODE_ENV=production
+      - DEBUG=
   mongo:
     image: mongo
     ports:

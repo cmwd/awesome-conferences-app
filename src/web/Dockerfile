@@ -8,7 +8,7 @@ WORKDIR /usr/src/web
 
 # Install app dependencies
 COPY package.json /usr/src/web/
-RUN npm install
+RUN npm install --production
 
 # Bundle app source
 COPY . /usr/src/web
