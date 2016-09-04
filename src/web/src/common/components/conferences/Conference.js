@@ -8,7 +8,7 @@ const Conference = (props) => {
   };
 
   return (
-    <Col xs={6} sm={4} className="conference">
+    <Col xs={6} sm={4}>
       <div className="conference">
         <div
           className="conference__thumbnail"
