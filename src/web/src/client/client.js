@@ -8,14 +8,17 @@ import logger from 'redux-logger';
 import rootReducer from '../common/reducers';
 import routes from '../common/routes';
 
-const { __PRELOADED_STATE__, __CONFIG__ } = window;
+const { __PRELOADED_STATE__ } = window;
+const middlewares = [thunk.withExtraArgument(process.env)];
+
+if (process.env.NODE_ENV !== 'production') {
+  middlewares.push(logger());
+}
+
 const store = createStore(
   rootReducer,
   __PRELOADED_STATE__,
-  applyMiddleware(
-    thunk.withExtraArgument(__CONFIG__),
-    logger()
-  ));
+  applyMiddleware(...middlewares));
 
 match({ history, routes }, (error, redirectLocation, renderProps) => {
   render(

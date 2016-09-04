@@ -4,7 +4,7 @@ BIN="./node_modules/.bin"
 
 if [ "$NODE_ENV" == "production" ];
 then
-  $BIN/webpack
+  $BIN/webpack -p
 else
   $BIN/webpack -d --watch
 fi  

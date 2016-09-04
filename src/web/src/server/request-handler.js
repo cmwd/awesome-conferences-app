@@ -5,12 +5,6 @@ import routes from '../common/routes';
 import { prepareStore, prepareRender } from './services/react-service';
 import fetch from 'node-fetch';
 
-const clientConfig = () => ({
-  config: {
-    API_URL: process.env.NODE_API_URL,
-  },
-});
-
 const handle500 = ({ res, error }) =>
   res.status(500).send(error.message);
 
@@ -30,7 +24,7 @@ const handleRender = ({ res, renderProps }) => {
   getConferences(fetch)(process.env.NODE_API_URL)({ limit, offset })
     .then(prepareStore)
     .then(store => prepareRender({ store, renderProps }))
-    .then(data => res.render('index', { ...data, ...clientConfig() }))
+    .then(data => res.render('index', data))
     .catch(error => handle500({ res,
       error: { ...error, message: error.stack } }));
 };
