@@ -1,0 +1,4 @@
+#!/bin/bash
+
+source ./.env
+./bin/get-conferences-data

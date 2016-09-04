@@ -2,4 +2,5 @@
 
 BIN="./node_modules/.bin"
 
+source ./.env
 $BIN/babel-node index.js --debug-brk --inspect index.js

@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-require('dotenv').config();
 require('../src/database');
 const co = require('co');
 const urlHelper = require('url');

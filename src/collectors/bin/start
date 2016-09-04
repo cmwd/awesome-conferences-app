@@ -4,8 +4,8 @@ BIN="./node_modules/.bin"
 
 if [ "$NODE_ENV" == "production" ];
 then
-  ./bin/build && $BIN/babel-node index.js
+  node index.js
 else
   source ./.env
-  $BIN/babel-node index.js | $BIN/bunyan -l warn
+  supervisor -w src ./index.js
 fi  

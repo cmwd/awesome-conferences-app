@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "./bin/start",
     "inspector": "node --debug-brk --inspect index.js",
     "test": "./node_modules/.bin/tape -r ./tests/config ./tests/**/*.test.js | faucet",
     "test-inspector": "node --debug-brk --inspect ./node_modules/.bin/tape -r ./tests/config ./tests/**/*.test.js | faucet"
@@ -14,7 +14,6 @@
   "dependencies": {
     "co": "^4.6.0",
     "debug": "^2.2.0",
-    "dotenv": "^2.0.0",
     "express": "^4.14.0",
     "global": "^4.3.0",
     "lodash": "^4.13.1",
