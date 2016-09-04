@@ -1,0 +1,10 @@
+#!/bin/bash
+
+BIN="./node_modules/.bin"
+
+if [ "$NODE_ENV" == "production" ];
+then
+  $BIN/webpack
+else
+  $BIN/webpack -d --watch
+fi  

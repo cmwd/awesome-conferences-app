@@ -1,5 +1,2 @@
-import dotenv from 'dotenv';
-import server from './src/server/server';
-
-dotenv.config();
-server.init();
+require('dotenv').config();
+require('./src/server/server');

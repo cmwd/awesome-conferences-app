@@ -1,12 +1,19 @@
 import { connect } from 'react-redux';
-import Conferences from '../components/Conferences';
+import Conferences from '../components/conferences/Conferences';
+import { selectConferencePage } from '../actions';
+
+const mapStateToProps = ({ conferences, pages, conferencesLoadingState }) =>
+  ({ conferences, pages, conferencesLoadingState });
+
+const mapDispatchToProps = (dispatcher) => ({
+  onSelect(page) {
+    dispatcher(selectConferencePage(page));
+  },
+});
 
 const VisibleConferences = connect(
-  ({ conferences, pages }) => ({ conferences, pages }),
-  () => ({
-    onConferenceClick(ev) { console.log(ev); },
-    onSelectPage(ev) { console.log(ev); },
-  })
+  mapStateToProps,
+  mapDispatchToProps
 )(Conferences);
 
 export default VisibleConferences;

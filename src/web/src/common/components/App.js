@@ -1,16 +1,15 @@
 import React from 'react';
 import { Grid, Row, Col } from './Bootstrap';
 import Header from './Header';
-import { VisibleConferences } from '../containers';
 
-const App = () => (
+const App = ({ children }) => (
   <Grid fluid>
     <Row>
       <Col xs={12}>
         <Header />
       </Col>
     </Row>
-    <VisibleConferences />
+    {children}
   </Grid>
 );
 

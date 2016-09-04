@@ -1,0 +1,10 @@
+#!/bin/bash
+
+BIN="./node_modules/.bin"
+
+if [ "$NODE_ENV" == "production" ];
+then
+  $BIN/babel-node index.js
+else
+  $BIN/babel-node index.js | $BIN/bunyan -l warn
+fi  

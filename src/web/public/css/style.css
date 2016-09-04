@@ -3,5 +3,24 @@
 }
 
 .conference {
-  height: 300px;
+  height: 350px;
+}
+
+.label-list__item {
+  margin-right: .2em;
+}
+
+.conferences--is-loading {
+  opacity: .4;
+}
+
+.conference__thumbnail {
+  background-color: #f3f3f3;
+  background-size: cover;
+  background-position: 50% 50%;
+  height: 50%;
+}
+
+.conference__location {
+  margin-top: .7em;
 }

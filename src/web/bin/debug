@@ -1,0 +1,5 @@
+#!/bin/bash
+
+BIN="./node_modules/.bin"
+
+$BIN/babel-node index.js --debug-brk --inspect index.js

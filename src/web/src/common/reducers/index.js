@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux';
-import conferences from './conferences';
-import pages from './pages';
+import * as conferences from './conferences-reducer';
 
-const conferencesApp = combineReducers({ conferences, pages });
+const conferencesApp = combineReducers({ ...conferences });
 
 export default conferencesApp;
