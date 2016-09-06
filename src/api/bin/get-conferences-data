@@ -2,21 +2,27 @@
 
 require('../src/database');
 const co = require('co');
-const urlHelper = require('url');
+const { stringify } = require('querystring');
 const _ = require('lodash');
 const fetch = require('node-fetch');
 const { conferenceModel, resourceModel } = require('../src/model/index');
 
-const C_URL = process.env.COLLECTORS_ADDRESS;
 const FETCH_SETTINGS = {
   timeout: 10000,
 };
 
-const composeUrl = ({ pathname, query }) =>
-  urlHelper.format({ host: C_URL, pathname, query });
+const composeUrl = ({ pathname, query }) => {
+  let url = `${process.env.COLLECTORS_ADDRESS}${pathname}`;
 
-const createRequest = requestUrl =>
-  fetch(requestUrl, FETCH_SETTINGS)
+  if (query) {
+    url += `?${stringify(query)}`;
+  }
+
+  return url;
+};
+
+const createRequest = params =>
+  fetch(composeUrl(params), FETCH_SETTINGS)
     .then(response => response.json());
 
 function storeTwitterResources(twitterResources) {
@@ -43,7 +49,7 @@ function getTwitterData(awesomeResources) {
   const pathname = '/resource/twitter/lookup';
   const users = awesomeResources.map(({ twitterId }) => twitterId);
   const requests = _.chunk(users, 100).map(screenName =>
-      createRequest(composeUrl({ pathname, query: { screenName } })));
+      createRequest({ pathname, query: { screenName } }));
 
   return Promise
     .all(requests)
@@ -53,7 +59,7 @@ function getTwitterData(awesomeResources) {
 function getAwesomeList() {
   const pathname = '/resource/awesomelist/get';
 
-  return createRequest(composeUrl({ pathname }));
+  return createRequest({ pathname });
 }
 
 function findTwitterResoure(twitterId, twitterResources) {

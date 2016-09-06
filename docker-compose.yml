@@ -5,7 +5,7 @@ services:
     volumes:
       - ./src/web/:/usr/src/web/
     ports:
-      - "8000:80"
+      - "8000"
     links:
       - api
     environment:
@@ -18,7 +18,7 @@ services:
     volumes:
       - ./src/collectors/:/usr/src/collectors/
     ports:
-      - "8001:80"
+      - "8001"
     links:
       - mongo
     environment:
@@ -30,18 +30,19 @@ services:
     volumes:
       - ./src/api/:/usr/src/api/
     ports:
-      - "8002:80"
+      - "8002"
     links:
       - mongo
     environment:
       - NODE_DB_ADDRESS=mongodb://mongo:27017
+      - COLLECTORS_ADDRESS=http://collectors:8001
       - NODE_PORT=8002
       - NODE_ENV=production
       - DEBUG=
   mongo:
     image: mongo
     ports:
-      - "27017:27017"
+      - "27017"
     volumes_from:
       - mongodata
   mongodata:

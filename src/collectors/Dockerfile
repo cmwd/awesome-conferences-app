@@ -13,5 +13,5 @@ RUN npm install --production
 # Bundle app source
 COPY . /usr/src/collectors
 
-EXPOSE 8000
+EXPOSE 8001
 CMD [ "npm", "start" ]
