@@ -46,7 +46,7 @@ function storeAwesomeListResources(awesomeResources) {
 }
 
 function getTwitterData(awesomeResources) {
-  const pathname = '/resource/twitter/lookup';
+  const pathname = '/resource/twitter';
   const users = awesomeResources.map(({ twitterId }) => twitterId);
   const requests = _.chunk(users, 100).map(screenName =>
       createRequest({ pathname, query: { screenName } }));
@@ -57,7 +57,7 @@ function getTwitterData(awesomeResources) {
 }
 
 function getAwesomeList() {
-  const pathname = '/resource/awesomelist/get';
+  const pathname = '/resource/awesomelist';
 
   return createRequest({ pathname });
 }

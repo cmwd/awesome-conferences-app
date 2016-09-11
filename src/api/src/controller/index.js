@@ -1,4 +1,4 @@
-const conferencesController = require('./conferences-controller');
-const resourcesController = require('./resources-controller');
+const conferenceController = require('./conference-controller');
+const resourceController = require('./resource-controller');
 
-module.exports = { conferencesController, resourcesController };
+module.exports = { conferenceController, resourceController };

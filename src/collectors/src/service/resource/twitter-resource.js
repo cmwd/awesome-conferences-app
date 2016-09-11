@@ -1,6 +1,5 @@
 const Twitter = require('twitter');
 const { process } = require('global');
-const { resourceFactory } = require('./resource-factory');
 
 const {
   TWITTER_CONSUMER_KEY: consumer_key,
@@ -17,28 +16,28 @@ const client = new Twitter({
 });
 
 
-const handler = (resolve, reject) =>
+const reqHandler = (resolve, reject) =>
   (err, data) => {
     if (err) reject(err);
     else resolve(data);
   };
 
-const methods = {
-  lookup({ screenName }) {
-    if (!Array.isArray(screenName) && screenName.length > 100) {
-      return Promise.reject(
-        new Error(
-          'Parameter screenName must be an array with less than 100 items'));
-    }
+const handler = ({ query }) => {
+  const { screenName } = query;
 
-    return new Promise((resolve, reject) => {
-      client.get('users/lookup',
-        {
-          screen_name: screenName.join(','),
-          include_entities: false,
-        }, handler(resolve, reject));
-    });
-  },
+  if (!Array.isArray(screenName) || screenName.length > 100) {
+    return Promise.reject(
+      new Error(
+        'Parameter screenName must be an array with less than 100 items'));
+  }
+
+  return new Promise((resolve, reject) => {
+    client.get('users/lookup',
+      {
+        screen_name: screenName.join(','),
+        include_entities: false,
+      }, reqHandler(resolve, reject));
+  });
 };
 
-module.exports = resourceFactory(methods);
+module.exports = handler;

@@ -4,16 +4,13 @@ const HEADERS_CONFIG = {
     'Origin, X-Requested-With, Content-Type, Accept',
 };
 
-const headersConfigMiddleware = (req, res, next) => {
-  Object
-    .keys(HEADERS_CONFIG)
-    .forEach(key => res.header(key, HEADERS_CONFIG[key]));
+const configMiddleware = (req, res, next) => {
+  Object.keys(HEADERS_CONFIG).forEach(key =>
+    res.header(key, HEADERS_CONFIG[key]));
   next();
 };
 
-function requestConfig(app) {
-  app.disable('x-powered-by')
-    .use(headersConfigMiddleware);
-}
-
-module.exports = requestConfig;
+module.exports = app => {
+  app.disable('x-powered-by');
+  app.use(configMiddleware);
+};
