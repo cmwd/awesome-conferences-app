@@ -7,5 +7,5 @@ then
   node index.js
 else
   source ./.env
-  supervisor -w src ./index.js
+  supervisor -n -w src ./index.js | $BIN/pino
 fi  

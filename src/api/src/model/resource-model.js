@@ -7,6 +7,7 @@ const R_AWESOMELIST = 'AWESOMELIST';
 
 const toUpperCase = str => str.toUpperCase();
 
+const { Schema } = mongoose;
 const resources = [R_YOUTUBE, R_VIMEO, R_TWITTER, R_AWESOMELIST];
 const schema = mongoose.Schema({
   resourceName: {
@@ -14,12 +15,13 @@ const schema = mongoose.Schema({
     enum: resources,
     set: toUpperCase,
   },
-  userId: {
+  resourceId: {
     type: String,
     required: false,
     index: true,
   },
-  data: mongoose.Schema.Types.Mixed,
+  _creator: { type: Schema.Types.ObjectId, ref: 'Conference' },
+  data: Schema.Types.Mixed,
 });
 
 const resourceModel = mongoose.model('Resource', schema);

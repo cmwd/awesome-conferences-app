@@ -1,10 +1,8 @@
-const {
-  conferenceController,
-  resourceController,
-} = require('./controller/index');
+const HTTPError = require('http-errors');
+const { conferenceController } = require('./controller/index');
 
 module.exports = app => {
   app
     .use('/conference', conferenceController)
-    .use('/resource', resourceController);
+    .get('*', (req, res, next) => next(HTTPError.NotFound()));
 };

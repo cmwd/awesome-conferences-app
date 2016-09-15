@@ -28,8 +28,8 @@ const createRequest = params =>
 function storeTwitterResources(twitterResources) {
   const resourceName = 'TWITTER';
   const resources = twitterResources.map(data => {
-    const { screen_name: userId } = data;
-    return { resourceName, userId, data };
+    const { screen_name: resourceId } = data;
+    return { resourceName, resourceId, data };
   });
 
   return resourceModel.insertMany(resources);
@@ -38,8 +38,8 @@ function storeTwitterResources(twitterResources) {
 function storeAwesomeListResources(awesomeResources) {
   const resourceName = 'AWESOMELIST';
   const resources = awesomeResources.map(data => {
-    const { twitterId: userId } = data;
-    return { resourceName, userId, data };
+    const { twitterId: resourceId } = data;
+    return { resourceName, resourceId, data };
   });
 
   return resourceModel.insertMany(resources);
@@ -83,6 +83,21 @@ function createConferenceData([awesomeList, twitter]) {
   });
 }
 
+function setCreatorId(conferences) {
+  const p = Promise.all(
+    conferences.reduce((result, conference) => {
+      const resources = conference.resources.map(model => {
+        model._creator = conference;
+        return model.save();
+      });
+      return [...result, ...resources];
+    }
+    , [])
+  );
+
+  return p;
+}
+
 function *getData() {
   const awesomeListResources = yield getAwesomeList();
   const twitterResources = yield getTwitterData(awesomeListResources);
@@ -94,8 +109,10 @@ function *storeData([awesomeListResources, twitterResources]) {
   const awesomeList = yield storeAwesomeListResources(awesomeListResources);
   const twitter = yield storeTwitterResources(twitterResources);
   const data = createConferenceData([awesomeList, twitter]);
+  const conferences = yield conferenceModel.insertMany(data);
+  yield setCreatorId(conferences);
 
-  return conferenceModel.insertMany(data);
+  return conferences;
 }
 
 co(getData)
