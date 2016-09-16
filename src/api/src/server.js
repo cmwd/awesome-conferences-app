@@ -9,7 +9,6 @@ const APP_PORT = process.env.NODE_PORT;
 const app = express()
   .use(pinoMiddleware());
 
-require('./response-config')(app);
 require('./router')(app);
 
 database();

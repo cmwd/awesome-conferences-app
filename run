@@ -1,3 +1,0 @@
-#!/bin/sh
-export EXTERNAL_IP=$(docker-machine ip $DOCKER_MACHINE_NAME)
-exec docker-compose $@

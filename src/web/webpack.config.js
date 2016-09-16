@@ -1,9 +1,9 @@
 const webpack = require('webpack');
 const path = require('path');
+const { NODE_ENV, FRONTEND_API_URL: API_URL } = require('./config');
 
 const BUILD_DIR = path.resolve(__dirname, 'public/js');
 
-const { NODE_ENV, NODE_API_URL: API_URL } = process.env;
 const config = {
   entry: [
     './src/client/client',

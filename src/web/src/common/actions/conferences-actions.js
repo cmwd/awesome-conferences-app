@@ -1,5 +1,8 @@
 import * as types from '../constants/action-types';
-import { getConferences } from '../services/api-service';
+import API from '../services/api-service';
+import { fetch } from 'global';
+
+const { getConferences } = API(fetch);
 
 export const setConferencePageData = conferences =>
   ({ type: types.SET_CONFERENCES_PAGE_DATA, conferences });
@@ -15,7 +18,7 @@ export const selectConferencePage = page =>
     if (current !== page) {
       dispatch({ type: types.SELECT_CONFRENCES_PAGE, page });
       dispatch(setConferencesLoadingState(true));
-      getConferences(fetch)(API_URL)({ limit, offset })
+      getConferences(API_URL)({ limit, offset })
         .then(({ conferences }) =>
           dispatch(setConferencePageData(conferences)))
         .then(() => dispatch(setConferencesLoadingState(false)))

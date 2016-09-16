@@ -9,7 +9,7 @@ services:
     links:
       - api
     environment:
-      - NODE_API_URL=http://${EXTERNAL_IP}/api
+      - NODE_API_URL=http://api.awesome-conferences.com
       - NODE_PORT=8000
       - NODE_ENV=production
       - DEBUG=
@@ -30,7 +30,7 @@ services:
     volumes:
       - ./src/api/:/usr/src/api/
     ports:
-      - "8002"
+      - "8002:8002"
     links:
       - mongo
     environment:
@@ -49,8 +49,8 @@ services:
       image: tianon/true
       volumes:
         - /data/db
-  ngnix:
-    build: ./src/ngnix/
+  nginx:
+    build: ./src/nginx/
     ports:
       - "80:80"
     volumes:

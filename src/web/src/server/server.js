@@ -1,6 +1,7 @@
 import express from 'express';
 import requestHandler from './request-handler';
 import log from './logger';
+import CONFIG from '../../config';
 
 express()
   .use(log.requestLogger())
@@ -8,4 +9,4 @@ express()
   .use(requestHandler)
   .set('view engine', 'pug')
   .set('views', './src/server/views')
-  .listen(process.env.NODE_PORT);
+  .listen(CONFIG.APP_PORT);
