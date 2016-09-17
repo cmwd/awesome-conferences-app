@@ -2,5 +2,6 @@
 
 BIN="./node_modules/.bin"
 
-source ./.env
+BACKEND_API_URL=http://api.awc.local\
+FRONTEND_API_URL=http://api.awc.local\
 $BIN/babel-node index.js --debug-brk --inspect index.js

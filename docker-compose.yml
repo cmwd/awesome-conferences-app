@@ -9,9 +9,10 @@ services:
     links:
       - api
     environment:
-      - NODE_API_URL=http://api.awesome-conferences.com
-      - NODE_PORT=8000
+      - APP_PORT=8000
       - NODE_ENV=production
+      - FRONTEND_API_URL=http://api.awesome-conferences.com
+      - BACKEND_API_URL=http://api:8002
       - DEBUG=
   collectors:
     build: ./src/collectors/
