@@ -30,19 +30,13 @@ server {
   listen 80;
   server_name api.awesome-conferences.com;
 
-  if ($http_origin ~* (.*\.awesome-conferences.com)) {
-    set $cors "true";
-  }
-
   location / {
     include 'common_config/base_api';
 
-    if ($cors = "true") {
-      add_header 'Access-Control-Allow-Origin' '$http_origin';
-      add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, DELETE, PUT';
-      add_header 'Access-Control-Allow-Credentials' 'true';
-      add_header 'Access-Control-Allow-Headers' 'User-Agent,Keep-Alive,Content-Type';
-    }
+  add_header 'Access-Control-Allow-Origin' 'www.awesome-conferences.com';
+  add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, DELETE, PUT';
+  add_header 'Access-Control-Allow-Credentials' 'true';
+  add_header 'Access-Control-Allow-Headers' 'User-Agent,Keep-Alive,Content-Type';
 
     if ($request_method = OPTIONS) {
       return 204;
