@@ -53,5 +53,5 @@ server {
     internal;
   }
 
-  return 301 /404.html;
+  return 301 http://www.awesome-conferences.com/404.html;
 }
