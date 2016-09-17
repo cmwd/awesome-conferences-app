@@ -33,7 +33,7 @@ server {
   location / {
     include 'common_config/base_api';
 
-  add_header 'Access-Control-Allow-Origin' 'www.awesome-conferences.com';
+  add_header 'Access-Control-Allow-Origin' 'http://www.awesome-conferences.com';
   add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, DELETE, PUT';
   add_header 'Access-Control-Allow-Credentials' 'true';
   add_header 'Access-Control-Allow-Headers' 'User-Agent,Keep-Alive,Content-Type';
