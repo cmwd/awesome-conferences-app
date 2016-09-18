@@ -22,7 +22,7 @@ server {
   }
 
   location / {
-    include 'common_config/base_web';
+    include 'common-config/base_web';
   }
 }
 
@@ -31,7 +31,7 @@ server {
   server_name api.awc.local;
 
   location / {
-    include 'common_config/base_api';
+    include 'common-config/base_api';
     add_header 'Access-Control-Allow-Origin' '*';
     add_header 'Access-Control-Allow-Headers' 'Origin, X-Requested-With, Content-Type, Accept';
  }

@@ -22,7 +22,7 @@ server {
   }
 
   location / {
-    include 'common_config/base_web';
+    include 'common-config/base_web';
   }
 }
 
@@ -31,7 +31,7 @@ server {
   server_name api.awesome-conferences.com;
 
   location / {
-    include 'common_config/base_api';
+    include 'common-config/base_api';
 
   add_header 'Access-Control-Allow-Origin' 'http://www.awesome-conferences.com';
   add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS, DELETE, PUT';

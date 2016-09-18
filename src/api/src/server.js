@@ -5,7 +5,7 @@ const pinoMiddleware = require('express-pino-logger');
 const pino = require('pino')({ name: 'server' });
 const { process } = require('global');
 
-const APP_PORT = process.env.NODE_PORT;
+const { NODE_PORT: APP_PORT, NODE_ENV } = process.env;
 const app = express()
   .use(pinoMiddleware());
 
@@ -15,4 +15,9 @@ database();
 
 app
   .use(errorHandler)
-  .listen(APP_PORT, pino.info(`Server connected at ${APP_PORT}`));
+  .listen(APP_PORT, () => {
+    pino.info(`
+      Server connected at "${APP_PORT}";
+      Environment "${NODE_ENV.toUpperCase()}";
+    `);
+  });

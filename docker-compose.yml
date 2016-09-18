@@ -2,6 +2,7 @@ version: "2"
 services:
   web:
     build: ./src/web/
+    restart: on-failure:20
     volumes:
       - ./src/web/:/usr/src/web/
     ports:
@@ -13,9 +14,9 @@ services:
       - NODE_ENV=production
       - FRONTEND_API_URL=http://api.awesome-conferences.com
       - BACKEND_API_URL=http://api:8002
-      - DEBUG=
   collectors:
     build: ./src/collectors/
+    restart: on-failure:20
     volumes:
       - ./src/collectors/:/usr/src/collectors/
     ports:
@@ -25,13 +26,13 @@ services:
     environment:
       - NODE_PORT=8001
       - NODE_ENV=production
-      - DEBUG=
   api:
     build: ./src/api/
+    restart: on-failure:20
     volumes:
       - ./src/api/:/usr/src/api/
     ports:
-      - "8002:8002"
+      - "8002"
     links:
       - mongo
     environment:
@@ -39,9 +40,9 @@ services:
       - COLLECTORS_ADDRESS=http://collectors:8001
       - NODE_PORT=8002
       - NODE_ENV=production
-      - DEBUG=
   mongo:
     image: mongo
+    restart: unless-stopped
     ports:
       - "27017"
     volumes_from:
@@ -52,6 +53,7 @@ services:
         - /data/db
   nginx:
     build: ./src/nginx/
+    restart: unless-stopped
     ports:
       - "80:80"
     volumes:
@@ -60,3 +62,4 @@ services:
       - web
     links:
       - api
+      - web

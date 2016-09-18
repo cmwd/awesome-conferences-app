@@ -4,9 +4,10 @@ BIN="./node_modules/.bin"
 
 if [ "$NODE_ENV" == "production" ];
 then
-  ./bin/build && $BIN/babel-node index.js
+  ./bin/build
+  $BIN/babel-node index.js | $BIN/pino
 else
   BACKEND_API_URL=http://api.awc.local\
   FRONTEND_API_URL=http://api.awc.local\
-  $BIN/babel-node index.js | $BIN/bunyan
+  $BIN/babel-node index.js | $BIN/pino
 fi  

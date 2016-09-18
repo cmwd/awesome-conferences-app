@@ -1,7 +1,0 @@
-#!/bin/bash
-
-BIN="./node_modules/.bin"
-
-BACKEND_API_URL=http://api.awc.local\
-FRONTEND_API_URL=http://api.awc.local\
-$BIN/babel-node index.js --debug-brk --inspect index.js
