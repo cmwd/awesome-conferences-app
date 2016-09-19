@@ -6,13 +6,14 @@ const { stringify } = require('querystring');
 const _ = require('lodash');
 const fetch = require('node-fetch');
 const { conferenceModel, resourceModel } = require('../src/model/index');
+const { COLLECTORS_ADDRESS } = require('../config');
 
 const FETCH_SETTINGS = {
   timeout: 10000,
 };
 
 const composeUrl = ({ pathname, query }) => {
-  let url = `${process.env.COLLECTORS_ADDRESS}${pathname}`;
+  let url = `${COLLECTORS_ADDRESS}${pathname}`;
 
   if (query) {
     url += `?${stringify(query)}`;

@@ -3,9 +3,8 @@ const errorHandler = require('./error-handler');
 const database = require('./database');
 const pinoMiddleware = require('express-pino-logger');
 const pino = require('pino')({ name: 'server' });
-const { process } = require('global');
+const { APP_PORT, NODE_ENV } = require('../config');
 
-const { NODE_PORT: APP_PORT, NODE_ENV } = process.env;
 const app = express()
   .use(pinoMiddleware());
 

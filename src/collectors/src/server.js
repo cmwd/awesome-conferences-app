@@ -1,14 +1,19 @@
 const express = require('express');
 const errorHandler = require('./error-handler');
-const info = require('debug')('collectors:info:server');
+const pinoMiddleware = require('express-pino-logger');
+const pino = require('pino')({ name: 'server' });
+const { APP_PORT, NODE_ENV } = require('../config');
 
 const app = express();
-const { NODE_PORT } = process.env;
 
 require('./router')(app);
 
 app
+  .use(pinoMiddleware())
   .use(errorHandler)
-  .listen(NODE_PORT, () => {
-    info(`App listening on port ${NODE_PORT}`);
+  .listen(APP_PORT, () => {
+    pino.info(`
+      App listening on port ${APP_PORT}
+      Environment "${NODE_ENV.toUpperCase()}";
+    `);
   });

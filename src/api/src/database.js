@@ -1,10 +1,10 @@
 const { Promise, process } = require('global');
 const mongoose = require('mongoose');
 const pino = require('pino')({ name: 'database' });
-const DB_NAME = 'acl';
-const DB_ADDRESS = `${process.env.NODE_DB_ADDRESS}/${DB_NAME}`;
+const { DB_NAME, DB_URL } = require('../config');
+const ADDRESS = `${DB_URL}/${DB_NAME}`;
 
-pino.info(`Connecting to mongo at ${DB_ADDRESS}`);
+pino.info(`Connecting to mongo at ${ADDRESS}`);
 mongoose.Promise = Promise;
 mongoose.connection.on('connected', () =>
   pino.info('Connected'));
@@ -19,4 +19,4 @@ process.on('SIGINT', () => {
   });
 });
 
-module.exports = () => mongoose.connect(DB_ADDRESS);
+module.exports = () => mongoose.connect(ADDRESS);

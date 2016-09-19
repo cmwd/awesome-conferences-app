@@ -5,6 +5,7 @@ services:
     restart: on-failure:20
     volumes:
       - ./src/web/:/usr/src/web/
+      - /usr/src/web/node_modules
     ports:
       - "8000"
     links:
@@ -19,26 +20,28 @@ services:
     restart: on-failure:20
     volumes:
       - ./src/collectors/:/usr/src/collectors/
+      - /usr/src/collectors/node_modules
     ports:
       - "8001"
     links:
       - mongo
     environment:
-      - NODE_PORT=8001
+      - APP_PORT=8001
       - NODE_ENV=production
   api:
     build: ./src/api/
     restart: on-failure:20
     volumes:
       - ./src/api/:/usr/src/api/
+      - /usr/src/api/node_modules
     ports:
       - "8002"
     links:
       - mongo
     environment:
-      - NODE_DB_ADDRESS=mongodb://mongo:27017
+      - DB_URL=mongodb://mongo:27017
       - COLLECTORS_ADDRESS=http://collectors:8001
-      - NODE_PORT=8002
+      - APP_PORT=8002
       - NODE_ENV=production
   mongo:
     image: mongo

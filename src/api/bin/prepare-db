@@ -1,8 +1,0 @@
-#!/bin/bash
-
-if [ "$NODE_ENV" != "production" ];
-then
-  source ./.env
-fi  
-
-./bin/get-conferences-data
