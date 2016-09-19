@@ -10,13 +10,20 @@ const app = express()
 
 require('./router')(app);
 
-database();
+database({
+  onConnect() {
+    app
+      .use(errorHandler)
+      .listen(APP_PORT, () => {
+        pino.info(`
+          Server connected at "${APP_PORT}";
+          Environment "${NODE_ENV.toUpperCase()}";
+        `);
+      });
+  },
+  onError(err) {
+    pino.error(err);
+    process.exit(1);
+  },
+});
 
-app
-  .use(errorHandler)
-  .listen(APP_PORT, () => {
-    pino.info(`
-      Server connected at "${APP_PORT}";
-      Environment "${NODE_ENV.toUpperCase()}";
-    `);
-  });

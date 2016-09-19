@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-require('../src/database');
+const database = require('../src/database');
 const co = require('co');
 const { stringify } = require('querystring');
 const _ = require('lodash');
@@ -116,13 +116,21 @@ function *storeData([awesomeListResources, twitterResources]) {
   return conferences;
 }
 
-co(getData)
-  .then(co.wrap(storeData))
-  .then(data => {
-    console.log(`Filled with ${data.length} items.`);
-    process.exit(0);
-  })
-  .catch(err => {
+database({
+  onConnect() {
+    co(getData)
+      .then(co.wrap(storeData))
+      .then(data => {
+        console.log(`Filled with ${data.length} items.`);
+        process.exit(0);
+      })
+      .catch(err => {
+        console.error(err);
+        process.exit(1);
+      });
+  },
+  onError(err) {
     console.error(err);
     process.exit(1);
-  });
+  }
+});
