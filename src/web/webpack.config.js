@@ -1,25 +1,35 @@
 const webpack = require('webpack');
 const path = require('path');
 const { NODE_ENV, FRONTEND_API_URL: API_URL } = require('./config');
-
+const IS_DEV_ENV = NODE_ENV.toUpperCase() !== 'development';
+const DEV_TOOL = 'eval';
 const BUILD_DIR = path.resolve(__dirname, 'public/js');
 
+const BUNDLER_PLUGINS = [
+  new webpack.DefinePlugin({
+    'process.env': JSON.stringify({ NODE_ENV, API_URL }),
+  }),
+];
+
+if (!IS_DEV_ENV) {
+  BUNDLER_PLUGINS.push(
+    new webpack.optimize.UglifyJsPlugin({
+      compress: { warnings: false },
+    }));
+}
+
 const config = {
+  debug: IS_DEV_ENV,
+  cache: IS_DEV_ENV,
+  devtool: IS_DEV_ENV ? DEV_TOOL : '',
   entry: [
-    './src/client/client',
+    path.join(__dirname, '/src/client/client'),
   ],
   output: {
     path: BUILD_DIR,
     filename: 'bundle.js',
   },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': JSON.stringify({ NODE_ENV, API_URL }),
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: { warnings: false },
-    }),
-  ],
+  plugins: BUNDLER_PLUGINS,
   module: {
     loaders: [
       {
