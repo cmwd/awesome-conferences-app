@@ -1,68 +1,68 @@
 version: "2"
 services:
   web:
-    build: ./src/web/
+    build: ./src/web
     restart: on-failure:20
     volumes:
-      - ./src/web/:/usr/src/web/
-      - /usr/src/web/node_modules
+      - ./src/web/:/home/web/app
+      - /home/web/app/node_modules
     ports:
       - "8000"
-    links:
-      - api
+    # links:
+    #   - api
     environment:
       - APP_PORT=8000
       - NODE_ENV=production
       - FRONTEND_API_URL=http://api.awesome-conferences.com
       - BACKEND_API_URL=http://api:8002
-  collectors:
-    build: ./src/collectors/
-    restart: on-failure:20
-    volumes:
-      - ./src/collectors/:/usr/src/collectors/
-      - /usr/src/collectors/node_modules
-    ports:
-      - "8001"
-    links:
-      - mongo
-    environment:
-      - APP_PORT=8001
-      - NODE_ENV=production
-  api:
-    build: ./src/api/
-    restart: on-failure:20
-    volumes:
-      - ./src/api/:/usr/src/api/
-      - /usr/src/api/node_modules
-    ports:
-      - "8002"
-    links:
-      - mongo
-    environment:
-      - DB_URL=mongodb://mongo:27017
-      - COLLECTORS_ADDRESS=http://collectors:8001
-      - APP_PORT=8002
-      - NODE_ENV=production
-  mongo:
-    image: mongo
-    restart: unless-stopped
-    ports:
-      - "27017"
-    volumes_from:
-      - mongodata
-  mongodata:
-      image: tianon/true
-      volumes:
-        - /data/db
-  nginx:
-    build: ./src/nginx/
-    restart: unless-stopped
-    ports:
-      - "80:80"
-    volumes:
-      - /www/public
-    volumes_from:
-      - web
-    links:
-      - api
-      - web
+  # collectors:
+  #   build: ./src/collectors/
+  #   restart: on-failure:20
+  #   volumes:
+  #     - ./src/collectors/:/usr/src/collectors/
+  #     - /usr/src/collectors/node_modules
+  #   ports:
+  #     - "8001"
+  #   links:
+  #     - mongo
+  #   environment:
+  #     - APP_PORT=8001
+  #     - NODE_ENV=production
+  # api:
+  #   build: ./src/api/
+  #   restart: on-failure:20
+  #   volumes:
+  #     - ./src/api/:/usr/src/api/
+  #     - /usr/src/api/node_modules
+  #   ports:
+  #     - "8002"
+  #   links:
+  #     - mongo
+  #   environment:
+  #     - DB_URL=mongodb://mongo:27017
+  #     - COLLECTORS_ADDRESS=http://collectors:8001
+  #     - APP_PORT=8002
+  #     - NODE_ENV=production
+  # mongo:
+  #   image: mongo
+  #   restart: unless-stopped
+  #   ports:
+  #     - "27017"
+  #   volumes_from:
+  #     - mongodata
+  # mongodata:
+  #     image: tianon/true
+  #     volumes:
+  #       - /data/db
+  # nginx:
+  #   build: ./src/nginx/
+  #   restart: unless-stopped
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - /www/public
+  #   volumes_from:
+  #     - web
+  #   links:
+  #     - api
+  #     - web
