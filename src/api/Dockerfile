@@ -2,16 +2,21 @@ FROM node:6.3.0
 
 MAINTAINER cmwd <pwojtkowiak@gmail.com>
 
-# Create app directory
-RUN mkdir -p /usr/src/api
-WORKDIR /usr/src/api
+RUN useradd --user-group --create-home --shell /bin/false api
 
-# Install app dependencies
-COPY package.json /usr/src/api/
-RUN npm install --production
+ENV HOME=/home/api
 
-# Bundle app source
-COPY . /usr/src/api
+COPY package.json npm-shrinkwrap.json $HOME/app/
+RUN chown -R api:api $HOME/*
 
-EXPOSE 8002
-CMD [ "npm", "start" ]
+USER api
+
+WORKDIR $HOME/app
+RUN npm install
+
+USER root
+COPY . $HOME/app
+RUN chown -R api:api $HOME/*
+USER api
+
+CMD ["npm", "start"]

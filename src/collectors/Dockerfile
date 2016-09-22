@@ -2,16 +2,21 @@ FROM node:6.3.0
 
 MAINTAINER cmwd <pwojtkowiak@gmail.com>
 
-# Create app directory
-RUN mkdir -p /usr/src/collectors
-WORKDIR /usr/src/collectors
+RUN useradd --user-group --create-home --shell /bin/false collectors
 
-# Install app dependencies
-COPY package.json /usr/src/collectors/
-RUN npm install --production
+ENV HOME=/home/collectors
 
-# Bundle app source
-COPY . /usr/src/collectors
+COPY package.json npm-shrinkwrap.json $HOME/app/
+RUN chown -R collectors:collectors $HOME/*
 
-EXPOSE 8001
-CMD [ "npm", "start" ]
+USER collectors
+
+WORKDIR $HOME/app
+RUN npm install
+
+USER root
+COPY . $HOME/app
+RUN chown -R collectors:collectors $HOME/*
+USER collectors
+
+CMD ["npm", "start"]
