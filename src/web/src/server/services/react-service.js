@@ -1,23 +1,44 @@
 import React from 'react';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
-import { RouterContext } from 'react-router';
+import { ServerRouter, createServerRenderContext } from 'react-router';
+import thunk, { thunkQueue } from '../redux-thunk-watcher';
+import { App } from '../../common/components';
 import conferencesApp from '../../common/reducers';
+import CONFIG from '../../../config';
 
-export const prepareStore = (conferencesData) => {
-  const { conferences, pages } = conferencesData;
-  return createStore(conferencesApp, { conferences, pages });
-};
-
-export const prepareRender = ({ store, renderProps }) => {
-  const html = renderToString(
+const { BACKEND_API_URL: API_URL } = CONFIG;
+const middlewares = [thunk.withExtraArgument({ API_URL })];
+const store = createStore(conferencesApp, applyMiddleware(...middlewares));
+const render = ({ location, context }) =>
+  renderToString(
     <Provider store={store}>
-      <RouterContext {...renderProps} />
+      <ServerRouter location={location} context={context}>
+        <App />
+      </ServerRouter>
     </Provider>
   );
-  const state = store.getState();
 
-  return { state, html };
+export const prepareRender = ({ location }) => {
+  const context = createServerRenderContext();
+  let html = render({ location, context });
+  const result = context.getResult();
+  let state = store.getState();
+
+  if (result.missed) {
+    thunkQueue.clear();
+    return Promise.resolve({ state, html, result });
+  }
+
+  return thunkQueue.isEmpty()
+    ? Promise.resolve({ state, html, result })
+    : new Promise((resolve) => {
+      thunkQueue.onEnd(() => {
+        state = store.getState();
+        html = render({ location, context });
+        resolve({ state, html, result });
+      });
+    });
 };
 
