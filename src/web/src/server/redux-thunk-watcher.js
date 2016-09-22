@@ -1,11 +1,22 @@
 import EventEmitter from 'events';
 
-export const emitter = new EventEmitter();
 const pendingActions = [];
+const emitter = new EventEmitter();
+
+export const thunkQueue = {
+  clear() {
+    pendingActions.length = 0;
+  },
+  isEmpty() {
+    return pendingActions.length === 0;
+  },
+  onEnd(cb) {
+    emitter.once('empty-queue', cb);
+  },
+};
 
 function checker() {
   pendingActions.shift();
-
   if (!pendingActions.length) {
     emitter.emit('empty-queue');
   }
