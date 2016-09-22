@@ -7,17 +7,17 @@ server {
   error_page 500 502 503 504 /50x.html;
 
   location /404.html {
-    root /usr/src/web/error;
+    root /home/web/app/error;
     internal;
   }
 
   location /50x.html {
-    root /usr/src/web/error;
+    root /home/web/app/error;
     internal;
   }
 
   location /public/ {
-    root /usr/src/web;
+    root /home/web/app;
     index index.html index.htm;
   }
 
@@ -56,7 +56,7 @@ server {
   error_page 404 /404.html;
 
   location /404.html {
-    root /usr/src/web/error;
+    root /home/web/app/error;
     internal;
   }
 
