@@ -2,13 +2,21 @@ FROM node:6.3.0
 
 MAINTAINER cmwd <pwojtkowiak@gmail.com>
 
-# Create app directory
-RUN mkdir -p /usr/src/web
-WORKDIR /usr/src/web
+RUN useradd --user-group --create-home --shell /bin/false web
 
-# Bundle app source
-COPY . /usr/src/web
-RUN npm install --production
+ENV HOME=/home/web
 
-EXPOSE 8000
-CMD [ "npm", "start" ]
+COPY package.json npm-shrinkwrap.json $HOME/app/
+RUN chown -R web:web $HOME/*
+
+USER web
+
+WORKDIR $HOME/app
+RUN npm install
+
+USER root
+COPY . $HOME/app
+RUN chown -R web:web $HOME/*
+USER web
+
+CMD ["npm", "start"]

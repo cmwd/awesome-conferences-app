@@ -4,8 +4,8 @@ services:
     build: ./src/web/
     restart: on-failure:20
     volumes:
-      - ./src/web/:/usr/src/web/
-      - /usr/src/web/node_modules
+      - ./src/web/:/home/web/app
+      - /home/web/app/node_modules
     ports:
       - "8000"
     links:
@@ -19,8 +19,8 @@ services:
     build: ./src/collectors/
     restart: on-failure:20
     volumes:
-      - ./src/collectors/:/usr/src/collectors/
-      - /usr/src/collectors/node_modules
+      - ./src/collectors/:/home/collectors/app
+      - /home/collectors/app/node_modules
     ports:
       - "8001"
     links:
@@ -32,8 +32,8 @@ services:
     build: ./src/api/
     restart: on-failure:20
     volumes:
-      - ./src/api/:/usr/src/api/
-      - /usr/src/api/node_modules
+      - ./src/api/:/home/api/app
+      - /home/api/app/node_modules
     ports:
       - "8002"
     links:
