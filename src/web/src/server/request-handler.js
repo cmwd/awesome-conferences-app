@@ -1,4 +1,4 @@
-import { prepareStore, prepareRender } from './services/react-service';
+import { prepareRender } from './services/react-service';
 
 const handleRedirect = (res, { pathname }) => {
   res.writeHead(301, {
@@ -9,9 +9,8 @@ const handleRedirect = (res, { pathname }) => {
 
 export default (req, res, next) => {
   const location = req.url;
-  const store = prepareStore({ conferences: [], pages: {} });
 
-  prepareRender({ store, location })
+  prepareRender({ location })
     .then(({ html, state, result: { redirect } }) => {
       if (redirect) {
         handleRedirect(res, redirect);

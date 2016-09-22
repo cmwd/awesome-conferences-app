@@ -10,7 +10,8 @@ import CONFIG from '../../../config';
 
 const { BACKEND_API_URL: API_URL } = CONFIG;
 const middlewares = [thunk.withExtraArgument({ API_URL })];
-const render = ({ store, location, context }) =>
+const store = createStore(conferencesApp, applyMiddleware(...middlewares));
+const render = ({ location, context }) =>
   renderToString(
     <Provider store={store}>
       <ServerRouter location={location} context={context}>
@@ -19,12 +20,9 @@ const render = ({ store, location, context }) =>
     </Provider>
   );
 
-export const prepareStore = () =>
-  createStore(conferencesApp, applyMiddleware(...middlewares));
-
-export const prepareRender = ({ store, location }) => {
+export const prepareRender = ({ location }) => {
   const context = createServerRenderContext();
-  let html = render({ store, location, context });
+  let html = render({ location, context });
   const result = context.getResult();
   let state = store.getState();
 
@@ -38,7 +36,7 @@ export const prepareRender = ({ store, location }) => {
     : new Promise((resolve) => {
       thunkQueue.onEnd(() => {
         state = store.getState();
-        html = render({ store, location, context });
+        html = render({ location, context });
         resolve({ state, html, result });
       });
     });
