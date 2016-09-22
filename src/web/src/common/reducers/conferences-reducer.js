@@ -1,18 +1,26 @@
 import * as types from '../constants/action-types';
 
-export const conferences = (state = [], action) => {
-  switch (action.type) {
-    case types.SET_CONFERENCES_PAGE_DATA:
-      return action.conferences;
-    default:
-      return state;
-  }
+const D_CONFERENCE_PAGE = {
+  pages: {},
+  conferences: [],
 };
+export const conferencePage = (state = D_CONFERENCE_PAGE, action) => {
+  const { type, data, page } = action;
 
-export const pages = (state = {}, action) => {
-  switch (action.type) {
+  switch (type) {
+
+    case types.SET_CONFERENCES_PAGE_DATA:
+      return {
+        pages: { ...state.pages, ...data.pages },
+        conferences: data.conferences,
+      };
+
     case types.SELECT_CONFRENCES_PAGE:
-      return { ...state, current: action.page };
+      return {
+        pages: { ...state.pages, page },
+        conferences: state.conferences,
+      };
+
     default:
       return state;
   }

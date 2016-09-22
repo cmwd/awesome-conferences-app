@@ -3,7 +3,10 @@ import requestHandler from './request-handler';
 import pinoLogger from 'pino';
 import pinoMiddleware from 'express-pino-logger';
 import CONFIG from '../../config';
+import nodeFetch from 'node-fetch';
+import { setImplementation } from '../common/utils/fetch';
 
+setImplementation(nodeFetch);
 const logger = pinoLogger({ name: 'server' });
 
 express()

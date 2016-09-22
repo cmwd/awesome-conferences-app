@@ -1,4 +1,5 @@
 import { prepareStore, prepareRender } from './services/react-service';
+import { fetchConferencesIfNeeded } from '../common/actions';
 
 const handleRedirect = (res, { pathname }) => {
   res.writeHead(301, {
@@ -7,30 +8,25 @@ const handleRedirect = (res, { pathname }) => {
   res.end();
 };
 
-const handle404 = res => {
-  res.writeHead(404);
-  res.write('404');
-  res.end();
-};
-
-export default (req, res) => {
+export default (req, res, next) => {
   const location = req.url;
   const store = prepareStore({ conferences: [], pages: {} });
-  const {
-    html,
-    state,
-    result: { redirect, missed },
-  } = prepareRender({ store, location });
 
-  if (redirect) {
-    handleRedirect(res, redirect);
-    return;
-  }
+  prepareRender({ store, location })
+    .then(({ html, state, result: { redirect, missed } }) => {
+      if (redirect) {
+        handleRedirect(res, redirect);
+        return;
+      }
 
-  if (missed) {
-    handle404(res);
-    return;
-  }
-
-  res.render('index', { state, html });
+      res.render('index', { state, html });
+    })
+    .catch(next);
+  // if (!missed) {
+  //   store.dispatch(fetchConferencesIfNeeded(1))
+  //     .then(() => {
+  //       res.render('index', prepareRender({ store, location }));
+  //     });
+  // } else {
+  // }
 };

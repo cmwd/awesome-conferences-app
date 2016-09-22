@@ -20,7 +20,6 @@ const store = createStore(
   __PRELOADED_STATE__,
   applyMiddleware(...middlewares));
 
-
 render(
   <Provider store={store}>
     <BrowserRouter>
@@ -29,3 +28,4 @@ render(
   </Provider>,
   document.getElementById('root')
 );
+
