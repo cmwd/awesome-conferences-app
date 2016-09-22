@@ -1,8 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
 const { NODE_ENV, FRONTEND_API_URL: API_URL } = require('./config');
-const IS_DEV_ENV = NODE_ENV.toUpperCase() !== 'development';
-const DEV_TOOL = 'eval';
+const IS_DEV_ENV = NODE_ENV.toUpperCase() === 'DEVELOPMENT';
 const BUILD_DIR = path.resolve(__dirname, 'public/js');
 
 const BUNDLER_PLUGINS = [
@@ -20,8 +19,7 @@ if (!IS_DEV_ENV) {
 
 const config = {
   debug: IS_DEV_ENV,
-  cache: IS_DEV_ENV,
-  devtool: IS_DEV_ENV ? DEV_TOOL : '',
+  devtool: IS_DEV_ENV ? 'eval' : '',
   entry: [
     path.join(__dirname, '/src/client/client'),
   ],
