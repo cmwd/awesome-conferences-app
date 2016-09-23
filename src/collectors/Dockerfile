@@ -1,22 +1,12 @@
-FROM node:6.3.0
+FROM node:6.6.0-wheezy
 
 MAINTAINER cmwd <pwojtkowiak@gmail.com>
 
-RUN useradd --user-group --create-home --shell /bin/false collectors
+RUN mkdir -p /var/www/collectors
 
-ENV HOME=/home/collectors
+COPY . /var/www/collectors
+WORKDIR /var/www/collectors
 
-COPY package.json npm-shrinkwrap.json $HOME/app/
-RUN chown -R collectors:collectors $HOME/*
-
-USER collectors
-
-WORKDIR $HOME/app
-RUN npm install
-
-USER root
-COPY . $HOME/app
-RUN chown -R collectors:collectors $HOME/*
-USER collectors
+RUN npm install --production
 
 CMD ["npm", "start"]

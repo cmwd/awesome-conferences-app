@@ -1,11 +1,12 @@
-FROM node:6.3.0
+FROM node:6.6.0-wheezy
 
 MAINTAINER cmwd <pwojtkowiak@gmail.com>
 
-ENV HOME=/home/web
+RUN mkdir -p /var/www/web
 
-COPY . $HOME/app
-WORKDIR $HOME/app
-RUN npm install
+COPY . /var/www/web
+WORKDIR /var/www/web
+
+RUN npm install --production
 
 CMD ["npm", "start"]
