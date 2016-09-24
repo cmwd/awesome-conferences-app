@@ -2,8 +2,7 @@ import React from 'react';
 import { Match, Redirect, Miss } from 'react-router';
 import { Grid, Row, Col } from './Bootstrap';
 import { Header, NoMatch } from './index';
-import { VisibleConferences } from '../containers';
-import Details from './details/DetailsIndex';
+import { VisibleConferences, VisibleDetailsIndex } from '../containers';
 
 const GoToConferences = () => (
   <Redirect to="/page/1" />
@@ -18,7 +17,7 @@ const App = () => (
     </Row>
     <Match pattern="/" exactly component={GoToConferences} />
     <Match pattern="/page/:current" component={VisibleConferences} />
-    <Match pattern="/details/:conferenceId" component={Details} />
+    <Match pattern="/details/:conferenceId" component={VisibleDetailsIndex} />
     <Miss component={NoMatch} />
   </Grid>
 );

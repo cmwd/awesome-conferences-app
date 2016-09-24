@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { Link } from 'react-router';
 import { Col } from '../Bootstrap';
 import LabelList from '../LabelList';
 
@@ -10,15 +11,17 @@ const Conference = (props) => {
   return (
     <Col xs={6} sm={4}>
       <div className="conference">
-        <div
-          className="conference__thumbnail"
-          style={thumbStyles}
-        />
-        <div className="conference__location">
-          <LabelList items={[props.region, props.location]} />
-        </div>
-        <h4>{props.name}</h4>
-        <p>{props.description}</p>
+        <Link to={`/details/${props._id}`} >
+          <div
+            className="conference__thumbnail"
+            style={thumbStyles}
+          />
+          <div className="conference__location">
+            <LabelList items={[props.region, props.location]} />
+          </div>
+          <h4>{props.name}</h4>
+          <p>{props.description}</p>
+        </Link>
       </div>
     </Col>
   );
