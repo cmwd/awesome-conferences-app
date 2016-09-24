@@ -21,7 +21,7 @@ const DetailsIndex = ({ loading, description, name, banner }) => {
 };
 
 DetailsIndex.propTypes = {
-  loading: PropTypes.boolean.isRequired,
+  loading: PropTypes.bool.isRequired,
   name: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   banner: PropTypes.string,
