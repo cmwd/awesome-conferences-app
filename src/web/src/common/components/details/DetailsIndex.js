@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import classNames from 'classnames';
 
 const BLOCK_NAME = 'details';
-const DetailsIndex = ({ loading, params, description, name, banner }) => {
+const DetailsIndex = ({ loading, description, name, banner }) => {
   const cssClasses = classNames(
     BLOCK_NAME,
     { [`${BLOCK_NAME}--loading`]: loading }
@@ -18,6 +18,13 @@ const DetailsIndex = ({ loading, params, description, name, banner }) => {
       <p>{description}</p>
     </div>
   );
+};
+
+DetailsIndex.propTypes = {
+  loading: PropTypes.boolean.isRequired,
+  name: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  banner: PropTypes.string,
 };
 
 export default DetailsIndex;
