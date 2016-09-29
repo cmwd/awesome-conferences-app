@@ -17,7 +17,7 @@ const App = () => (
     </Row>
     <Match pattern="/" exactly component={GoToConferences} />
     <Match pattern="/page/:current" component={VisibleConferences} />
-    <Match pattern="/details/:conferenceId" component={VisibleDetailsIndex} />
+    <Match pattern="/details/:slug" component={VisibleDetailsIndex} />
     <Miss component={NoMatch} />
   </Grid>
 );

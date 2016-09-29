@@ -1,23 +1,22 @@
-import * as types from '../constants/action-types';
+import { DETAILS_PAGE } from '../constants/action-types';
 
 const DEFAULT_STATE = {
   loading: false,
-  pages: {},
+  loadingVideos: false,
+  videos: [],
 };
 
-const createPagesObject = (fromState, action) => {
-  const { conferenceId, data } = action.data;
-
-  return { ...fromState, ...{ [conferenceId]: data } };
-};
-
-export const detailsPage = (state = DEFAULT_STATE, action) => {
+export default (state = DEFAULT_STATE, action) => {
   switch (action.type) {
-    case types.SET_DETAILS_LOADING_STATE:
+
+    case DETAILS_PAGE.SET_LOADING_STATE:
       return { ...state, loading: action.loading };
 
-    case types.SET_DETAILS_PAGE_DATA:
-      return { ...state, pages: createPagesObject(state.pages, action) };
+    case DETAILS_PAGE.SET_VIDEOS_LOADING_STATE:
+      return { ...state, loadingVideos: action.loadingVideos };
+
+    case DETAILS_PAGE.SET_VIDEOS_DATA:
+      return { ...state, videos: action.videos };
 
     default:
       return state;

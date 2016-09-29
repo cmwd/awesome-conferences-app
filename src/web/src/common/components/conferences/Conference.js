@@ -3,24 +3,19 @@ import { Link } from 'react-router';
 import { Col } from '../Bootstrap';
 import LabelList from '../LabelList';
 
-const Conference = (props) => {
-  const thumbStyles = {
-    backgroundImage: `url(${props.banner})`,
-  };
-
+const Conference = ({ name, slug, details }) => {
   return (
     <Col xs={6} sm={4}>
       <div className="conference">
-        <Link to={`/details/${props._id}`} >
+        <Link to={`/details/${slug}`} >
           <div
             className="conference__thumbnail"
-            style={thumbStyles}
+            style={{ backgroundImage: `url(${details.banner})` }}
           />
           <div className="conference__location">
-            <LabelList items={[props.region, props.location]} />
+            <LabelList items={[details.location]} />
           </div>
-          <h4>{props.name}</h4>
-          <p>{props.description}</p>
+          <h4>{name}</h4>
         </Link>
       </div>
     </Col>
@@ -28,11 +23,9 @@ const Conference = (props) => {
 };
 
 Conference.propTypes = {
+  slug: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  banner: PropTypes.string.isRequired,
-  region: PropTypes.string.isRequired,
-  location: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  details: PropTypes.any.isRequired,
 };
 
 export default Conference;

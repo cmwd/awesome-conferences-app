@@ -1,31 +1,29 @@
-import * as types from '../constants/action-types';
-import { getConferenceDetails } from '../services/api-service';
+import { DETAILS_PAGE } from '../constants/action-types';
+import { fetchConference } from './conferences-actions';
 
-export const setDetailsLoadingState = loading =>
-  ({ type: types.SET_DETAILS_LOADING_STATE, loading });
+export const setLoadingState = loading =>
+  ({ type: DETAILS_PAGE.SET_LOADING_STATE, loading });
 
-export const setDetailsPageData = data =>
-  ({ type: types.SET_DETAILS_PAGE_DATA, data });
+export const setDetailsVideosLoadingState = loadingVideos =>
+  ({ type: DETAILS_PAGE.SET_VIDEOS_LOADING_STATE, loadingVideos });
 
-export const fetchDetailsPage = conferenceId =>
-  (dispatch, getState, { API_URL }) =>
-    new Promise((resolve, reject) => {
-      dispatch(setDetailsLoadingState(true));
-      getConferenceDetails(API_URL)({ conferenceId })
-        .then((data) => {
-          dispatch(setDetailsLoadingState(false));
-          dispatch(setDetailsPageData({ conferenceId, data }));
-          resolve(data);
-        })
-        .catch(reject);
-    });
+// export const setVideosData = videos =>
+//   ({ type: DETAILS_PAGE.SET_VIDEOS_DATA, videos });
 
-export const fetchDetailsPageIfNeeded = conferenceId =>
-  (...args) => {
-    const [, getState] = args;
-    const { detailsPage: { pages } } = getState();
+export const fetchConferenceIfNeeded = slug =>
+  (dispatch, getState, opts) => {
+    if (getState().conferences.find(c => c.slug === slug)) {
+      return Promise.resolve(null);
+    }
 
-    return pages[conferenceId]
-      ? Promise.resolve()
-      : fetchDetailsPage(conferenceId)(...args);
+    dispatch(setLoadingState(true));
+    return fetchConference(slug)(dispatch, getState, opts)
+      .then((data) => {
+        dispatch(setLoadingState(false));
+        return Promise.resolve(data);
+      })
+      .catch((error) => {
+        dispatch(setLoadingState(false));
+        return Promise.reject(error);
+      });
   };

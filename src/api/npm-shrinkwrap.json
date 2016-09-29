@@ -484,6 +484,11 @@
       "from": "mongoose@>=4.5.4 <5.0.0",
       "resolved": "https://registry.npmjs.org/mongoose/-/mongoose-4.6.1.tgz"
     },
+    "mongoose-url-slugs": {
+      "version": "0.2.1",
+      "from": "mongoose-url-slugs@latest",
+      "resolved": "https://registry.npmjs.org/mongoose-url-slugs/-/mongoose-url-slugs-0.2.1.tgz"
+    },
     "mpath": {
       "version": "0.2.1",
       "from": "mpath@0.2.1",

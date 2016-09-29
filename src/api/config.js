@@ -3,7 +3,7 @@ const {
   NODE_ENV = 'development',
   COLLECTORS_ADDRESS = 'http://collectors:8001',
   DB_NAME = 'acl',
-  DB_URL = 'mongodb://localhost:27017',
+  DB_URL = 'mongodb://web.awc.local:27017',
 } = process.env;
 
 module.exports = {

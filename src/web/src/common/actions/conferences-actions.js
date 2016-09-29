@@ -1,50 +1,37 @@
-import * as types from '../constants/action-types';
-import { getConferences } from '../services/api-service';
+import { CONFERENCES } from '../constants/action-types';
+import { getConferences, getConference } from '../services/api-service';
 
-export const setConferencePageData = data =>
-  ({ type: types.SET_CONFERENCES_PAGE_DATA, data });
+export const putConference = conference =>
+  ({ type: CONFERENCES.PUT_CONFERENCE, conference });
 
-export const setConferencesLoadingState = state =>
-  ({ type: types.SET_CONFERENCES_LOADING_STATE, state });
+export const setConferences = conferences =>
+  ({ type: CONFERENCES.SET_CONFERENCES, conferences });
 
-export const fetchConferences = page =>
+export const fetchConferences = pageIndex =>
   (dispatch, getState, { API_URL }) =>
     new Promise((resolve, reject) => {
       const {
-        conferencePage: {
-          pages: { itemsLimit: limit = 20 },
+        conferencesPage: {
+          pagination: { itemsLimit },
         },
       } = getState();
-      const offset = limit * (parseInt(page, 10) - 1);
+      const offset = itemsLimit * (parseInt(pageIndex, 10) - 1);
 
-      dispatch(setConferencesLoadingState(true));
-      getConferences(API_URL)({ limit, offset })
-        .then(data => {
-          dispatch(setConferencePageData(data));
-          dispatch(setConferencesLoadingState(false));
+      getConferences(API_URL)({ itemsLimit, offset })
+        .then((data) => {
+          dispatch(setConferences(data.conferences));
           resolve(data);
         })
         .catch(reject);
     });
 
-export const fetchConferencesIfNeeded = page =>
-  (...args) => {
-    const [, getState] = args;
-    const { conferencePage: { conferences } } = getState();
-
-    return conferences.length
-      ? Promise.resolve
-      : fetchConferences(page)(...args);
-  };
-
-export const selectConferencePage = page =>
-  (...args) => {
-    const [dispatch, getState] = args;
-    const { conferencePage: { pages: { current } } } = getState();
-
-    if (current !== page) {
-      fetchConferences(page)(...args)
-        .then(() =>
-          dispatch({ type: types.SELECT_CONFRENCES_PAGE, page }));
-    }
-  };
+export const fetchConference = slug =>
+  (dispatch, getState, { API_URL }) =>
+    new Promise((resolve, reject) => {
+      getConference(API_URL)({ slug })
+        .then((conference) => {
+          dispatch(putConference(conference));
+          resolve(conference);
+        })
+        .catch(reject);
+    });

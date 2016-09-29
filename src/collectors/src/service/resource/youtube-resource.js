@@ -7,10 +7,11 @@ const utils = require('../../utils');
 const Y_URL = 'https://www.googleapis.com/youtube/v3/';
 const DEFAULT_PARAMS = {
   key: process.env.YOUTUBE_APP_KEY,
-  part: ['snippet, id'].join(','),
+  part: 'snippet,id,status',
   order: 'date',
   maxResults: 50,
 };
+const PUBLIC_STATUS = 'public';
 
 const getUrl = (method, params) =>
   `${Y_URL}${method}?${stringify(Object.assign({}, DEFAULT_PARAMS, params))}`;
@@ -30,7 +31,9 @@ function *fetchVideos({ channelId }) {
   const videos = yield getVideosDetails(playlists.items);
 
   return videos.reduce((result, { items }) =>
-    [...result, ...items]
+    [].concat(
+      result,
+      items.filter(({ status }) => status.privacyStatus === PUBLIC_STATUS))
   , []);
 }
 

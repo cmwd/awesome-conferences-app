@@ -14,11 +14,11 @@ const LabelList = ({ items }) => (
 );
 
 LabelValue.propTypes = {
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
 };
 
 LabelList.propTypes = {
-  items: PropTypes.array.isRequired,
+  items: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default LabelList;

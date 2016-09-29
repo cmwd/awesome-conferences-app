@@ -5,14 +5,12 @@ const paginator = require('../utils/paginator');
 const { conferenceModel } = require('../model/index');
 
 function *index(req, res) {
-  const {
-    limit = 20,
-    offset = 0,
-  } = req.query;
+  const { limit: lm = 20, offset: ofs = 0 } = req.query;
+  const limit = parseInt(lm, 10);
+  const offset = parseInt(ofs, 10);
   const [conferences, count] = yield Promise.all(
     [
-      conferenceModel
-        .find().skip(parseInt(offset, 10)).limit(parseInt(limit, 10)),
+      conferenceModel.find().skip(offset).limit(limit),
       conferenceModel.count(),
     ]);
   const pages = paginator.generate(count, offset, limit);
@@ -20,18 +18,18 @@ function *index(req, res) {
   res.json({ pages, conferences });
 }
 
-function *conference(req, res) {
-  const { conferenceId } = req.params;
-  const model = yield conferenceModel.findOne({ _id: conferenceId });
+function *conference(req, res, next) {
+  const { slug } = req.params;
+  const model = yield conferenceModel.findOne({ slug });
 
   if (!model) {
-    throw HTTPError.NotFound('Conference not found');
+    next(HTTPError.NotFound('Conference not found'));
+  } else {
+    res.json(model);
   }
-
-  res.json(model);
 }
 
 module.exports =
   Router()
     .get('/', co(index))
-    .get('/:conferenceId', co(conference));
+    .get('/:slug', co(conference));

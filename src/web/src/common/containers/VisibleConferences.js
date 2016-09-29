@@ -1,27 +1,24 @@
 import { connect } from 'react-redux';
-import Conferences from '../components/conferences/Conferences';
-import { selectConferencePage, fetchConferencesIfNeeded } from '../actions';
+import Index from '../components/conferences/Index';
+import { fetchConferencesIfNeeded } from '../actions';
 import { AsyncHook } from '../lib/server-async-hooks';
 
 const fetchInitialData = ({ params, dispatch }) =>
   dispatch(fetchConferencesIfNeeded(params.current));
 
-const mapStateToProps = (props) => {
-  const { conferencePage, conferencesLoadingState } = props;
-  const { conferences, pages } = conferencePage;
-  return { conferences, pages, conferencesLoadingState };
-};
+const mapStateToProps = ({ conferences, conferencesPage }) =>
+  ({ conferences, ...conferencesPage });
 
 const mapDispatchToProps = dispatch =>
   ({
-    onSelect(page) {
-      dispatch(selectConferencePage(page));
+    onSelect(current) {
+      dispatch(fetchConferencesIfNeeded(current));
     },
   });
 
 const VisibleConferences = connect(
     mapStateToProps,
     mapDispatchToProps
-)(Conferences);
+)(Index);
 
 export default AsyncHook(fetchInitialData)(VisibleConferences);

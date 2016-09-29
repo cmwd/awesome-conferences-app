@@ -20,6 +20,7 @@
     "http-errors": "^1.5.0",
     "lodash": "^4.13.1",
     "mongoose": "^4.5.4",
+    "mongoose-url-slugs": "^0.2.1",
     "node-fetch": "^1.5.3",
     "pino": "^2.9.0"
   },

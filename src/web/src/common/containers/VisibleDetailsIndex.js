@@ -1,18 +1,17 @@
 import { connect } from 'react-redux';
 import { AsyncHook } from '../lib/server-async-hooks';
-import DetailsIndex from '../components/details/DetailsIndex';
-import { fetchDetailsPageIfNeeded } from '../actions/';
+import Index from '../components/details/Index';
+import { fetchConferenceIfNeeded } from '../actions/';
 
 const fetchInitialData = ({ dispatch, params }) =>
-  dispatch(fetchDetailsPageIfNeeded(params.conferenceId));
+  dispatch(fetchConferenceIfNeeded(params.slug));
 
-const mapStateToProps = ({ detailsPage }, { params }) => {
-  const { conferenceId } = params;
-  const { loading, pages } = detailsPage;
-
-  return { loading, ...pages[conferenceId] };
+const mapStateToProps = ({ conferences, detailsPage }, { params }) => {
+  const { slug } = params;
+  const conference = conferences.find(c => c.slug === slug) || {};
+  return { ...conference, ...detailsPage };
 };
 
-const VisibleDetailsIndex = connect(mapStateToProps)(DetailsIndex);
+const VisibleDetailsIndex = connect(mapStateToProps)(Index);
 
 export default AsyncHook(fetchInitialData)(VisibleDetailsIndex);

@@ -6,7 +6,12 @@ export const getConferences = host =>
     fetch(`${host}/conference?${stringify({ limit, offset })}`)
       .then(response => response.json());
 
-export const getConferenceDetails = host =>
+export const getConference = host =>
+  ({ slug }) =>
+    fetch(`${host}/conference/${slug}`)
+      .then(response => response.json());
+
+export const getVideos = host =>
   ({ conferenceId }) =>
-    fetch(`${host}/conference/${conferenceId}`)
+    fetch(`${host}/video/${conferenceId}`)
       .then(response => response.json());
