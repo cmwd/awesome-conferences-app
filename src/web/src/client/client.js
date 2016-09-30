@@ -7,6 +7,7 @@ import { render } from 'react-dom';
 import logger from 'redux-logger';
 import rootReducer from '../common/reducers';
 import { App } from '../common/components';
+import './main.scss';
 
 const { __PRELOADED_STATE__ } = window;
 const middlewares = [thunk.withExtraArgument(process.env)];

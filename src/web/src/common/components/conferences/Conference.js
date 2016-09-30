@@ -5,20 +5,18 @@ import LabelList from '../LabelList';
 
 const Conference = ({ name, slug, details }) => {
   return (
-    <Col xs={6} sm={4}>
-      <div className="conference">
-        <Link to={`/details/${slug}`} >
+    <article className="conference">
+      <Link className="conference__link" to={`/details/${slug}`} >
+        <div className="conference__thumbnail">
           <div
-            className="conference__thumbnail"
-            style={{ backgroundImage: `url(${details.banner})` }}
-          />
-          <div className="conference__location">
-            <LabelList items={[details.location]} />
-          </div>
-          <h4>{name}</h4>
-        </Link>
-      </div>
-    </Col>
+            className="conference__img"
+            style={{ backgroundImage: `url(${details.banner})` }}/>
+        </div>
+        <div className="conference__meta">
+          <h1 className="conference__name">{name}</h1>
+        </div>
+      </Link>
+    </article>
   );
 };
 

@@ -9,7 +9,7 @@ const createConference = (props, key) =>
 const Index = ({ pagination, conferences, onSelect }) =>
 (
   <div className="conferences">
-    <Row>{conferences.map(createConference)}</Row>
+    {conferences.map(createConference)}
     <div className="conferences__pagination">
       <Pagination
         prev

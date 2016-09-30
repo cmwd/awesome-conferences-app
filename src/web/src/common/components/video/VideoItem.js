@@ -6,7 +6,7 @@ const VideoItem = ({ title, thumbnails }) => {
   const img = chooseThumbnail(thumbnails);
 
   return (
-    <div>
+    <div className="video-item">
       <img src={img.url} height={img.height} width={img.width} />
       <h4>{title}</h4>
     </div>

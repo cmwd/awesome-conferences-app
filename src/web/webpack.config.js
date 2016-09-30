@@ -1,13 +1,16 @@
 const webpack = require('webpack');
 const path = require('path');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+
 const { NODE_ENV, FRONTEND_API_URL: API_URL } = require('./config');
 const IS_DEV_ENV = NODE_ENV.toUpperCase() === 'DEVELOPMENT';
-const BUILD_DIR = path.resolve(__dirname, 'public/js');
+const BUILD_DIR = path.resolve(__dirname, 'public');
 
 const BUNDLER_PLUGINS = [
   new webpack.DefinePlugin({
     'process.env': JSON.stringify({ NODE_ENV, API_URL }),
   }),
+  new ExtractTextPlugin('/css/bundle.css'),
 ];
 
 if (!IS_DEV_ENV) {
@@ -25,7 +28,7 @@ const config = {
   ],
   output: {
     path: BUILD_DIR,
-    filename: 'bundle.js',
+    filename: '/js/bundle.js',
   },
   plugins: BUNDLER_PLUGINS,
   module: {
@@ -34,6 +37,12 @@ const config = {
         test: /\.js$/,
         exclude: path.join(__dirname, 'node_modules'),
         loaders: ['babel'],
+      },
+      {
+        test: /\.scss$/,
+        loader: ExtractTextPlugin.extract(
+          'style-loader',
+          'css-loader!sass-loader!autoprefixer-loader'),
       },
     ],
   },
