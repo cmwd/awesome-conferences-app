@@ -11,8 +11,8 @@ const getVideos = ({ conferenceId, videos }) => {
   return conference ? conference.videos : [];
 };
 
-const mapStateToProps = ({ videos }, { conferenceId }) =>
-  ({ videos: getVideos({ conferenceId, videos }) });
+const mapStateToProps = ({ videos }, { conferenceId, pathname }) =>
+  ({ videos: getVideos({ conferenceId, videos }), pathname });
 
 const VisibleDetailsVideos = connect(mapStateToProps)(VideosList);
 

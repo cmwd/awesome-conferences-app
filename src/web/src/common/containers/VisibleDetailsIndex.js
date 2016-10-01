@@ -6,10 +6,10 @@ import { fetchConferenceIfNeeded } from '../actions/';
 const fetchInitialData = ({ dispatch, params }) =>
   dispatch(fetchConferenceIfNeeded(params.slug));
 
-const mapStateToProps = ({ conferences, detailsPage }, { params }) => {
-  const { slug } = params;
+const mapStateToProps = ({ conferences, detailsPage }, props) => {
+  const { pathname, params: { slug } } = props;
   const conference = conferences.find(c => c.slug === slug) || {};
-  return { ...conference, ...detailsPage };
+  return { ...conference, ...detailsPage, pathname };
 };
 
 const VisibleDetailsIndex = connect(mapStateToProps)(Index);

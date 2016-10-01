@@ -661,6 +661,11 @@
       "from": "block-stream@*",
       "resolved": "https://registry.npmjs.org/block-stream/-/block-stream-0.0.9.tgz"
     },
+    "bluebird": {
+      "version": "3.4.6",
+      "from": "bluebird@>=3.3.0 <4.0.0",
+      "resolved": "https://registry.npmjs.org/bluebird/-/bluebird-3.4.6.tgz"
+    },
     "boom": {
       "version": "2.10.1",
       "from": "boom@>=2.0.0 <3.0.0",
@@ -2562,6 +2567,11 @@
       "from": "load-json-file@>=1.0.0 <2.0.0",
       "resolved": "https://registry.npmjs.org/load-json-file/-/load-json-file-1.1.0.tgz"
     },
+    "load-script": {
+      "version": "1.0.0",
+      "from": "load-script@>=1.0.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/load-script/-/load-script-1.0.0.tgz"
+    },
     "loader-utils": {
       "version": "0.2.16",
       "from": "loader-utils@>=0.2.11 <0.3.0",
@@ -2618,6 +2628,11 @@
       "version": "4.0.5",
       "from": "lodash.indexof@>=4.0.5 <5.0.0",
       "resolved": "https://registry.npmjs.org/lodash.indexof/-/lodash.indexof-4.0.5.tgz"
+    },
+    "lodash.isequal": {
+      "version": "4.4.0",
+      "from": "lodash.isequal@>=4.0.0 <5.0.0",
+      "resolved": "https://registry.npmjs.org/lodash.isequal/-/lodash.isequal-4.4.0.tgz"
     },
     "lodash.pickby": {
       "version": "4.6.0",
@@ -3461,6 +3476,11 @@
         }
       }
     },
+    "react-youtube": {
+      "version": "7.2.0",
+      "from": "react-youtube@latest",
+      "resolved": "https://registry.npmjs.org/react-youtube/-/react-youtube-7.2.0.tgz"
+    },
     "read-pkg": {
       "version": "1.1.0",
       "from": "read-pkg@>=1.0.0 <2.0.0",
@@ -3720,6 +3740,11 @@
       "version": "3.0.1",
       "from": "signal-exit@>=3.0.0 <4.0.0",
       "resolved": "https://registry.npmjs.org/signal-exit/-/signal-exit-3.0.1.tgz"
+    },
+    "sister": {
+      "version": "3.0.0",
+      "from": "sister@>=3.0.0 <4.0.0",
+      "resolved": "https://registry.npmjs.org/sister/-/sister-3.0.0.tgz"
     },
     "slash": {
       "version": "1.0.0",
@@ -4248,6 +4273,11 @@
           "resolved": "https://registry.npmjs.org/camelcase/-/camelcase-3.0.0.tgz"
         }
       }
+    },
+    "youtube-player": {
+      "version": "3.0.4",
+      "from": "youtube-player@>=3.0.0 <4.0.0",
+      "resolved": "https://registry.npmjs.org/youtube-player/-/youtube-player-3.0.4.tgz"
     }
   }
 }

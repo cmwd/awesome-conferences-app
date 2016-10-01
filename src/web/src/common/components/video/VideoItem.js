@@ -1,14 +1,58 @@
 import React from 'react';
+import { Match, Link } from 'react-router';
+import YouTubeVideo from './YouTubeVideo';
+import VideoModal from './VideoModal';
+import { Row, Col } from '../Bootstrap';
 
 const chooseThumbnail = ({ medium }) => medium;
 
-const VideoItem = ({ title, thumbnails }) => {
+type PropTypes = {
+  title: string,
+  thumbnails: Object,
+  pathname: string,
+  videoId: string,
+  id: string,
+  internalId: string,
+};
+
+const VideoItem = (
+  { title, thumbnails, pathname, videoId, id, internalId }: PropTypes
+) => {
   const img = chooseThumbnail(thumbnails);
+  const videoUrl = `${pathname}/video/${internalId}`;
 
   return (
     <div className="video-item">
-      <img src={img.url} height={img.height} width={img.width} />
-      <h4>{title}</h4>
+      <Link to={videoUrl} className="video-item__trigger" />
+
+      <Row className="video-item__content">
+        <Col
+          xs={6}
+          style={{ maxWidth: img.width }}
+        >
+          <img
+            className="video-item__thumbnail"
+            src={img.url}
+            height={img.height}
+            width={img.width}
+          />
+        </Col>
+        <Col xs={6} className="video-item__meta">
+          <h4>{title}</h4>
+        </Col>
+      </Row>
+      
+      <Match
+        pattern={videoUrl}
+        exactly
+        render={
+          props => (
+            <VideoModal parentPath={pathname}>
+              <YouTubeVideo {...props} videoId={videoId} id={id} />
+            </VideoModal>
+          )
+        }
+      />
     </div>
   )};
 
