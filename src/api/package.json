@@ -12,17 +12,24 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "bcrypt": "^0.8.7",
+    "body-parser": "^1.15.2",
     "co": "^4.6.0",
     "co-express": "^1.2.2",
     "express": "^4.14.0",
+    "express-jwt": "^5.0.0",
     "express-pino-logger": "^1.1.0",
     "global": "^4.3.0",
     "http-errors": "^1.5.0",
+    "jsonwebtoken": "^7.1.9",
     "lodash": "^4.13.1",
     "mongoose": "^4.5.4",
     "mongoose-url-slugs": "^0.2.1",
     "node-fetch": "^1.5.3",
-    "pino": "^2.9.0"
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "pino": "^2.9.0",
+    "validator": "^6.0.0"
   },
   "devDependencies": {
     "faucet": "0.0.1",

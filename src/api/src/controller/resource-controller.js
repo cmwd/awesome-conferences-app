@@ -3,6 +3,7 @@ const { Router } = require('express');
 const HTTPError = require('http-errors');
 const { resourceModel, conferenceModel } = require('../model/index');
 const youtube = require('../service/youtube');
+const { tokenSecured, isAdmin } = require('../service/authentication');
 
 function *index({ params, query }, res) {
   const { conferenceId } = params;
@@ -36,4 +37,4 @@ function *add({ params, query }, res, next) {
 module.exports =
   Router()
     .get('/:conferenceId', co(index))
-    .put('/:conferenceId/:resourceName', co(add));
+    .put('/:conferenceId/:resourceName', tokenSecured, isAdmin, co(add));
