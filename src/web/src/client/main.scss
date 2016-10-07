@@ -2,3 +2,8 @@
 @import '../common/components/header/index';
 @import '../common/components/conferences/conferences';
 @import '../common/components/video/video';
+@import '../common/components/user/index';
+
+.container-fluid {
+  max-width: $container-max-width;
+}

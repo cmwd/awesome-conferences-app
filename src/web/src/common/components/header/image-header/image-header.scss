@@ -1,10 +1,8 @@
 .details-header {
   position: relative;
-
-  &__thumbnail {
-    overflow: hidden;
-    max-height: 400px;
-  }
+  width: 100%;
+  max-height: 400px;
+  overflow: hidden;
 
   &__img {
     background-color: #f3f3f3;
@@ -12,6 +10,13 @@
     background-position: 50% 50%;
     padding-bottom: 56%;
     height: 0;
+  }
+
+  &__fixed-navbar {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    background: rgba(#fff, .9);
   }
 
   &__meta {

@@ -1,24 +1,10 @@
 .user-navigation {
-  float: right;
-
-
-  &:hover .user-navigation__menu {
-    max-height: none;
-    opacity: 1;
-    display: block;
-  }
-
-  &__menu {
-    padding: 0 0 .5em;
-    max-height: 0;
-    opacity: 0;
-    display: none;
-    background: #fff;
-    position: absolute;
-    width: 100%;
-  }
-
-  &__menu-item {
-    list-style: none;
+  text-align: right;
+  
+  &__user-name {
+    &:after {
+      content: '//';
+      padding: 0 .5rem;
+    }
   }
 }

@@ -13,12 +13,8 @@ type Props = {
 
 const UserMenu = ({ name } : User) => (
   <div className="user-navigation">
-    <span className="user-navigation__name">{name}</span>
-    <ul className="user-navigation__menu">
-      <li className="user-navigation__menu-item">
-        <a href={USER.LOGOUT}>Logout</a>
-      </li>
-    </ul>
+    <span className="user-navigation__user-name">{name}</span>
+    <a href={USER.LOGOUT}>Logout</a>
   </div>
 );
 
