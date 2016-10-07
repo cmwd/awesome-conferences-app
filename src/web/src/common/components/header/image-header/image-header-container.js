@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import Header from '../components/header/DetailsHeader';
+import ImageHeader from './image-header-tag';
 
 const mapStateToProps = ({ conferences }, { params: { slug } }) => {
   const conference = conferences.find(c => c.slug === slug) || {};
@@ -10,4 +10,4 @@ const mapStateToProps = ({ conferences }, { params: { slug } }) => {
   return { name, banner };
 };
 
-export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps)(ImageHeader);

@@ -1,0 +1,35 @@
+import React from 'react';
+import { Link } from 'react-router';
+import { USER } from '../../../../constants/routes';
+
+type User = {
+  loggedIn: Boolean,
+  name: String,
+};
+
+type Props = {
+  user: User,
+};
+
+const UserMenu = ({ name } : User) => (
+  <div className="user-navigation">
+    <span className="user-navigation__name">{name}</span>
+    <ul className="user-navigation__menu">
+      <li className="user-navigation__menu-item">
+        <a href={USER.LOGOUT}>Logout</a>
+      </li>
+    </ul>
+  </div>
+);
+
+const UserNavigation = ({ user } : Props) => (
+  <div className="user-navigation">
+    {
+      user.loggedIn
+        ? <UserMenu {...user} />
+        : <Link to={USER.LOGIN}>Login</Link>
+    }
+  </div>
+);
+
+export default UserNavigation;

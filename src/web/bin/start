@@ -7,7 +7,5 @@ then
   ./bin/build
   $BIN/babel-node index.js
 else
-  BACKEND_API_URL=http://api.awc.local\
-  FRONTEND_API_URL=http://api.awc.local\
   $BIN/babel-node index.js
 fi  

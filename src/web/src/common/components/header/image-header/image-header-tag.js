@@ -1,8 +1,15 @@
 import React from 'react';
-import { Grid } from '../Bootstrap';
+import { Grid } from '../../Bootstrap';
+import Navigation from '../navigation-bar';
 
-const Header = ({ name, banner }) => (
+type Props = {
+  name: String,
+  banner: String,
+};
+
+const ImageHeader = ({ name, banner } : Props) => (
   <div className="details-header">
+    <Navigation />
     <div className="details-header__thumbnail">
       <div
         className="details-header__img"
@@ -15,4 +22,4 @@ const Header = ({ name, banner }) => (
   </div>
 );
 
-export default Header;
+export default ImageHeader;

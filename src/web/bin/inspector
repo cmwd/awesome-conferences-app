@@ -2,4 +2,4 @@
 
 BIN="./node_modules/.bin"
 
-BACKEND_API_URL=http://api.awc.local FRONTEND_API_URL=http://api.awc.local $BIN/babel-node --debug-brk --inspect index.js | $BIN/pino
+$BIN/babel-node --debug-brk --inspect index.js | $BIN/pino

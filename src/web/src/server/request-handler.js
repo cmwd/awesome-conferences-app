@@ -7,17 +7,23 @@ const handleRedirect = (res, { pathname }) => {
   res.end();
 };
 
-export default (req, res, next) => {
-  const location = req.url;
+const requestHandler = () =>
+  (req, res, next) => {
+    const location = req.url;
+    const preloadedState = {
+      user: req.pocket.get('user') || { loggedIn: false },
+    };
 
-  prepareRender({ location })
-    .then(({ html, state, result: { redirect } }) => {
-      if (redirect) {
-        handleRedirect(res, redirect);
-        return;
-      }
+    prepareRender({ location, preloadedState })
+      .then(({ html, state, result: { redirect } }) => {
+        if (redirect) {
+          handleRedirect(res, redirect);
+          return;
+        }
 
-      res.render('index', { state, html });
-    })
-    .catch(next);
-};
+        res.render('index', { state, html });
+      })
+      .catch(next);
+  };
+
+export default requestHandler;

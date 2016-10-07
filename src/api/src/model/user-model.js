@@ -1,37 +1,7 @@
 const mongoose = require('mongoose');
+const co = require('co');
 const validator = require('validator');
-const bcrypt = require('bcrypt');
-
-const SALT_WORK_FACTOR = 10;
-
-const generateSalt = () =>
-  new Promise((resolve, reject) =>
-      bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) =>
-        err ? reject(err) : resolve(salt)));
-
-const generateHash = string =>
-  salt =>
-    new Promise((resolve, reject) =>
-        bcrypt.hash(string, salt, (err, hash) =>
-          err ? reject(err) : resolve(hash)));
-
-const publicMethods = {
-  comparePassword(password) {
-    return new Promise((resolve, reject) => {
-      bcrypt.compare(password, this.password, (err, matched) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(matched);
-        }
-      });
-    });
-  },
-  serialize() {
-    const { email, _id: id, admin } = this;
-    return { email, id, admin };
-  },
-};
+const { bcrypt } = require('../service/crypto');
 
 const schema = mongoose.Schema({
   email: {
@@ -42,30 +12,69 @@ const schema = mongoose.Schema({
     required: 'Email address is required',
     validate: [validator.isEmail, 'Please fill a valid email address'],
   },
-  password: {
-    type: String,
-    required: 'Password is required',
-  },
+  name: { type: String, default: '' },
+  password: { type: String },
+  services: [{
+    id: { type: String },
+    serviceName: { type: String, uppercase: true },
+  }],
   admin: { type: Boolean, default: false },
 });
 
-schema.pre('save', function createPasswordHash(next) {
-  const user = this;
+function *preSaveHook(model) {
+  let result = {};
 
-  if (!user.isModified('password')) {
-    next();
-  } else {
-    generateSalt()
-      .then(generateHash(user.password))
-      .then((password) => {
-        user.password = password;
-        next();
-      })
-      .catch(next);
+  if (model.isModified('password')) {
+    const password = yield bcrypt.generateHash(model.password);
+    result = Object.assign({}, result, { password });
   }
+
+  return result;
+}
+
+schema.pre('save', function preSaveHookWrapper(next) {
+  co(preSaveHook(this))
+    .then((user) => {
+      Object.assign(this, user);
+      next();
+    })
+    .catch(next);
 });
 
-Object.assign(schema.methods, publicMethods);
+/**
+ * Public members
+ */
+Object.assign(schema.methods, {
+  comparePassword(password) {
+    return bcrypt.comparePassword(password, this.password);
+  },
+
+  serialize() {
+    const { email, _id: id, admin, name } = this;
+    return { email, id, admin, name };
+  },
+});
+
+/**
+ * Static members
+ */
+Object.assign(schema.statics, {
+  findByService({ id, service }) {
+    const serviceName = service.toUpperCase();
+    return this.findOne({
+      services: { $elemMatch: { serviceName, id } },
+    });
+  },
+
+  createFromService({ id, service, email, name }) {
+    const serviceName = service.toUpperCase();
+    return this.create({
+      email,
+      name,
+      services: [{ id, serviceName }],
+    });
+  },
+});
 
 const userModel = mongoose.model('User', schema);
 

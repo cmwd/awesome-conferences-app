@@ -8,12 +8,13 @@ import rootReducer from '../common/reducers';
 import { App } from '../common/components';
 import { ControlledRouter } from '../common/lib/redux-react-router-v4';
 import { setLocation } from '../common/actions';
+import { NODE_ENV } from '../../config';
 import './main.scss';
 
 const { __PRELOADED_STATE__ } = window;
 const middlewares = [thunk.withExtraArgument(process.env)];
 
-if (process.env.NODE_ENV !== 'production') {
+if (NODE_ENV !== 'production') {
   middlewares.push(logger());
 }
 

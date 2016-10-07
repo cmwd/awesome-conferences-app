@@ -15,7 +15,10 @@ const schema = mongoose.Schema({
   data: Schema.Types.Mixed,
 });
 
-const statics = {
+/**
+ * Static members
+ */
+Object.assign(schema.statics, {
   findByParent({ conferenceId, resourceName }) {
     const query = { conferenceId };
 
@@ -25,9 +28,8 @@ const statics = {
 
     return this.find(query);
   },
-};
+});
 
-Object.assign(schema.statics, statics);
 const resourceModel = mongoose.model('Resource', schema);
 
 module.exports = resourceModel;

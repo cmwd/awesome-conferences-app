@@ -6,7 +6,5 @@ if [ "$NODE_ENV" == "production" ];
 then
   $BIN/webpack -p
 else
-  BACKEND_API_URL=http://api.awc.local\
-  FRONTEND_API_URL=http://api.awc.local\
   $BIN/webpack -d --watch
 fi  

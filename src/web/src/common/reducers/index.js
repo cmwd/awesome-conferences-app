@@ -4,6 +4,7 @@ import conferencesPage from './conferences-page-reducer';
 import detailsPage from './details-reducer';
 import videos from './videos-reducer';
 import application from './application-reducer';
+import user from './user-reducer';
 
 const conferencesApp = combineReducers({
   conferences,
@@ -11,6 +12,7 @@ const conferencesApp = combineReducers({
   detailsPage,
   videos,
   application,
+  user,
 });
 
 export default conferencesApp;

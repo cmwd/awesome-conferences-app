@@ -1,21 +1,30 @@
 import React from 'react';
 import { Match, Redirect, Miss } from 'react-router';
 import { Grid } from './Bootstrap';
-import Header from './header/Index';
+import Header from './header';
 import { NoMatch } from './index';
+import { LoginScreen } from './user';
 import { VisibleConferences, VisibleDetailsIndex } from '../containers';
+import { APP, USER, CONFERENCES } from '../constants/routes';
 
 const GoToConferences = () => (
-  <Redirect to="/page/1" />
+  <Redirect to={`${CONFERENCES.PAGE}/1`} />
 );
 
 const App = () => (
   <div>
     <Header />
     <Grid fluid>
-      <Match pattern="/" exactly component={GoToConferences} />
-      <Match pattern="/page/:current" component={VisibleConferences} />
-      <Match pattern="/details/:slug" component={VisibleDetailsIndex} />
+      <Match pattern={APP.HOME} exactly component={GoToConferences} />
+      <Match
+        pattern={`${CONFERENCES.PAGE}/:current`}
+        component={VisibleConferences}
+      />
+      <Match
+        pattern={`${CONFERENCES.DETAILS}/:slug`}
+        component={VisibleDetailsIndex}
+      />
+      <Match pattern={USER.LOGIN} component={LoginScreen} />
       <Miss component={NoMatch} />
     </Grid>
   </div>

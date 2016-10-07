@@ -1,14 +1,18 @@
 const webpack = require('webpack');
 const path = require('path');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const {
+  NODE_ENV,
+  FRONTEND_API_URL: API_URL,
+  AUTH_GITHUB_ID,
+} = require('./config');
 
-const { NODE_ENV, FRONTEND_API_URL: API_URL } = require('./config');
 const IS_DEV_ENV = NODE_ENV.toUpperCase() === 'DEVELOPMENT';
 const BUILD_DIR = path.resolve(__dirname, 'public');
 
 const BUNDLER_PLUGINS = [
   new webpack.DefinePlugin({
-    'process.env': JSON.stringify({ NODE_ENV, API_URL }),
+    'process.env': JSON.stringify({ NODE_ENV, API_URL, AUTH_GITHUB_ID }),
   }),
   new ExtractTextPlugin('/css/bundle.css'),
 ];
