@@ -1,7 +1,10 @@
 import React from 'react';
 import { Match, Redirect, Miss } from 'react-router';
 import { Grid } from './Bootstrap';
-import Header from './header';
+/**
+ * TODO: Check why './header' path is failing in prod env.
+ */
+import Header from './header/header-tag';
 import { NoMatch } from './index';
 import { LoginScreen } from './user';
 import { VisibleConferences, VisibleDetailsIndex } from '../containers';

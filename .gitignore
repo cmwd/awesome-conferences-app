@@ -4,3 +4,4 @@ npm-debug.log*
 editor-project-file.sublime-*
 .DS_Store
 docker-compose.override.yml
+docker-compose.production.yml
