@@ -35,10 +35,13 @@ const config = {
     filename: '/js/bundle.js',
   },
   plugins: BUNDLER_PLUGINS,
+  resolve: {
+    extensions: ['', '.js', '.jsx'],
+  },
   module: {
     loaders: [
       {
-        test: /\.js$/,
+        test: /\.jsx?$/,
         exclude: path.join(__dirname, 'node_modules'),
         loaders: ['babel'],
       },

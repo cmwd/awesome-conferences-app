@@ -1,0 +1,9 @@
+.navigation {
+  padding: 1em 0;
+
+  &__group {
+    display: inline-block;
+    width: 50%;
+    text-align: left;
+  }
+}

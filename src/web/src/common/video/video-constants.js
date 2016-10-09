@@ -1,0 +1,3 @@
+export const VIDEO_ACTIONS = {
+  ADD_VIDEOS: 'VIDEO_ACTIONS__ADD_VIDEO',
+};

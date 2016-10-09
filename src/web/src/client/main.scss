@@ -1,9 +1,6 @@
 @import './variables';
-@import '../common/components/header/index';
-@import '../common/components/conferences/conferences';
-@import '../common/components/video/video';
-@import '../common/components/user/index';
-
-.container-fluid {
-  max-width: $container-max-width;
-}
+@import '../common/app/index';
+@import '../common/conference/index';
+@import '../common/header/index';
+@import '../common/user/index';
+@import '../common/video/index';

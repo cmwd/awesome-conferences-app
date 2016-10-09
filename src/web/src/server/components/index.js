@@ -1,2 +1,2 @@
-export { default as AppIndex } from './AppIndex';
-export { default as AsyncHook } from './AsyncHook';
+export { default as AppIndex } from './app-index-component';
+export { default as AsyncHook } from './async-hook-component';

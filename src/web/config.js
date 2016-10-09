@@ -1,6 +1,7 @@
 const {
+  BASE_PATH = '',
   APP_PORT = 8000,
-  BACKEND_API_URL = 'http://localhost:8002',
+  BACKEND_API_URL = 'http://api.awc.local',
   FRONTEND_API_URL = 'http://api.awc.local',
   NODE_ENV = 'development',
   TOKEN_SECRET = 'SUPER_IMPORTANT_TO_OVERRIDE_IN_PROD_ENV',
@@ -10,6 +11,7 @@ const {
 } = process.env;
 
 module.exports = {
+  BASE_PATH,
   APP_PORT,
   BACKEND_API_URL,
   FRONTEND_API_URL,

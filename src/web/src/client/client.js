@@ -4,10 +4,9 @@ import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { render } from 'react-dom';
 import logger from 'redux-logger';
-import rootReducer from '../common/reducers';
-import { App } from '../common/components';
+import App, { appActions } from '../common/app';
+import reducers from '../common/reducers';
 import { ControlledRouter } from '../common/lib/redux-react-router-v4';
-import { setLocation } from '../common/actions';
 import { NODE_ENV } from '../../config';
 import './main.scss';
 
@@ -19,12 +18,13 @@ if (NODE_ENV !== 'production') {
 }
 
 const store = createStore(
-  rootReducer,
+  reducers,
   __PRELOADED_STATE__,
   applyMiddleware(...middlewares));
 
+
 const locationChanged = location =>
-  store.dispatch(setLocation(location));
+  store.dispatch(appActions.setLocation(location));
 
 render(
   <Provider store={store}>
