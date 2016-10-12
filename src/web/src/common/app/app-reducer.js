@@ -11,7 +11,7 @@ export default (state = DEFAULT, action) => {
   switch (action.type) {
 
     case APP_ACTIONS.LOCATION_CHANGED:
-      return Object.assign({}, state, action.location);
+      return Object.assign({}, state, { location: action.location });
 
     default:
       return state;

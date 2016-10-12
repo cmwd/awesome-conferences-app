@@ -8,10 +8,13 @@ type DetailsTypes = {
 
 type PropsTypes = {
   details: DetailsTypes,
+  name: String,
   navigation: () => Object,
 };
 
-const HeaderBackgroundImage = ({ details = {}, navigation } : PropsTypes) => (
+const HeaderBackgroundImage = (
+  { name, details = {}, navigation } : PropsTypes
+) => (
   <div className="details-header">
     <div className="details-header__fixed-navbar">
       <Grid fluid>{navigation}</Grid>
@@ -24,7 +27,7 @@ const HeaderBackgroundImage = ({ details = {}, navigation } : PropsTypes) => (
     </div>
     <div className="details-header__meta">
       <Grid fluid>
-        <h1 className="details-header__name">{details.name}</h1>
+        <h1 className="details-header__name">{name}</h1>
       </Grid>
     </div>
   </div>

@@ -6,19 +6,27 @@ const youtube = require('../service/youtube');
 const { tokenSecured, isAdmin } = require('../service/authentication');
 
 function *index({ params, query }, res) {
-  const { conferenceId } = params;
+  const { slug } = params;
   const { resourceName } = query;
+  const { _id: conferenceId } = yield conferenceModel.findOne({ slug });
   const items = yield resourceModel
     .findByParent({ conferenceId, resourceName });
+  const resultJson = items.reduce((result, resource) =>
+    Object.assign({}, result, {
+      [resource.resourceName.toLowerCase()]: resource }), {});
 
-  res.json(items);
+  res.json(resultJson);
 }
 
 function *add({ params, query }, res, next) {
-  const { conferenceId, resourceName: rN } = params;
+  /**
+   * @todo move resourceName to query
+   */
+  const { slug, resourceName: rN } = params;
   const resourceName = rN.toUpperCase();
   const resourceInfo = query;
-  const conference = yield conferenceModel.findOne({ _id: conferenceId });
+  const conference = yield conferenceModel.findOne({ slug });
+  const conferenceId = conference._id;
 
   if (conference) {
     const data = yield youtube.getVideos(query);
@@ -36,5 +44,5 @@ function *add({ params, query }, res, next) {
 
 module.exports =
   Router()
-    .get('/:conferenceId', co(index))
-    .put('/:conferenceId/:resourceName', tokenSecured, isAdmin, co(add));
+    .get('/:slug', co(index))
+    .put('/:slug/:resourceName', tokenSecured, isAdmin, co(add));

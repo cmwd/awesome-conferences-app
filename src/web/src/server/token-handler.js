@@ -10,7 +10,11 @@ export default function () {
       jwt.verify(
         req.cookies.token, TOKEN_SECRET,
         (err, user) => {
-          req.pocket.set('user', { ...user, loggedIn: true });
+          req.pocket.set('user', {
+            ...user,
+            token: req.cookies.token,
+            loggedIn: true,
+          });
           next(null);
         });
     }

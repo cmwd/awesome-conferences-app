@@ -1,13 +1,12 @@
 import { VIDEO_ACTIONS } from './video-constants';
-import { getVideos } from '../services/api-service';
+import fetch from '../utils/fetch';
 
-export const addVideos = data =>
-  ({ type: VIDEO_ACTIONS.ADD_VIDEOS, data });
-
-export const fetchConferenceVideos = conferenceId =>
-  (dispatch, getState, { API_URL }) =>
-    getVideos(API_URL)({ conferenceId })
-     .then((data) => {
-        dispatch(addVideos(data));
-        return Promise.resolve(data);
-     });
+export const getVideos = conferenceId => ({
+  types: [
+    VIDEO_ACTIONS.API_GET_VIDEOS_REQUEST,
+    VIDEO_ACTIONS.API_GET_VIDEOS_SUCCESS,
+    VIDEO_ACTIONS.API_GET_VIDEOS_REQUEST,
+  ],
+  callAPI: (state, { API_URL }) =>
+    fetch(`${API_URL}/video/${conferenceId}`),
+});

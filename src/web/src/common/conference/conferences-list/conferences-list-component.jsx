@@ -44,7 +44,8 @@ const PaginationLinks = ({ total, current }: PaginationType) => (
 
 /* eslint-disable class-methods-use-this */
 class ConferencesList extends Component {
-  componentWillReceiveProps({ pagination, setCurrentPage, params }) {
+  componentWillReceiveProps(props) {
+    const { pagination, setCurrentPage, params } = props;
     const newPageNumber = parseInt(params.current, 10);
 
     if (pagination.current !== newPageNumber) {

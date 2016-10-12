@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 import { AsyncHook } from '../../lib/server-async-hooks';
 import VideosList from './video-list-component';
-import { fetchConferenceVideos } from '../video-actions';
+import { getVideos } from '../video-actions';
 import { videosByConferenceId } from '../video-selectors';
 
 const fetchInitialData = ({ dispatch, conferenceId }) =>
-  dispatch(fetchConferenceVideos(conferenceId));
+  dispatch(getVideos(conferenceId));
 
 const VisibleDetailsVideos = connect(
   (state, props) => ({

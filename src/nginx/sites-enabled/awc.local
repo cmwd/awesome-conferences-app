@@ -32,7 +32,6 @@ server {
 
   location / {
     include 'common-config/base_api';
-    add_header 'Access-Control-Allow-Origin' '*';
-    add_header 'Access-Control-Allow-Headers' 'Origin, X-Requested-With, Content-Type, Accept';
+    add_header 'Access-Control-Allow-Origin' '$http_origin';
  }
 }

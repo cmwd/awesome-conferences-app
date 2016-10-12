@@ -7,11 +7,15 @@ import logger from 'redux-logger';
 import App, { appActions } from '../common/app';
 import reducers from '../common/reducers';
 import { ControlledRouter } from '../common/lib/redux-react-router-v4';
+import callAPIMiddleware from '../common/lib/call-api-middleware';
 import { NODE_ENV } from '../../config';
 import './main.scss';
 
 const { __PRELOADED_STATE__ } = window;
-const middlewares = [thunk.withExtraArgument(process.env)];
+const middlewares = [
+  callAPIMiddleware(process.env),
+  thunk.withExtraArgument(process.env),
+];
 
 if (NODE_ENV !== 'production') {
   middlewares.push(logger());

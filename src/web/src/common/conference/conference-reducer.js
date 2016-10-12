@@ -1,22 +1,25 @@
+import _ from 'lodash';
 import { CONFERENCE_ACTIONS } from './conference-constants';
 
 const DEFAULT_STATE = {
-  pageInfo: {
+  params: {
+    limit: 20,
     current: 1,
-    itemsLimit: 20,
     total: 0,
-    pages: [],
   },
+  pages: [],
   items: {},
+  resources: {},
+  editor: {},
 };
 
-const addConferences = (stateItems, conferences) =>
+const addConferenceItems = (stateItems, conferences) =>
   conferences.reduce((result, current) =>
     Object.assign({}, result, {
       [current._id]: current,
     }), stateItems);
 
-const setPageConferences = (statePages, data) =>
+const addConferencePage = (statePages, data) =>
   [
     ...statePages.filter(({ page }) => page !== data.pages.current),
     {
@@ -28,29 +31,37 @@ const setPageConferences = (statePages, data) =>
 export default (state = DEFAULT_STATE, action) => {
   switch (action.type) {
 
-    case CONFERENCE_ACTIONS.ADD_PAGE:
+    case CONFERENCE_ACTIONS.API_GET_CONFERENCES_SUCCESS:
       return Object.assign({}, state, {
-        items: addConferences(state.items, action.data.conferences),
-        pageInfo: Object.assign({}, state.pageInfo, {
-          pages: setPageConferences(state.pageInfo.pages, action.data),
+        items: addConferenceItems(state.items, action.response.conferences),
+        pages: addConferencePage(state.pages, action.response),
+        params: Object.assign({},
+          state.params,
+          { total: action.response.pages.total }),
+      });
+
+    case CONFERENCE_ACTIONS.API_GET_CONFERENCE_BY_SLUG_SUCCESS:
+      return Object.assign({}, state, {
+        items: addConferenceItems(state.items, [action.response]),
+      });
+
+    case CONFERENCE_ACTIONS.API_GET_RESOURCES_SUCCESS:
+      return Object.assign({}, state, {
+        resources: Object.assign({}, state.resources, {
+          [action.slug]: action.response,
         }),
       });
 
-    case CONFERENCE_ACTIONS.ADD_ITEM:
+    case CONFERENCE_ACTIONS.STORE_EDITOR_FORM_DATA:
       return Object.assign({}, state, {
-        items: addConferences(state.items, [action.data]),
+        editor: action.editor === null
+          ? DEFAULT_STATE.editor
+          : Object.assign({}, state.editor, action.editor),
       });
 
     case CONFERENCE_ACTIONS.SET_PAGINATION_INFO:
       return Object.assign({}, state, {
-        pageInfo: Object.assign({}, state.pageInfo, action.pagesInfo),
-      });
-
-    case CONFERENCE_ACTIONS.SET_CURRENT_PAGE:
-      return Object.assign({}, state, {
-        pageInfo: Object.assign({}, state.pageInfo, {
-          current: action.current,
-        }),
+        params: Object.assign({}, state.params, action.params),
       });
 
     default:

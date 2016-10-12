@@ -4,19 +4,16 @@ import { Grid } from '../lib/bootstrap';
 import {
   ConferencesList,
   ConferenceDetails,
+  ConferenceEditor,
   CONFERENCE_ROUTES,
 } from '../conference';
 import { APP_ROUTES } from './app-constants';
 import { UserLogin, USER_ROUTES } from '../user';
-import Header from '../header';
 /**
  * TODO: Check why './header' path is failing in prod env.
  */
-// import Header from '../header/header-tag';
+import Header from '../header/header-component';
 import NotFound from '../not-found';
-// import { LoginScreen } from '../user';
-// import { VisibleConferences, VisibleDetailsIndex } from '../containers';
-// import { APP, USER, CONFERENCES } from '../constants/routes';
 
 const GoToConferences = () => (
   <Redirect to={`${CONFERENCE_ROUTES.LIST}/1`} />
@@ -38,6 +35,10 @@ const App = () => (
       <Match
         pattern={`${CONFERENCE_ROUTES.DETAILS}/:slug`}
         component={ConferenceDetails}
+      />
+      <Match
+        pattern={`${CONFERENCE_ROUTES.ADMIN_PANEL}/:slug`}
+        component={ConferenceEditor}
       />
       <Match pattern={USER_ROUTES.LOGIN} component={UserLogin} />
       <Miss component={NotFound} />

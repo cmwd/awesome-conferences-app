@@ -7,9 +7,13 @@ import reducers from '../../common/reducers';
 import CONFIG from '../../../config';
 import { AppIndex, AsyncHook } from '../components';
 import { createAsyncContext } from '../../common/lib/server-async-hooks';
+import callAPIMiddleware from '../../common/lib/call-api-middleware';
 
 const { BACKEND_API_URL: API_URL } = CONFIG;
-const middlewares = [thunk.withExtraArgument({ API_URL })];
+const middlewares = [
+  callAPIMiddleware({ API_URL }),
+  thunk.withExtraArgument({ API_URL }),
+];
 
 export const prepareRender = ({ location, preloadedState }) => {
   const store = createStore(

@@ -8,7 +8,7 @@ import {
   AUTH_GITHUB_SECRET as clientSecret,
   AUTH_GITHUB_CALLBACK as callbackURL,
 } from '../../../../config';
-import { authenticateWithService } from '../../../common/services/api-service';
+import { authenticateWithService } from '../api-service';
 
 const service = 'GITHUB';
 const TOKEN_DEFAULTS = {

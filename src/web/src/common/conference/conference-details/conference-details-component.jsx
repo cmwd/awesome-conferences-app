@@ -1,25 +1,36 @@
 import React from 'react';
+import { Link } from 'react-router';
 import { VideoList } from '../../video';
+import { CONFERENCE_ROUTES } from '../conference-constants';
 
 type DetailsProps = {
   description: String,
 };
 
 type PropTypes = {
-  details: DetailsProps,
+  conference: {
+    _id: String,
+    details: DetailsProps,
+  },
   pathname: String,
-  _id: String,
 };
 
-const Details = ({ details = {}, pathname, _id }: PropTypes) => (
+const Details = ({ conference, user, pathname }: PropTypes) => (
   <div className="details">
-    <p>{details.description}</p>
+    <p>{conference.details.description}</p>
+    {
+      user.loggedIn && user.admin
+        ? <Link
+          to={`${CONFERENCE_ROUTES.ADMIN_PANEL}/${conference.slug}`}
+        >Edit conference</Link>
+        : null
+    }
     {
       /**
        * TODO: add ability to search by conference slug in video api
        */
-      _id
-        ? <VideoList pathname={pathname} conferenceId={_id} />
+      conference._id
+        ? <VideoList pathname={pathname} conferenceId={conference._id} />
         : null
     }
   </div>
