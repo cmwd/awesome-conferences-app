@@ -16,6 +16,8 @@ export const paginationSelector = (
   { conference: { params: { current, limit, total } } }
 ) => ({ current, limit, total });
 
+export const conferencesMapSelector = ({ conference: { items } }) => items;
+
 export const conferenceBySlugSelector = (
   { conference: { items } }, { params: { slug } }
 ) => {

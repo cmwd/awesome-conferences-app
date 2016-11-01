@@ -1,8 +1,18 @@
+const _ = require('lodash');
 const fetch = require('node-fetch');
 const co = require('co');
 const { process } = require('global');
 const { stringify } = require('querystring');
+const HTTPErrors = require('http-errors');
 const utils = require('../../utils');
+
+const ACTIONS = {
+  SEARCH: 'SEARCH',
+  PLAYLIST_ITEMS: 'PLAYLISTITEMS',
+  PLAYLISTS: 'PLAYLISTS',
+  GET_CHANNEL_VIDEOS: 'GETCHANNELVIDEOS',
+  VIDEOS: 'VIDEOS',
+};
 
 const Y_URL = 'https://www.googleapis.com/youtube/v3/';
 const DEFAULT_PARAMS = {
@@ -16,6 +26,7 @@ const PUBLIC_STATUS = 'public';
 const getUrl = (method, params) =>
   `${Y_URL}${method}?${stringify(Object.assign({}, DEFAULT_PARAMS, params))}`;
 
+
 const getVideosDetails = playlistItems =>
   Promise.all(
     playlistItems.map(({ id: playlistId }) =>
@@ -24,7 +35,23 @@ const getVideosDetails = playlistItems =>
     )
   );
 
-function *fetchVideos({ channelId }) {
+function search(props) {
+  const query = Object.assign({}, props, { part: 'snippet' });
+  return fetch(getUrl('search', query))
+    .then(utils.handleFetchError);
+}
+
+function playlistItems(query) {
+  return fetch(getUrl('playlistItems', query))
+    .then(utils.handleFetchError);
+}
+
+function playlists(query) {
+  return fetch(getUrl('playlists', query))
+    .then(utils.handleFetchError);
+}
+
+function* fetchVideos({ channelId }) {
   const playlists = yield fetch(getUrl('playlists', { channelId }))
     .then(utils.handleFetchError);
 
@@ -37,12 +64,34 @@ function *fetchVideos({ channelId }) {
   , []);
 }
 
-const handler = ({ query }) => {
-  if (!query.channelId) {
-    return Promise.reject(new Error('Parameter channelId is required'));
-  }
+function* videos(query) {
+  return fetch(getUrl('videos', query))
+    .then(utils.handleFetchError);
+}
 
-  return co.wrap(fetchVideos)(query);
+const handler = ({ query }) => {
+  const { action } = query;
+  const props = _.omit(query, ['action']);
+
+  switch (action.toUpperCase()) {
+    case ACTIONS.SEARCH:
+      return search(props);
+
+    case ACTIONS.PLAYLIST_ITEMS:
+      return playlistItems(props);
+
+    case ACTIONS.PLAYLISTS:
+      return playlists(props);
+
+    case ACTIONS.GET_CHANNEL_VIDEOS:
+      return co.wrap(fetchVideos)(query);
+
+    case ACTIONS.VIDEOS:
+      return co.wrap(videos)(query);
+
+    default:
+      return Promise.reject(HTTPErrors.NotAcceptable());
+  }
 };
 
 module.exports = handler;

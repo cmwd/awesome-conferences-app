@@ -1,3 +1,8 @@
 .container-fluid {
   max-width: $container-max-width;
 }
+
+.is-breakable {
+  word-break: break-word;
+  white-space: normal;
+}

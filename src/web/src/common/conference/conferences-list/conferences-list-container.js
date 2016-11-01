@@ -10,14 +10,16 @@ import {
   paginationSelector,
 } from '../conference-selectors';
 
-const fetchInitialData = ({ params, dispatch }) =>
-  dispatch(getConferences(params.current));
+const fetchInitialData = ({ params: { current }, dispatch }) => {
+  dispatch(setPagination({ current }));
+  return dispatch(getConferences());
+};
 
 const mapDispatchToProps = dispatch => ({
   setCurrentPage(currentPage) {
     const current = parseInt(currentPage, 10);
     dispatch(setPagination({ current }));
-    dispatch(getConferences(current));
+    dispatch(getConferences());
   },
 });
 

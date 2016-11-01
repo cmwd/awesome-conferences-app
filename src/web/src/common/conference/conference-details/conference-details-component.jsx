@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { VideoList } from '../../video';
-import { CONFERENCE_ROUTES } from '../conference-constants';
+import { RESOURCE_ROUTES } from '../../resource';
 
 type DetailsProps = {
   description: String,
@@ -15,14 +15,17 @@ type PropTypes = {
   pathname: String,
 };
 
+const conferenceDashboard = ({ _id: id }) => ({
+  pathname: RESOURCE_ROUTES.YOUTUBE_IMPORTER,
+  query: { id },
+});
+
 const Details = ({ conference, user, pathname }: PropTypes) => (
   <div className="details">
     <p>{conference.details.description}</p>
     {
       user.loggedIn && user.admin
-        ? <Link
-          to={`${CONFERENCE_ROUTES.ADMIN_PANEL}/${conference.slug}`}
-        >Edit conference</Link>
+        ? <Link to={conferenceDashboard(conference)}>Edit conference</Link>
         : null
     }
     {

@@ -4,11 +4,11 @@ import { Grid } from '../lib/bootstrap';
 import {
   ConferencesList,
   ConferenceDetails,
-  ConferenceEditor,
   CONFERENCE_ROUTES,
 } from '../conference';
 import { APP_ROUTES } from './app-constants';
 import { UserLogin, USER_ROUTES } from '../user';
+import { ResourceEditor, RESOURCE_ROUTES } from '../resource';
 /**
  * TODO: Check why './header' path is failing in prod env.
  */
@@ -37,8 +37,8 @@ const App = () => (
         component={ConferenceDetails}
       />
       <Match
-        pattern={`${CONFERENCE_ROUTES.ADMIN_PANEL}/:slug`}
-        component={ConferenceEditor}
+        pattern={`${RESOURCE_ROUTES.EDITOR}`}
+        component={ResourceEditor}
       />
       <Match pattern={USER_ROUTES.LOGIN} component={UserLogin} />
       <Miss component={NotFound} />

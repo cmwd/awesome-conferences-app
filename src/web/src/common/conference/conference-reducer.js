@@ -19,6 +19,14 @@ const addConferenceItems = (stateItems, conferences) =>
       [current._id]: current,
     }), stateItems);
 
+const getPaginationInfo = (state, newState) => ({
+  current: newState.current
+    ? parseInt(newState.current, 10)
+    : state.current,
+  limit: newState.limit || state.limit,
+  total: newState.total || state.total,
+});
+
 const addConferencePage = (statePages, data) =>
   [
     ...statePages.filter(({ page }) => page !== data.pages.current),
@@ -61,7 +69,8 @@ export default (state = DEFAULT_STATE, action) => {
 
     case CONFERENCE_ACTIONS.SET_PAGINATION_INFO:
       return Object.assign({}, state, {
-        params: Object.assign({}, state.params, action.params),
+        params: Object.assign(
+          {}, state.params, getPaginationInfo(state.params, action.params)),
       });
 
     default:

@@ -23,6 +23,7 @@ const concatconferenceItems = (stateVideos, videos) =>
 export default (state = DEFAULT_STATE, action) => {
   switch (action.type) {
     case VIDEO_ACTIONS.API_GET_VIDEOS_SUCCESS:
+    case VIDEO_ACTIONS.API_GET_VIDEOS_BY_CONFERENCE_ID_SUCCESS:
       return Object.assign({}, state, {
         items: concatItems(state.items, action.response.videos),
         conferenceItems: concatconferenceItems(

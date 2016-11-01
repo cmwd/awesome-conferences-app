@@ -1,13 +1,14 @@
 const { Router } = require('express');
+const bodyParser = require('body-parser');
 const resource = require('../service/resource');
 
-function index({ query, params }, res, next) {
+function index({ query, body, params }, res, next) {
   const { resourceName } = params;
 
   if (!resource[resourceName]) {
     next(new Error('Unknown resource'));
   } else {
-    resource[resourceName](Object.assign({}, { params, query }))
+    resource[resourceName](Object.assign({}, { params, query, body }))
       .then(result => res.json(result))
       .catch(next);
   }
@@ -15,4 +16,5 @@ function index({ query, params }, res, next) {
 
 module.exports =
   Router()
+    .use(bodyParser.json())
     .get('/:resourceName', index);

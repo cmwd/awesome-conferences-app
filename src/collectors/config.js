@@ -1,5 +1,5 @@
 const {
-  APP_PORT = 8002,
+  APP_PORT = 8001,
   NODE_ENV = 'development',
 } = process.env;
 

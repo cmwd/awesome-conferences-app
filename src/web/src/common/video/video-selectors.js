@@ -3,10 +3,18 @@ import { createSelector } from 'reselect';
 export const conferenceVideoIds = ({ video }, { conferenceId }) =>
   video.conferenceItems[conferenceId] || [];
 
-export const videoItems = ({ video }) => video.items;
+export const videoItemsMapSelector = ({ video }) => video.items;
 
-export const videosByConferenceId = createSelector(
+export const videoItemsSelector = createSelector(
+  videoItemsMapSelector,
+  videos => Object
+    .keys(videos)
+    .reduce((result, videoId) =>
+      [...result, videos[videoId]], [])
+);
+
+export const videosByConferenceIdSelector = createSelector(
   conferenceVideoIds,
-  videoItems,
+  videoItemsMapSelector,
   (videoIds, items) => videoIds.map(videoId => items[videoId])
 );
