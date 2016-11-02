@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const resource = require('../service/resource');
 
 function index({ query, body, params }, res, next) {
-  const { resourceName } = params;
+  const resourceName = params.resourceName.toLowerCase();
 
   if (!resource[resourceName]) {
     next(new Error('Unknown resource'));
@@ -17,4 +17,5 @@ function index({ query, body, params }, res, next) {
 module.exports =
   Router()
     .use(bodyParser.json())
+    .post('/:resourceName', index)
     .get('/:resourceName', index);

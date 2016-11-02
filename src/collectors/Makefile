@@ -15,10 +15,9 @@ run-dev:
 
 run-inspector:
 	@NODE_PATH=$(APP_DIR) \
-		node \
+		node ./server.js \
 			--inspect \
-			--debug-brk \
-			./server.js
+			--debug-brk
 
 # TESTS
 TEST_PATH=./test/**/*.test.js

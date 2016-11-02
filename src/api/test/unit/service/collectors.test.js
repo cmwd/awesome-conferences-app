@@ -24,6 +24,7 @@ suite('Collectors Service', () => {
           body: '{"videoIds":["one","two"]}',
           method: 'POST',
           timeout: 3e4,
+          mode: 'cors',
           headers: { 'Content-Type': 'application/json' },
         }
       );

@@ -12,6 +12,7 @@ module.exports = {
       body: JSON.stringify({ videoIds }),
       method: 'POST',
       timeout: 3e4,
+      mode: 'cors',
       headers: {
         'Content-Type': 'application/json',
       },

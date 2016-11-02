@@ -7,9 +7,8 @@ const normalizeError = (errObj) => {
   return Object.assign({}, errObj, { status, message });
 };
 
-/* eslint-disable no-unused-vars */
+// eslint-disable-next-line no-unused-vars
 const errorHandler = (errObj, req, res, next) => {
-/* eslint-enable no-unused-vars */
   let status = null;
   const err = normalizeError(errObj);
 
