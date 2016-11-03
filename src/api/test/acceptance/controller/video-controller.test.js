@@ -1,6 +1,5 @@
 const supertest = require('supertest');
 const assert = require('assert');
-const co = require('co');
 const sinon = require('sinon');
 const app = require('server');
 const { videoIds, youtubeVideoDetails } = require('test/data/video-data');
@@ -56,7 +55,7 @@ suite('Video Controller', () => {
             'Should return false if request has failed'))
     );
 
-    test('Should accept JSON body', () => co(function* () {
+    test('Should accept JSON body', function* () {
       const { _id: id } = yield conferenceModel.create({ name: 'test' });
 
       conferenceId = id.toString();
@@ -70,7 +69,7 @@ suite('Video Controller', () => {
         .send({ resourceName: 'YOUTUBE', videoIds })
         .expect(200)
         .then(() => { collectors.getVideoDetails.restore(); });
-    }));
+    });
 
     test('Should accept application/x-www-form-urlencoded body', () => {
       sinon.stub(collectors, 'getVideoDetails')

@@ -37,6 +37,8 @@ test:
 	$(MOCHA) \
 		--reporter $(REPORTER) \
 		--ui tdd \
+		--require co-mocha \
+		$(if $(grep), --grep $(grep)) \
 		$(TEST_PATH)
 
 test-watch:
@@ -52,7 +54,9 @@ test-watch:
 				$(MOCHA) \
 		 			--reporter $(REPORTER) \
 		 			--ui tdd \
-		 			--growl $(TEST_PATH)"
+					--require co-mocha \
+					$(if $(grep), --grep $(grep)) \
+		 			--growl $(TEST_PATH) || true"
 
 test-inspector:
 	$(info Run tests inspector for $(TEST_PATH))
@@ -65,6 +69,8 @@ test-inspector:
 		--debug-brk \
 		--reporter $(REPORTER) \
 		--ui tdd \
+		--require co-mocha \
+		$(if $(grep), --grep $(grep)) \
 		$(TEST_PATH)
 
 .PHONY: run run-dev run-inspector test test-watch test-inspector
