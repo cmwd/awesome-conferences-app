@@ -18,8 +18,8 @@ schema.statics.setVideos = function setVideos(
   if (!Array.isArray(videos)) throw new TypeError('videos must be an array');
 
   const updateQuery = data => this.update(
-    { conferenceId, resourceName, resourceId: data.id },
-    { $set: { conferenceId, resourceName, resourceId: data.id, data } },
+    { conferenceId, resourceName, resourceId: data.videoId },
+    { $set: { conferenceId, resourceName, resourceId: data.videoId, data } },
     { upsert: true });
 
   const removeQuery = videoIds => this.remove(
@@ -27,7 +27,7 @@ schema.statics.setVideos = function setVideos(
 
   return co(function* setVideosQueries() {
     yield Promise.all(videos.map(data => updateQuery(data)));
-    yield removeQuery(videos.map(({ id }) => id));
+    yield removeQuery(videos.map(({ videoId }) => videoId));
   });
 };
 

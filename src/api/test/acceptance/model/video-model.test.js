@@ -6,8 +6,8 @@ suite('Video Model - @video-model', () => {
     const resourceName = 'YOUTUBE';
     const conferenceId = '57fe482de5f4f8475949c204';
     const testData = [
-      { id: 1, videoName: 'one' },
-      { id: 2, videoName: 'two' },
+      { videoId: 1, videoName: 'one' },
+      { videoId: 2, videoName: 'two' },
     ];
 
     test('Should validate provided videos', () => {
