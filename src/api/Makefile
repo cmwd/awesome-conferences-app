@@ -38,6 +38,7 @@ test:
 		--reporter $(REPORTER) \
 		--ui tdd \
 		--require co-mocha \
+		--full-trace \
 		$(if $(grep), --grep $(grep)) \
 		$(TEST_PATH)
 

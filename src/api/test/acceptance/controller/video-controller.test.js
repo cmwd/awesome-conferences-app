@@ -1,34 +1,54 @@
 const supertest = require('supertest');
-const assert = require('assert');
+const { assert } = require('chai');
 const sinon = require('sinon');
 const app = require('server');
-const { videoIds, youtubeVideoDetails } = require('test/data/video-data');
 const { generateToken } = require('util/crypto/jwt');
 const { conferenceModel, videoModel } = require('model');
 const collectors = require('service/collectors');
-
 require('sinon-as-promised');
 
 const createUserToken = (userInfo = {}) => generateToken(userInfo);
 
-suite('Video Controller', () => {
-  let conferenceId = null;
-
+suite('Video Controller - @video-controller', () => {
   suite('GET /video/', () => {
     test('Should return status ok and array of videos', () =>
         supertest(app)
           .get('/video/')
           .expect(200)
           .expect(({ body }) => {
-            assert.ok(body.status.ok,
-              'Should return true if request has succeed');
-            assert.ok(Array.isArray(body.videos),
-              'Incorrect data type');
+            assert.isOk(body.status.ok);
+            assert.isArray(body.videos);
           })
     );
   });
 
+  suite('GET /video/:conferenceId', () => {
+    setup(() => Promise.all([
+      videoModel.remove({}),
+      conferenceModel.remove({}),
+    ]));
+
+    test('Should return videos for conferenceId', function* () {
+      const conference = yield conferenceModel.create({ name: 'test' });
+      return supertest(app)
+        .get(`/video/${conference.id}`)
+        .expect(200)
+        .expect(({ body }) => {
+          assert.isOk(body.status.ok);
+          assert.isArray(body.videos);
+          assert.isOk(
+            body.videos.every(vid =>
+              vid.conferenceId === conference.id));
+        });
+    });
+  });
+
   suite('PUT /video/:conferenceId', () => {
+    setup(() => Promise.all([
+      conferenceModel.remove({}),
+      videoModel.remove({}),
+    ]));
+
     test('Should fail authorization if user token is not provided', () =>
       supertest(app)
         .put('/video/57fe482de5f4f8475949c204')
@@ -40,9 +60,7 @@ suite('Video Controller', () => {
         .put('/video/57fe482de5f4f8475949c204')
         .set('Authorization', `Bearer ${createUserToken({ admin: false })}`)
         .expect(401)
-        .expect(({ body }) =>
-          assert.ok(!body.status.ok,
-            'Should return false if request has failed'))
+        .expect(({ body }) => assert.isNotOk(body.status.ok))
       );
 
     test('Should fail if conferenceId does not exists', () =>
@@ -50,67 +68,156 @@ suite('Video Controller', () => {
         .put('/video/57fe482de5f4f8475949c204')
         .set('Authorization', `Bearer ${createUserToken({ admin: true })}`)
         .expect(400)
-        .expect(({ body }) =>
-          assert.ok(!body.status.ok,
-            'Should return false if request has failed'))
+        .expect(({ body }) => assert.isNotOk(body.status.ok))
     );
 
     test('Should accept JSON body', function* () {
-      const { _id: id } = yield conferenceModel.create({ name: 'test' });
+      const conference = yield conferenceModel.create({ name: 'test' });
 
-      conferenceId = id.toString();
       sinon.stub(collectors, 'getVideoDetails')
-        .resolves(youtubeVideoDetails);
+        .resolves({ videoId: 'ny3hScFgCIQ', title: 'test' });
 
       return supertest(app)
-        .put(`/video/${conferenceId}`)
+        .put(`/video/${conference.id}`)
         .set('Authorization', `Bearer ${createUserToken({ admin: true })}`)
         .type('json')
-        .send({ resourceName: 'YOUTUBE', videoIds })
+        .send({ resourceName: 'YOUTUBE', videoId: 'ny3hScFgCIQ' })
         .expect(200)
-        .then(() => { collectors.getVideoDetails.restore(); });
+        .then(() => collectors.getVideoDetails.restore());
     });
 
-    test('Should accept application/x-www-form-urlencoded body', () => {
+    test('Should accept form body', function* () {
+      const conference = yield conferenceModel.create({ name: 'test' });
       sinon.stub(collectors, 'getVideoDetails')
-        .resolves(youtubeVideoDetails);
+        .resolves({ videoId: 'ny3hScFgCIQ', title: 'test' });
 
       return supertest(app)
-        .put(`/video/${conferenceId}`)
+        .put(`/video/${conference.id}`)
         .set('Authorization', `Bearer ${createUserToken({ admin: true })}`)
+        .type('form')
         .send('resourceName=YOUTUBE')
-        .send(`videoIds[]=${videoIds.join('&videoIds[]=')}`)
+        .send('videoId=ny3hScFgCIQ')
         .expect(200)
-        .then(() => { collectors.getVideoDetails.restore(); });
+        .then(() => collectors.getVideoDetails.restore());
     });
 
-    test('Should fail with 400 code if input data is incorrect', () =>
-      supertest(app)
-        .put(`/video/${conferenceId}`)
+    test('Should get video details from collectors', function* () {
+      const conference = yield conferenceModel.create({ name: 'test' });
+      sinon.stub(collectors, 'getVideoDetails')
+        .resolves({ videoId: 'ny3hScFgCIQ', title: 'test' });
+
+      return supertest(app)
+        .put(`/video/${conference.id}`)
+        .set('Authorization', `Bearer ${createUserToken({ admin: true })}`)
+        .type('form')
+        .send('resourceName=YOUTUBE')
+        .send('videoId=ny3hScFgCIQ')
+        .expect(200)
+        .then(() => {
+          sinon.assert.calledWith(collectors.getVideoDetails, {
+            resourceName: 'YOUTUBE',
+            videoId: 'ny3hScFgCIQ',
+          });
+          collectors.getVideoDetails.restore();
+        });
+    });
+
+    test('Should override model if exists', function* () {
+      const conference = yield conferenceModel.create({ name: 'test' });
+
+      sinon.stub(collectors, 'getVideoDetails')
+        .resolves({ videoId: 'ny3hScFgCIQ', title: 'test' });
+
+      yield supertest(app)
+        .put(`/video/${conference.id}`)
         .set('Authorization', `Bearer ${createUserToken({ admin: true })}`)
         .type('json')
-        .send({ resourceName: 'YOUTUBE', videoIds: [{}, {}] })
-        .expect(400)
-    );
+        .send({ resourceName: 'YOUTUBE', videoId: 'ny3hScFgCIQ' })
+        .expect(200);
+
+      return supertest(app)
+        .put(`/video/${conference.id}`)
+        .set('Authorization', `Bearer ${createUserToken({ admin: true })}`)
+        .type('json')
+        .send({ resourceName: 'YOUTUBE', videoId: 'ny3hScFgCIQ' })
+        .expect(200)
+        .then(() => collectors.getVideoDetails.restore());
+    });
+
+    test('Should fail with 400 code if input data is incorrect', function* () {
+      const conference = yield conferenceModel.create({ name: 'test' });
+      return supertest(app)
+        .put(`/video/${conference.id}`)
+        .set('Authorization', `Bearer ${createUserToken({ admin: true })}`)
+        .type('json')
+        .send({ resourceName: 'YOUTUBE', videoId: {} })
+        .expect(400);
+    });
   });
 
-  suite('GET /video/:conferenceId', () => {
-    teardown(() => Promise.all([
-      videoModel.remove({}),
-      conferenceModel.remove({}),
-    ]));
+  suite('DELETE /video/:conferenceId', () => {
+    setup(() => videoModel.create({
+      resourceName: 'resourceName',
+      conferenceId: '57fe482de5f4f8475949c204',
+      videoId: '1234',
+      title: 'test',
+    }));
 
-    test('Should return videos for conferenceId', () =>
+    teardown(() => videoModel.remove({}));
+
+    test('Should fail authorization if user token is not provided', () =>
       supertest(app)
-        .get(`/video/${conferenceId}`)
-        .expect(200)
-        .expect(({ body }) => {
-          assert.ok(body.status.ok, 'Invalid status');
-          assert.ok(Array.isArray(body.videos), 'Invalid data type');
-          assert.ok(
-            body.videos.every(vid =>
-              vid.conferenceId === conferenceId), 'Invalid parent ID');
-        })
+        .delete('/video/57fe482de5f4f8475949c204')
+        .expect(401)
+        .expect(({ body }) =>
+          assert.isNotOk(body.status.ok))
+    );
+
+    test('Should fail authorization if user is not admin', () =>
+      supertest(app)
+        .delete('/video/57fe482de5f4f8475949c204')
+        .set('Authorization', `Bearer ${createUserToken({ admin: false })}`)
+        .expect(401)
+        .expect(({ body }) => assert.isNotOk(body.status.ok))
+    );
+
+    test('Should fail if video does not exists', () =>
+      supertest(app)
+        .delete('/video/57fe482de5f4f8475949c204')
+        .set('Authorization', `Bearer ${createUserToken({ admin: true })}`)
+        .type('json')
+        .send({ videoId: '123' })
+        .expect(404)
+        .expect(({ body }) =>
+          assert.isNotOk(body.status.ok))
       );
+
+    test('Should accept JSON body', function* () {
+      yield supertest(app)
+        .delete('/video/57fe482de5f4f8475949c204')
+        .set('Authorization', `Bearer ${createUserToken({ admin: true })}`)
+        .type('json')
+        .send({ videoId: '1234' })
+        .expect(200)
+        .expect(({ body }) =>
+          assert.isOk(body.status.ok));
+      const video = yield videoModel.findOne({ videoId: '123' });
+
+      assert.isNull(video);
+    });
+
+    test('Shoudl accept form body', function* () {
+      yield supertest(app)
+        .delete('/video/57fe482de5f4f8475949c204')
+        .set('Authorization', `Bearer ${createUserToken({ admin: true })}`)
+        .type('form')
+        .send('videoId=1234')
+        .expect(200)
+        .expect(({ body }) =>
+          assert.isOk(body.status.ok));
+      const video = yield videoModel.findOne({ videoId: '123' });
+
+      assert.isNull(video);
+    });
   });
 });

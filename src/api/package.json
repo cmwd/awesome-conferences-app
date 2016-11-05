@@ -21,7 +21,7 @@
     "http-errors": "^1.5.0",
     "jsonwebtoken": "^7.1.9",
     "lodash": "^4.13.1",
-    "mongoose": "^4.5.4",
+    "mongoose": "^4.6.6",
     "mongoose-url-slugs": "^0.2.1",
     "node-fetch": "^1.5.3",
     "passport": "^0.3.2",

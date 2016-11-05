@@ -2,53 +2,25 @@ const { assert } = require('chai');
 const { videoModel } = require('model');
 
 suite('Video Model - @video-model', () => {
-  suite('setVideos', () => {
-    const resourceName = 'YOUTUBE';
-    const conferenceId = '57fe482de5f4f8475949c204';
-    const testData = [
-      { videoId: 1, videoName: 'one' },
-      { videoId: 2, videoName: 'two' },
-    ];
+  const resourceName = 'YOUTUBE';
+  const conferenceId = '57fe482de5f4f8475949c204';
 
-    test('Should validate provided videos', () => {
-      assert.throws(() => {
-        videoModel.setVideos('resourceName', 'conferenceId', { a: 'a' });
-      }, TypeError);
-    });
+  test('Should throw ValidationError', function* () {
+    try {
+      yield videoModel.create({ resourceName, conferenceId });
+    } catch (e) {
+      assert.equal(e.name, 'ValidationError');
+    }
 
-    test('Should save provided videos', function* () {
-      yield videoModel.setVideos(resourceName, conferenceId, testData);
-      const videos = yield videoModel.find({ resourceName, conferenceId });
-      assert.lengthOf(videos, 2);
+    try {
+      yield videoModel.create({ resourceName, conferenceId, videoId: 1 });
+    } catch (e) {
+      assert.equal(e.name, 'ValidationError');
+    }
 
-      yield videoModel.remove({});
-    });
+    const video = yield videoModel.findOne({ conferenceId });
+    yield videoModel.remove({});
 
-    test('Should update video if already exists', function* () {
-      yield videoModel.setVideos(resourceName, conferenceId, testData);
-      const modData = testData.slice(0);
-      const newName = 'video new name';
-      modData[1].videoName = newName;
-
-      yield videoModel.setVideos(resourceName, conferenceId, testData);
-      const video = yield videoModel
-        .findOne({ resourceName, conferenceId, 'data.videoName': newName });
-      assert.isNotNull(video);
-      yield videoModel.remove({});
-    });
-
-    test('Should should remove remaining videos', function* () {
-      yield videoModel.setVideos(resourceName, conferenceId, testData);
-      yield videoModel.setVideos(resourceName, conferenceId, [testData[0]]);
-      const video = yield videoModel
-        .find({
-          resourceName,
-          conferenceId,
-          'data.videoName': testData[1].videoName,
-        });
-
-      assert.lengthOf(video, 0);
-      yield videoModel.remove({});
-    });
+    assert.isNull(video);
   });
 });

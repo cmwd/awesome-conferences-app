@@ -5,11 +5,11 @@ const { COLLECTORS_ADDRESS } = require('config');
 const logger = require('logger');
 
 module.exports = {
-  getVideoDetails({ resourceName, videoIds }) {
+  getVideoDetails({ resourceName, videoId }) {
     const query = stringify({ action: 'videos' });
     const url = `${COLLECTORS_ADDRESS}/resource/${resourceName}/?${query}`;
     const opts = {
-      body: JSON.stringify({ videoIds }),
+      body: JSON.stringify({ videoId }),
       method: 'POST',
       timeout: 3e4,
       mode: 'cors',
