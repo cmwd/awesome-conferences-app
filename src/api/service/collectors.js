@@ -6,7 +6,7 @@ const logger = require('logger');
 
 module.exports = {
   getVideoDetails({ resourceName, videoId }) {
-    const query = stringify({ action: 'videos' });
+    const query = stringify({ action: 'video_details' });
     const url = `${COLLECTORS_ADDRESS}/resource/${resourceName}/?${query}`;
     const opts = {
       body: JSON.stringify({ videoId }),

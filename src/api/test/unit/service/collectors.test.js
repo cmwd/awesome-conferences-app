@@ -19,7 +19,7 @@ suite('Collectors Service - @collectors', () => {
 
       getVideoDetails({ resourceName: 'resourceName', videoId });
       sinon.assert.calledWith(fetch,
-        `${COLLECTORS_ADDRESS}/resource/resourceName/?action=videos`,
+        `${COLLECTORS_ADDRESS}/resource/resourceName/?action=video_details`,
         {
           body: '{"videoId":"one"}',
           method: 'POST',

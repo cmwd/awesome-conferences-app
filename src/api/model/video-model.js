@@ -1,16 +1,5 @@
 const mongoose = require('mongoose');
 
-const thumbnailSchema = {
-  url: {
-    type: String,
-  },
-  width: {
-    type: Number,
-  },
-  height: {
-    type: Number,
-  },
-};
 const videoModelSchema = {
   resourceName: {
     type: String,
@@ -37,10 +26,16 @@ const videoModelSchema = {
     type: Date,
     default: Date.now,
   },
-  thumbnails: {
-    low: thumbnailSchema,
-    mid: thumbnailSchema,
-    high: thumbnailSchema,
+  thumbnail: {
+    url: {
+      type: String,
+    },
+    width: {
+      type: Number,
+    },
+    height: {
+      type: Number,
+    },
   },
   other: {
     type: mongoose.Schema.Types.Mixed,
