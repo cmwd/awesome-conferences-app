@@ -1,0 +1,13 @@
+html
+  head
+    title Awesome Conferences
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    link(rel="shortcut icon" href="/public/favicon.ico")
+    link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css")
+    link(rel="stylesheet" href="/public/css/bundle.css")
+    script(src="/public/js/client.js" async=true)
+  body
+    #root!= html
+    script.
+      window.__PRELOADED_STATE__ = !{JSON.stringify(state)};

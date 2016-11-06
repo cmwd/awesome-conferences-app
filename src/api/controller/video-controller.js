@@ -2,7 +2,7 @@ const _ = require('lodash');
 const co = require('co-express');
 const { Router } = require('express');
 const bodyParser = require('body-parser');
-const { BadRequest, NotFound } = require('http-errors');
+const { BadRequest, NotFound, Conflict } = require('http-errors');
 const { videoModel, conferenceModel } = require('model');
 const errorHandler = require('middleware/error-to-json-response');
 const { tokenSecured, isAdmin } = require('middleware/authentication');
@@ -43,17 +43,19 @@ function* addVideo({ params, body, log }, res) {
   if (!resourceName || !videoId || !_.isString(videoId)) {
     throw new BadRequest('Incorrect input data');
   }
+  const videoDetails = yield collectors.getVideoDetails(
+    { resourceName, videoId });
 
-  const [videoDetails, video] = yield Promise.all([
-    collectors.getVideoDetails({ resourceName, videoId }),
-    videoModel.findOne({ conferenceId, videoId }),
-  ]);
-  const data = Object.assign({}, videoDetails, { resourceName, conferenceId });
+  try {
+    yield videoModel.create(
+      Object.assign({}, videoDetails, { resourceName, conferenceId }));
+  } catch (error) {
+    log.error(error);
+    if (error.code === 11000) {
+      throw new Conflict('Video already exists');
+    }
 
-  if (!video) {
-    yield videoModel.create(data);
-  } else {
-    yield video.update(data, { runValidators: true });
+    throw error;
   }
 
   res.json({ status: SUCCESS_STATUS });
@@ -78,9 +80,8 @@ module.exports = Router()
   .get('/', co(getVideos))
   .get('/:conferenceId',
     co(checkIfConferenceExists),
-    co(getVideosByConferenceId)
-    )
-  .put('/:conferenceId',
+    co(getVideosByConferenceId))
+  .post('/:conferenceId',
     tokenSecured,
     isAdmin,
     co(checkIfConferenceExists),

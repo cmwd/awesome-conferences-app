@@ -1,5 +1,0 @@
-#!/bin/bash
-
-BIN="./node_modules/.bin"
-
-$BIN/babel-node --debug-brk --inspect index.js | $BIN/pino

@@ -4,11 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "./bin/start",
-    "build": "./bin/build",
-    "inspector": "./bin/inspector",
-    "test": "./node_modules/.bin/tape -r ./tests/config ./tests/**/*.test.js | faucet",
-    "test-inspector": "node --debug-brk --inspect ./node_modules/.bin/tape -r ./tests/config ./tests/**/*.test.js | faucet"
+    "start": "make run",
+    "dev": "make run-dev"
   },
   "author": "",
   "license": "MIT",
@@ -18,6 +15,7 @@
     "babel-core": "^6.13.2",
     "babel-eslint": "^6.1.2",
     "babel-loader": "^6.2.5",
+    "babel-plugin-transform-require-ignore": "^0.0.2",
     "babel-preset-es2015": "^6.13.2",
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-0": "^6.5.0",
@@ -54,13 +52,7 @@
     "style-loader": "^0.13.1",
     "webpack": "^1.13.2"
   },
-  "devDependencies": {
-    "faucet": "0.0.1",
-    "path-alias": "0.0.7",
-    "proxyquire": "^1.7.10",
-    "sinon": "^1.17.4",
-    "tape": "^4.6.0"
-  },
+  "devDependencies": {},
   "engines": {
     "node": "6.6.0"
   }
