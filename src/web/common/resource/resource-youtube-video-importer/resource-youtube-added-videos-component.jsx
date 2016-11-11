@@ -1,16 +1,20 @@
+/* @flow */
+
 import React from 'react';
 import { Table, Button } from '../../lib/bootstrap';
 
-const YoutubeAddedVideos = ({ items, onRemove }) => (
-  <Table
-    condensed
-    responsive
-    hover
-    striped
-  >
-    <tbody>
-      {
-        items.map((item, index) => (
+type PropTypes = {
+  items: Array,
+  onRemove: Function,
+};
+
+function YoutubeAddedVideos(props: PropTypes) {
+  const { items = [], onRemove } = props;
+
+  return (
+    <Table condensed responsive hover striped>
+      <tbody>
+        { items.map((item, index) => (
           <tr key={index}>
             <td>{index + 1}</td>
             <td>
@@ -24,10 +28,10 @@ const YoutubeAddedVideos = ({ items, onRemove }) => (
               >Remove</Button>
             </td>
           </tr>
-        ))
-      }
-    </tbody>
-  </Table>
-);
+        )) }
+      </tbody>
+    </Table>
+  );
+}
 
 export default YoutubeAddedVideos;

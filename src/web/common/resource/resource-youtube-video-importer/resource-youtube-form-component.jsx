@@ -46,6 +46,7 @@ const YoutubeForm = ({ onAdd, onUpdate, videoId }) => (
           onClick={(e) => {
             e.preventDefault();
             onAdd({ videoId });
+            onUpdate({ videoId: '' });
           }}
         >Add</Button>
       </InputGroup.Button>

@@ -9,12 +9,12 @@ type PropTypes = {
 const VideoList = ({ videos, pathname }: PropTypes) => (
   <div>
     {
-      videos.map(({ _id, data }, key) =>
+      videos.map(item =>
         (<VideoListItem
-          {...data}
-          internalId={_id}
+          item={item}
+          internalId={item._id}
           pathname={pathname}
-          key={key}
+          key={item._id}
         />))
     }
   </div>

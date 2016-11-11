@@ -7,7 +7,6 @@ import {
   conferencePageSelector,
   conferenceBySlugSelector,
 } from './conference-selectors';
-import { userSelectors } from '../user';
 
 export const setPagination = params =>
   ({ type: CONFERENCE_ACTIONS.SET_PAGINATION_INFO, params });

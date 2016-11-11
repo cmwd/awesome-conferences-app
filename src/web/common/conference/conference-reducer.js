@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { CONFERENCE_ACTIONS } from './conference-constants';
 
 const DEFAULT_STATE = {

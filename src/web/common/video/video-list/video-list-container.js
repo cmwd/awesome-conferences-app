@@ -1,17 +1,18 @@
 import { connect } from 'react-redux';
 import { AsyncHook } from '../../lib/server-async-hooks';
 import VideosList from './video-list-component';
-import { getVideosByConferenceId } from '../video-actions';
-import { videosByConferenceIdSelector } from '../video-selectors';
+import { getVideos } from '../video-actions';
+import { conferenceVideosSelector } from '../video-selectors';
 
 const fetchInitialData = ({ dispatch, conferenceId }) =>
-  dispatch(getVideosByConferenceId(conferenceId));
+  dispatch(getVideos(conferenceId));
 
-const VisibleDetailsVideos = connect(
-  (state, props) => ({
-    videos: videosByConferenceIdSelector(state, props),
-    ...props,
-  })
-)(VideosList);
+function mapStateToProps(state, props) {
+  const videos = conferenceVideosSelector(state, props);
+
+  return Object.assign({}, props, { videos });
+}
+
+const VisibleDetailsVideos = connect(mapStateToProps)(VideosList);
 
 export default AsyncHook(fetchInitialData)(VisibleDetailsVideos);

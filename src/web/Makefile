@@ -3,6 +3,8 @@ APP_DIR=.
 # TOOLS
 WEBPACK=./node_modules/.bin/webpack
 NODE=./node_modules/.bin/babel-node
+ESLINT=./node_modules/.bin/eslint
+ESLINT_FORMATTER=./node_modules/eslint-codeframe-formatter
 
 # APP
 run:
@@ -20,4 +22,8 @@ run-inspector:
 			--debug-brk \
 			./server/server
 
-.PHONY: run run-dev run-inspector
+test-linter:
+	$(ESLINT) --format=$(ESLINT_FORMATTER) .
+
+
+.PHONY: run run-dev run-inspector test-linter

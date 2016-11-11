@@ -10,36 +10,37 @@ import callAPIMiddleware from 'common/lib/call-api-middleware';
 import { NODE_ENV } from 'config';
 import './main.scss';
 
-const { __PRELOADED_STATE__, __REDUX_DEVTOOLS_EXTENSION_COMPOSE__ } = window;
 let composeEnhancers = compose;
-
+const rootElement = document.getElementById('root');
+const location = Object.assign({}, document.location);
 const middlewares = [
   callAPIMiddleware(process.env),
   thunk.withExtraArgument(process.env),
 ];
+const {
+  __PRELOADED_STATE__: preloadedState,
+  __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: reduxDevtoolsExtension,
+} = window;
 
-if (NODE_ENV !== 'production') {
-  composeEnhancers = __REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+if (NODE_ENV !== 'production' && reduxDevtoolsExtension) {
+  composeEnhancers = reduxDevtoolsExtension;
 }
 
-const store = createStore(
-  reducers,
-  __PRELOADED_STATE__,
+const store = createStore(reducers, preloadedState,
   composeEnhancers(applyMiddleware(...middlewares)));
 
-
-const locationChanged = location =>
-  store.dispatch(appActions.setLocation(location));
-
 render(
-  <Provider store={store}>
+  <Provider
+    store={store}
+  >
     <ControlledRouter
-      location={Object.assign({}, document.location)}
-      setLocation={locationChanged}
+      location={location}
+      setLocation={
+        currentLocation =>
+          store.dispatch(appActions.setLocation(currentLocation))
+      }
     >
       <App />
     </ControlledRouter>
-  </Provider>,
-  document.getElementById('root')
-);
+  </Provider>, rootElement);
 

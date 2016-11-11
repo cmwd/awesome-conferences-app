@@ -4,21 +4,19 @@ import { VideoPlayerYoutube } from '../video-player';
 import VideoModal from '../video-modal';
 import { Row, Col } from '../../lib/bootstrap';
 
-const chooseThumbnail = ({ medium }) => medium;
-
-type PropTypes = {
+type videoItemType = {
   title: string,
-  thumbnails: Object,
-  pathname: string,
+  thumbnail: Object,
   videoId: string,
-  id: string,
-  internalId: string,
 };
 
-const VideoItem = (
-  { title, thumbnails, pathname, videoId, id, internalId }: PropTypes
-) => {
-  const img = chooseThumbnail(thumbnails);
+type propTypes = {
+  pathname: string,
+  internalId: string,
+  item: videoItemType
+};
+
+function VideoItem({ pathname, id, internalId, item }: propTypes) {
   const videoUrl = `${pathname}/video/${internalId}`;
 
   return (
@@ -28,17 +26,17 @@ const VideoItem = (
       <Row className="video-item__content">
         <Col
           xs={6}
-          style={{ maxWidth: img.width }}
+          style={{ maxWidth: item.thumbnail.width }}
         >
           <img
             className="video-item__thumbnail"
-            src={img.url}
-            height={img.height}
-            width={img.width}
+            src={item.thumbnail.url}
+            height={item.thumbnail.height}
+            width={item.thumbnail.width}
           />
         </Col>
         <Col xs={6} className="video-item__meta">
-          <h4>{title}</h4>
+          <h4>{item.title}</h4>
         </Col>
       </Row>
 
@@ -46,15 +44,15 @@ const VideoItem = (
         pattern={videoUrl}
         exactly
         render={
-          props => (
+          () => (
             <VideoModal parentPath={pathname}>
-              <VideoPlayerYoutube {...props} videoId={videoId} id={id} />
+              <VideoPlayerYoutube videoId={item.videoId} id={item._id} />
             </VideoModal>
           )
         }
       />
     </div>
   );
-};
+}
 
 export default VideoItem;

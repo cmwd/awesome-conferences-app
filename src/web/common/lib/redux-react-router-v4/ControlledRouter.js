@@ -9,7 +9,8 @@ import { StaticRouter } from 'react-router';
  */
 
 /**
- * ControlledRouter, greatly inspired by https://gist.github.com/donnanicolas/3d76397a92551f449637590bf0413133
+ * ControlledRouter, greatly inspired by
+ * https://gist.github.com/donnanicolas/3d76397a92551f449637590bf0413133
  * Usage:
  * <ControlledRouter location={location} setLocation={setLocation}>
  *  <App />
@@ -42,7 +43,8 @@ class ControlledRouter extends Component {
           const historyPathname = historyLocation.pathname;
           const controlledPathname = location.pathname;
           const pathChanged = historyPathname !== controlledPathname;
-          const shouldUpdateState = pathChanged && historyPathname !== this.prevPathname;
+          const shouldUpdateState = pathChanged
+            && historyPathname !== this.prevPathname;
           const shouldUpdateHistory = pathChanged && !shouldUpdateState;
           this.prevPathname = historyLocation.pathname;
 
@@ -58,7 +60,11 @@ class ControlledRouter extends Component {
               onReplace={history.replace}
               blockTransitions={history.block}
             >
-              { shouldUpdateHistory ? <Push path={location.pathname} /> : children }
+              {
+                shouldUpdateHistory
+                  ? <Push path={location.pathname} />
+                  : children
+              }
             </StaticRouter>
           );
         }}

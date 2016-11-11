@@ -1,7 +1,9 @@
+/* eslint-disable no-alert */
 /**
  * Extended version of callAPIMiddleware from redux recipes
  * https://github.com/reactjs/redux/blob/master/docs/recipes/ReducingBoilerplate.md
  */
+/* eslint-enable no-alert */
 
 export default extraParam =>
   ({ dispatch, getState }) =>
