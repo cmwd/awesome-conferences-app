@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { USER_ROUTES } from '../../../user';
+import './user-navigation.scss';
 
 type User = {
   loggedIn: Boolean,

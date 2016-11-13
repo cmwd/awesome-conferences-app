@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { VideoList } from '../../video';
-import { RESOURCE_ROUTES } from '../../resource';
+import { ResourceEditor, RESOURCE_ROUTES } from '../../resource';
 
 type DetailsProps = {
   description: String,
@@ -29,9 +29,6 @@ const Details = ({ conference, user, pathname }: PropTypes) => (
         : null
     }
     {
-      /**
-       * TODO: add ability to search by conference slug in video api
-       */
       conference._id
         ? <VideoList pathname={pathname} conferenceId={conference._id} />
         : null

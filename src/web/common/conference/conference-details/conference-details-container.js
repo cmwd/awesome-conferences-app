@@ -1,18 +1,26 @@
 import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
 import { AsyncHook } from '../../lib/server-async-hooks';
 import ConferenceDetails from './conference-details-component';
 import { getConferenceBySlug } from '../conference-actions';
-import { conferenceBySlugSelector } from '../conference-selectors';
+import { conferenceBySlug } from '../conference-selectors';
 import { userSelectors } from '../../user';
 
 const fetchInitialData = ({ dispatch, params }) =>
   dispatch(getConferenceBySlug(params.slug));
 
-const ConferenceDetailsContainer = connect(
-  (state, props) => ({
-    conference: conferenceBySlugSelector(state, props) || { details: {} },
-    user: userSelectors.userInfoSelector(state, props),
-  }))(
-    ConferenceDetails);
+function mapStateToProps(state, props) {
+  const { slug } = props.params;
 
-export default AsyncHook(fetchInitialData)(ConferenceDetailsContainer);
+  return createSelector(
+    conferenceBySlug,
+    userSelectors.userInfoSelector,
+    (conference, user) => ({ conference, user }))(
+    state, Object.assign({}, props, { slug }));
+}
+
+export default connect(
+  mapStateToProps)(
+  AsyncHook(
+    fetchInitialData)(
+    ConferenceDetails));

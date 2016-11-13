@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import UserNavigation from './user-navigation';
+import './header-navigation-bar.scss';
 
 const Navigation = () => (
   <nav className="navigation">

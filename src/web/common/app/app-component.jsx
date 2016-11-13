@@ -1,14 +1,11 @@
 import React from 'react';
 import { Match, Redirect, Miss } from 'react-router';
 import { Grid } from '../lib/bootstrap';
-import {
-  ConferencesList,
-  ConferenceDetails,
-  CONFERENCE_ROUTES,
-} from '../conference';
+import { ConferenceDetails, CONFERENCE_ROUTES } from '../conference';
 import { APP_ROUTES } from './app-constants';
 import { UserLogin, USER_ROUTES } from '../user';
-import { ResourceEditor, RESOURCE_ROUTES } from '../resource';
+import { Admin, ADMIN_ROUTES } from '../admin';
+import HomePage from '../home-page';
 /**
  * TODO: Check why './header' path is failing in prod env.
  */
@@ -30,17 +27,14 @@ const App = () => (
       />
       <Match
         pattern={`${CONFERENCE_ROUTES.LIST}/:current`}
-        component={ConferencesList}
+        component={HomePage}
       />
       <Match
         pattern={`${CONFERENCE_ROUTES.DETAILS}/:slug`}
         component={ConferenceDetails}
       />
-      <Match
-        pattern={`${RESOURCE_ROUTES.EDITOR}`}
-        component={ResourceEditor}
-      />
       <Match pattern={USER_ROUTES.LOGIN} component={UserLogin} />
+      <Match pattern={ADMIN_ROUTES.INDEX} component={Admin} />
       <Miss component={NotFound} />
     </Grid>
   </div>

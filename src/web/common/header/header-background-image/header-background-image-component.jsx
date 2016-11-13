@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid } from '../../lib/bootstrap';
+import './header-background-image.scss';
 
 type DetailsTypes = {
   name: String,

@@ -8,7 +8,6 @@ import reducers from 'common/reducers';
 import { ControlledRouter } from 'common/lib/redux-react-router-v4';
 import callAPIMiddleware from 'common/lib/call-api-middleware';
 import { NODE_ENV } from 'config';
-import './main.scss';
 
 let composeEnhancers = compose;
 const rootElement = document.getElementById('root');
