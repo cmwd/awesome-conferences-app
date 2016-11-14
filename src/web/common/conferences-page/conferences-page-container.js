@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import HomePageComponent from './home-page-component';
+import ConferencesPageComponent from './conferences-page-component';
 import { conferenceSelectors } from '../conference';
 
 function mapStateToProps(state, props) {
@@ -13,4 +13,4 @@ function mapStateToProps(state, props) {
     state, Object.assign({}, props, { page, itemsLimit }));
 }
 
-export default connect(mapStateToProps)(HomePageComponent);
+export default connect(mapStateToProps)(ConferencesPageComponent);

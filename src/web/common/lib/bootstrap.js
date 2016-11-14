@@ -19,5 +19,6 @@ export { default as ListGroup } from 'react-bootstrap/lib/ListGroup';
 export { default as ListGroupItem } from 'react-bootstrap/lib/ListGroupItem';
 export { default as Glyphicon } from 'react-bootstrap/lib/Glyphicon';
 export { default as Media } from 'react-bootstrap/lib/Media';
+export { default as Navbar } from 'react-bootstrap/lib/Navbar';
 export { default as Nav } from 'react-bootstrap/lib/Nav';
-export { default as NavItem } from 'react-bootstrap/lib/NavItem';
+export { default as NavDropdown } from 'react-bootstrap/lib/NavDropdown';

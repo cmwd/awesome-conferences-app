@@ -1,19 +1,25 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { CONFERENCE_ROUTES } from '../conference';
 import ConferencesList from '../conferences-list';
 import ConferencesListItem from '../conferences-list-item';
 import { Pagination } from '../lib/bootstrap';
+import { PageLayout } from '../page-layout';
+import { CONFERENCES_PAGE_ROUTES } from './conferences-page-constants';
 
 type propTypes = {
-  page: Number,
-  totalPages: Number,
-  itemsLimit: Number,
+  page: number,
+  totalPages: number,
+  itemsLimit: number,
 };
 
-function PaginationLink({ eventKey, children }) {
+function PaginationLink(props) {
+  const { eventKey, children } = props;
+
   return eventKey
-    ? (<Link to={`${CONFERENCE_ROUTES.LIST}/${eventKey}`}>{children}</Link>)
+    ? (
+      <Link to={`${CONFERENCES_PAGE_ROUTES.LIST}/${eventKey}`}>
+        {children}
+      </Link>)
     : children;
 }
 
@@ -21,7 +27,7 @@ export default function HomePage(props: propTypes) {
   const { page, totalPages, itemsLimit } = props;
 
   return (
-    <div className="home-page">
+    <PageLayout pageName="home-page">
       <ConferencesList
         page={page}
         itemsLimit={itemsLimit}
@@ -39,6 +45,6 @@ export default function HomePage(props: propTypes) {
           activePage={page}
         />
       </div>
-    </div>
+    </PageLayout>
   );
 }
