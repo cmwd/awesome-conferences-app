@@ -1,5 +1,5 @@
 import { stringify } from 'querystring';
-import fetch from '../utils/fetch';
+import fetch from '../service/fetch';
 import { CONFERENCE_ACTIONS } from './conference-constants';
 import { conferenceBySlug } from './conference-selectors';
 

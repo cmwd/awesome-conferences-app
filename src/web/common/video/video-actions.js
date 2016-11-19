@@ -1,6 +1,6 @@
 import { VIDEO_ACTIONS } from './video-constants';
 import { userSelectors } from '../user';
-import fetch from '../utils/fetch';
+import fetch from '../service/fetch';
 
 function getVideosByConferenceId({ conferenceId }) {
   const types = [

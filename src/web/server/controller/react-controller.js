@@ -1,4 +1,4 @@
-import { prepareRender } from './services/react-service';
+import { prepareRender } from '../services/react-service';
 
 const handleRedirect = (res, { pathname }) => {
   res.writeHead(301, {
