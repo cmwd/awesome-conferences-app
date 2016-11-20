@@ -10,6 +10,11 @@ require('sinon-as-promised');
 const createUserToken = (userInfo = {}) => generateToken(userInfo);
 
 suite('Video Controller - @video-controller', () => {
+  teardown(function* () {
+    yield videoModel.remove({});
+    yield conferenceModel.remove({});
+  });
+
   suite('GET /video/', () => {
     test('Should return status ok and array of videos', () =>
         supertest(app)
@@ -23,11 +28,6 @@ suite('Video Controller - @video-controller', () => {
   });
 
   suite('GET /video/:conferenceId', () => {
-    setup(() => Promise.all([
-      videoModel.remove({}),
-      conferenceModel.remove({}),
-    ]));
-
     test('Should return videos for conferenceId', function* () {
       const conference = yield conferenceModel.create({ name: 'test' });
       return supertest(app)
@@ -44,11 +44,6 @@ suite('Video Controller - @video-controller', () => {
   });
 
   suite('POST /video/:conferenceId', () => {
-    setup(() => Promise.all([
-      conferenceModel.remove({}),
-      videoModel.remove({}),
-    ]));
-
     test('Should fail authorization if user token is not provided', () =>
       supertest(app)
         .post('/video/57fe482de5f4f8475949c204')
@@ -162,8 +157,6 @@ suite('Video Controller - @video-controller', () => {
       videoId: '1234',
       title: 'test',
     }));
-
-    teardown(() => videoModel.remove({}));
 
     test('Should fail authorization if user token is not provided', () =>
       supertest(app)

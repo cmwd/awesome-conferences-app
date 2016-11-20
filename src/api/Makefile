@@ -25,7 +25,7 @@ TEST_PATH=./test/**/*.test.js
 TEST_DB_NAME=aclTest
 ENV_TEST=test
 REPORTER=spec
-TEST_APP_PORT=8009
+TEST_APP_PORT=8019
 
 test:
 	$(info Run tests for $(TEST_PATH))
