@@ -3,7 +3,10 @@ const { assert } = require('chai');
 const sinon = require('sinon');
 const app = require('server');
 const { conferenceModel } = require('model');
+const { generateToken } = require('util/crypto/jwt');
 require('sinon-as-promised');
+
+const createUserToken = (userInfo = {}) => generateToken(userInfo);
 
 const genLetters = (startLetter, endLetter) => {
   const start = startLetter.charCodeAt(0);
@@ -40,7 +43,8 @@ suite('Conference Controller - @conference-controller', () => {
           assert.isObject(body.info);
           assert.equal(body.info.offset, 0);
           assert.equal(body.info.limit, 20);
-          assert.equal(body.info.count, 26)
+          assert.equal(body.info.count, 26);
+          assert.isDefined(body.conferences[0].id);
         }));
 
     test('GET /conference?limit=<Number>', () =>
@@ -135,12 +139,14 @@ suite('Conference Controller - @conference-controller', () => {
     test('should return error if request is not authenticated', () =>
       supertest(app)
         .post('/conference/')
+        .set('Authorization', `Bearer ${createUserToken({ admin: false })}`)
         .expect(401));
 
     test('should create new conference', function* () {
       yield supertest(app)
         .post('/conference/')
         .send({ name: 'Conference Name'})
+        .set('Authorization', `Bearer ${createUserToken({ admin: true })}`)
         .expect(200)
         .expect(({ body }) => {
           assert.isOk(body.status.ok);
@@ -152,25 +158,32 @@ suite('Conference Controller - @conference-controller', () => {
     });
   });
 
-  suite('UPDATE /conference/:conferenceId', () => {
-    test('should return error if request is not authenticated', () =>
-      supertest(app)
-        .put('/conference/1234')
-        .expect(401));
-
+  suite('PARAM :conferenceId', () => {
     test('should fail if conference does not exists', () =>
       supertest(app)
         .put('/conference/1234')
         .expect(400));
+  });
+
+  suite('UPDATE /conference/:conferenceId', () => {
+    test('should return error if request is not authenticated', () =>
+      supertest(app)
+        .put(`/conference/${conferences[0].id}`)
+        .expect(401));
+
 
     test('should update existing confrence', function* () {
       let conference = yield conferenceModel.create({ name: 'Wrong name :/'});
 
       yield supertest(app)
         .put(`/conference/${conference.id}`)
-        .send({ name: 'This is correct name'})
-        .expect(200);
-      conference = yield conferenceModel.findOne(conference.id);
+        .set('Authorization', `Bearer ${createUserToken({ admin: true })}`)
+        .send({ name: 'This is correct name' })
+        .expect(200)
+        .expect(({ body }) => {
+          assert.isOk(body.status.ok);
+        });
+      conference = yield conferenceModel.findById(conference.id);
       assert.equal(conference.name, 'This is correct name');
     });
   });
@@ -178,7 +191,21 @@ suite('Conference Controller - @conference-controller', () => {
   suite('DELETE /conference/:conferenceId', () => {
     test('should return error if request is not authenticated', () =>
       supertest(app)
-        .del('/conference/')
+        .del(`/conference/${conferences[0].id}`)
+        .set('Authorization', `Bearer ${createUserToken({ admin: false })}`)
         .expect(401));
+
+    test('should remove existing model', function* () {
+      yield supertest(app)
+        .del(`/conference/${conferences[0].id}`)
+        .set('Authorization', `Bearer ${createUserToken({ admin: true })}`)
+        .expect(200)
+        .expect(({ body }) => {
+          assert.isOk(body.status.ok);
+        });
+      const conference = yield conferenceModel.findById(conferences[0].id);
+
+      assert.isNull(conference);
+    })
   });
 });
