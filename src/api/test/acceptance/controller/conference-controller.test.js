@@ -69,10 +69,10 @@ suite('Conference Controller - @conference-controller', () => {
           assert.equal(body.conferences[4].name, 'j');
         }));
 
-    suite('GET /conference?id=<ObjectIds>', () => {
+    suite('GET /conference?ids=<ObjectIds>', () => {
       test('returns requested conference by id', () =>
         supertest(app)
-          .get(`/conference?id=${conferences[0].id}`)
+          .get(`/conference?ids=${conferences[0].id}`)
           .expect(200)
           .expect(({ body }) => {
             assert.isOk(body.status.ok);
@@ -81,9 +81,9 @@ suite('Conference Controller - @conference-controller', () => {
             assert.equal(body.conferences[0].name, 'a');
           }));
 
-      test('returns multiple conferences by id', () =>
+      test('returns multiple conferences by ids', () =>
         supertest(app)
-          .get(`/conference?id=${[
+          .get(`/conference?ids=${[
             conferences[0].id,
             conferences[1].id,
             conferences[2].id
@@ -96,10 +96,10 @@ suite('Conference Controller - @conference-controller', () => {
           }));
     })
 
-    suite('GET /conference?slug=<Strings>', () => {
+    suite('GET /conference?slugs=<Strings>', () => {
       test('returns requested conference by slug', () =>
         supertest(app)
-          .get('/conference?slug=a')
+          .get('/conference?slugs=a')
           .expect(200)
           .expect(({ body }) => {
             assert.isOk(body.status.ok);
@@ -110,7 +110,7 @@ suite('Conference Controller - @conference-controller', () => {
 
       test('returns multiple conferences by slug', () =>
         supertest(app)
-          .get('/conference?slug=a,b,c')
+          .get('/conference?slugs=a,b,c')
           .expect(200)
           .expect(({ body }) => {
             assert.isOk(body.status.ok);

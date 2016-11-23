@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const co = require('co');
-const validator = require('validator');
+const { isEmail } = require('validator');
 const { bcrypt } = require('util/crypto');
 
 const schema = mongoose.Schema({
@@ -8,9 +8,11 @@ const schema = mongoose.Schema({
     type: String,
     trim: true,
     lowercase: true,
-    index: { unique: true },
+    index: {
+      unique: true
+    },
     required: 'Email address is required',
-    validate: [validator.isEmail, 'Please fill a valid email address'],
+    validate: [isEmail, 'Please fill a valid email address'],
   },
   name: { type: String, default: '' },
   password: { type: String },
@@ -21,7 +23,7 @@ const schema = mongoose.Schema({
   admin: { type: Boolean, default: false },
 });
 
-function *preSaveHook(model) {
+function* preSaveHook(model) {
   let result = {};
 
   if (model.isModified('password')) {

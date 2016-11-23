@@ -1,78 +1,68 @@
-const _ = require('lodash');
 const co = require('co-express');
-const bodyParser = require('body-parser');
-const { Router } = require('express');
-const HTTPError = require('http-errors');
 const { conferenceModel } = require('model');
-const { tokenSecured, isAdmin } = require('middleware/authentication');
 
-const SUCCESS_STATUS = { ok: true };
+const DEFAULT_LIMIT = 20;
+const DEFAULT_OFFSET = 0;
 
-const getLimit = req => parseInt(req.query.limit, 10) || 20;
-const getOffset = req => parseInt(req.query.offset, 10) || 0;
+function conferenceController(proto) {
+  const { router, bodyParser, httpError, response } = proto;
+  const { tokenSecured, isAdmin } = proto.authentication;
+  const authenticationCheck = [tokenSecured, isAdmin];
 
-function* attachConferenceToRequest(req, res, next, id) {
-  let error = null;
+  function prepareQueryParams(req, res, next) {
+    const { limit, offset, ids, slugs } = req.query;
 
-  req.conference = yield conferenceModel.findById(id);
+    Object.assign(req.query, {
+      limit: parseInt(limit, 10) || DEFAULT_LIMIT,
+      offset: parseInt(offset, 10) || DEFAULT_OFFSET,
+      slugs: (slugs && slugs.split(',')) || null,
+      ids: (ids && ids.split(',')) || null,
+    });
 
-  if (!req.conference) {
-    HTTPError(404, 'Conference does not exists')
+    next();
+  };
+
+  function* getConference(req, res, next, id) {
+    req.conference = yield conferenceModel.findById(id);
+    next(req.conference
+      ? null
+      : httpError(404, 'Conference does not exists'));
   }
 
-  next(error);
-}
+  function* getConferences(req, res) {
+    const { limit, offset, slugs, ids } = req.query;
+    const query = conferenceModel.createQuery({ slugs, ids });
+    const [conferences, count] = yield Promise.all([
+      conferenceModel.find(query).skip(offset).limit(limit),
+      conferenceModel.count(),
+    ]);
+    const info = { limit, offset, count };
 
-function* getConferences(req, res) {
-  const limit = getLimit(req);
-  const offset = getOffset(req);
-  let conferencesFindQuery = null;
-
-  if (req.query.id) {
-    conferencesFindQuery = conferenceModel.findByIds(req.query.id.split(','));
-  } else if (req.query.slug) {
-    conferencesFindQuery = conferenceModel
-      .findBySlugs(req.query.slug.split(','))
-  } else {
-    conferencesFindQuery = conferenceModel.find();
+    response(res, { info, conferences });
   }
 
-  const [conferences, count] = yield Promise.all([
-    conferencesFindQuery.skip(offset).limit(limit),
-    conferenceModel.count(),
-  ]);
-  const info = { limit, offset, count };
+  function* createConference(req, res) {
+    yield conferenceModel.create(req.body);
+    response(res);
+  }
 
-  res.json({ info, conferences, status: SUCCESS_STATUS });
-}
+  function* updateConference(req, res) {
+    yield req.conference.update(req.body);
+    response(res);
+  }
 
-function* saveConference(req, res) {
-  yield conferenceModel.create(req.body);
+  function* removeConference(req, res) {
+    yield req.conference.remove();
+    response(res);
+  }
 
-  res.json({ status: SUCCESS_STATUS });
-}
-
-function* updateConference(req, res) {
-  const result = yield req.conference.update(req.body);
-  const status = Object.assign({}, SUCCESS_STATUS);
-
-  res.json({ status });
-}
-
-function* removeConference(req, res) {
-  const result = yield req.conference.remove();
-  const status = Object.assign({}, SUCCESS_STATUS);
-
-  res.json({ status });
-}
-
-const securityCheck = [tokenSecured, isAdmin];
-
-module.exports =
-  Router()
+  return router()
     .use(bodyParser.json())
-    .param('conferenceId', co(attachConferenceToRequest))
-    .get('/', co(getConferences))
-    .post('/', securityCheck, co(saveConference))
-    .put('/:conferenceId', securityCheck, co(updateConference))
-    .delete('/:conferenceId', securityCheck, co(removeConference));
+    .param('conferenceId', co(getConference))
+    .get('/', [prepareQueryParams, co(getConferences)])
+    .post('/', [authenticationCheck, co(createConference)])
+    .put('/:conferenceId', [authenticationCheck, co(updateConference)])
+    .delete('/:conferenceId', [authenticationCheck, co(removeConference)]);
+}
+
+module.exports = conferenceController;
