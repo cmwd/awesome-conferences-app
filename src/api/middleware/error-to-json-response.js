@@ -22,6 +22,10 @@ const errorHandler = (errObj, req, res, next) => {
     req.log.fatal(errObj.stack);
   }
 
+  if (process.env.NODE_ENV === 'test' && status.status >= 500) {
+    console.error(errObj);
+  }
+
   res
     .status(status.status)
     .json({ status });

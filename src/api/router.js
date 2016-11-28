@@ -1,8 +1,10 @@
 const httpError = require('http-errors');
 const bodyParser = require('body-parser');
-const { Router: router } = require('express');
+const { Router } = require('express');
 const authentication = require('middleware/authentication');
+const errorHandler = require('middleware/error-to-json-response');
 const response = require('util/response');
+const param = require('middleware/param');
 
 const {
   conferenceController,
@@ -12,16 +14,17 @@ const {
 } = require('./controller/index');
 
 function routerCreator(app, route, controller) {
-    const proto = { httpError, bodyParser, router, authentication, response };
+    const proto = { app: Router(), authentication, response, param };
 
     app.use(route, controller(proto));
 }
 
 module.exports = (app) => {
     routerCreator(app, '/conference/', conferenceController);
+    routerCreator(app, '/video/', videoController);
 
   app
-    .use('/video', videoController)
     .use('/authenticate', authenticateController)
-    .get('*', (req, res, next) => next(httpError.NotFound()));
+    .get('*', (req, res, next) => next(httpError.NotFound()))
+    .use(errorHandler);
 };

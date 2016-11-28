@@ -1,93 +1,49 @@
 const _ = require('lodash');
 const co = require('co-express');
-const { Router } = require('express');
 const bodyParser = require('body-parser');
-const { BadRequest, NotFound, Conflict } = require('http-errors');
-const { videoModel, conferenceModel } = require('model');
-const errorHandler = require('middleware/error-to-json-response');
+const HTTPError = require('http-errors');
+const { VideoModel } = require('model');
 const { tokenSecured, isAdmin } = require('middleware/authentication');
 const collectors = require('service/collectors');
 
-const SUCCESS_STATUS = { ok: true };
+function VideoController({ authentication, app, response, param }) {
+  const { tokenSecured, isAdmin } = authentication;
+  const authenticationCheck = [tokenSecured, isAdmin];
 
-/**
- * @todo Find better solution for this check
- */
-function* checkIfConferenceExists({ params }, res, next) {
-  const conference = yield conferenceModel.findById(params.conferenceId);
+  function* getVideos(req, res) {
+    const videos = yield VideoModel.find();
 
-  if (!conference) {
-    throw new BadRequest('Unknown conference');
+    response(res, { videos });
   }
 
-  next(null);
-}
+  function* getVideosByConferenceId({ params }, res) {
+    const { conferenceId } = params;
+    const videos = yield VideoModel.find({ conferenceId });
 
-function* getVideos(req, res) {
-  const videos = yield videoModel.find();
-
-  res.json({ videos, status: SUCCESS_STATUS });
-}
-
-function* getVideosByConferenceId({ params }, res) {
-  const { conferenceId } = params;
-  const videos = yield videoModel.find({ conferenceId });
-
-  res.json({ videos, status: SUCCESS_STATUS });
-}
-
-function* addVideo({ params, body, log }, res) {
-  const { conferenceId } = params;
-  const { resourceName, videoId } = body;
-
-  if (!resourceName || !videoId || !_.isString(videoId)) {
-    throw new BadRequest('Incorrect input data');
-  }
-  const videoDetails = yield collectors.getVideoDetails(
-    { resourceName, videoId });
-
-  try {
-    yield videoModel.create(
-      Object.assign({}, videoDetails, { resourceName, conferenceId }));
-  } catch (error) {
-    log.error(error);
-    if (error.code === 11000) {
-      throw new Conflict('Video already exists');
-    }
-
-    throw error;
+    response(res, { videos });
   }
 
-  res.json({ status: SUCCESS_STATUS });
-}
+  function* createVideoModel({ params, body, query }, res) {
+    const video = VideoModel.create(body);
 
-function* removeVideo({ body }, res) {
-  const { videoId } = body;
+    yield video.getVideoDetails();
 
-  const model = yield videoModel.findOne({ videoId });
-  if (model) {
-    yield model.remove();
-  } else {
-    throw new NotFound(`Video ${videoId} is not found`);
+    response(res);
   }
 
-  res.json({ status: { ok: true } });
+  function* removeVideoModel({ video }, res) {
+    yield video.remove();
+    response(res);
+  }
+
+  return app
+    .param('videoId', param.videoId)
+    .use(bodyParser.urlencoded({ extended: true }))
+    .use(bodyParser.json())
+    .get('/', co(getVideos))
+    .get('/:conferenceId', co(getVideosByConferenceId))
+    .post('/', authenticationCheck, co(createVideoModel))
+    .delete('/:videoId', authenticationCheck, co(removeVideoModel))
 }
 
-module.exports = Router()
-  .use(bodyParser.urlencoded({ extended: true }))
-  .use(bodyParser.json())
-  .get('/', co(getVideos))
-  .get('/:conferenceId',
-    co(checkIfConferenceExists),
-    co(getVideosByConferenceId))
-  .post('/:conferenceId',
-    tokenSecured,
-    isAdmin,
-    co(checkIfConferenceExists),
-    co(addVideo))
-  .delete('/:conferenceId',
-    tokenSecured,
-    isAdmin,
-    co(removeVideo))
-  .use(errorHandler);
+module.exports = VideoController;

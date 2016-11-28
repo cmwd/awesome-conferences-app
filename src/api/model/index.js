@@ -1,9 +1,9 @@
-const conferenceModel = require('./conference-model');
-const videoModel = require('./video-model');
-const userModel = require('./user-model');
+const ConferenceModel = require('./conference-model');
+const VideoModel = require('./video-model');
+const UserModel = require('./user-model');
 
 module.exports = {
-  conferenceModel,
-  videoModel,
-  userModel,
+  ConferenceModel,
+  VideoModel,
+  UserModel,
 };
