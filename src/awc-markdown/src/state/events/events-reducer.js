@@ -6,22 +6,11 @@ import {
   DESTROY_EVENT,
   UPDATE_EVENT_DESCRIPTION
 } from '../action-types';
-import { DESCRIPTION_DEFAULT_STATE, TEST_TALK } from './events-constants';
+import { DESCRIPTION_DEFAULT_STATE } from './events-constants';
+import talks from './events-talks-reducer';
 
-function talks(state = [TEST_TALK], { type, payload }) {
-  switch (type) {
-    case 'ACTIONS.ADD_TALK':
-      return state.concat(payload);
-    case 'ACTIONS.UPDATE_TALK':
-      return state
-        .filter(({ key }) => key !== payload.key)
-        .concat(payload);
-    case 'ACTIONS.DESTROY_TALK':
-      return state
-        .filter(({ key }) => key !== payload.key);
-    default:
-      return state;
-  }
+function uuid(state = uniqueId('uuid-')) {
+  return state;
 }
 
 function description(state = DESCRIPTION_DEFAULT_STATE, { type, payload }) {
@@ -33,11 +22,7 @@ function description(state = DESCRIPTION_DEFAULT_STATE, { type, payload }) {
   }
 }
 
-function uuid(state = uniqueId('uuid-')) {
-  return state;
-}
-
-function events(state, action) {
+function eventsReducer(state, action) {
   switch (action.type) {
     case CREATE_EVENT:
       return state.concat(action.payload);
@@ -48,13 +33,13 @@ function events(state, action) {
   }
 }
 
-const eventReducer = combineReducers({ talks, description, uuid });
+const eventReducerIterator = combineReducers({ talks, description, uuid });
 
 export default function(state = [], action) {
-  return events(state, action)
+  return eventsReducer(state, action)
     .map(event =>
       !action.uuid || event.uuid === action.uuid
-        ? eventReducer(event, action)
+        ? eventReducerIterator(event, action)
         : event
     );
 }
