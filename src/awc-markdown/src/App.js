@@ -1,21 +1,22 @@
 import React, { Component } from 'react';
-import { createStore, combineReducers } from 'redux'
 import { Provider } from 'react-redux';
 import { Container, Header } from 'semantic-ui-react'
-import { TalksComponent, reducer as talks } from './talks';
 
+// import { TalksComponent } from './talks';
+import { SectionHeaderComponent, SectionEventsComponent } from './components';
+import { createReduxStore } from './state';
 import logo from './logo.svg';
 
-const store = createStore(combineReducers({ talks }));
-
+          // <TalksComponent />
+const store = createReduxStore();
 class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <Container className="App">
-          <Header as="h1" dividing>Conference</Header>
-          <TalksComponent />
-        </Container>
+        <div>
+            <SectionHeaderComponent />
+            <SectionEventsComponent />
+        </div>
       </Provider>
     );
   }
