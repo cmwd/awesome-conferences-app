@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+
 import { Table, Button, Icon } from 'semantic-ui-react';
 import TalkEditorComponent from './talk-editor-component';
-import { addTalk, updateTalk, destroyTalk } from './talks-actions';
 
 function InputModeButton(props) {
   return (
@@ -50,7 +50,7 @@ function TalkEntry({ toggleEditMode, talk }) {
 function TableBody(props) {
   const hasEditModeEnabled = ({ key }) => props.ui.editEntries.includes(key);
 
-  const rows = props.entries
+  const rows = props.talks
     .map(talk =>
       hasEditModeEnabled(talk)
         ? (

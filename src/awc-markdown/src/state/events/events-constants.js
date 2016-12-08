@@ -7,7 +7,7 @@ export const DESCRIPTION_DEFAULT_STATE = {
 export const TEST_TALK = {
   speaker: 'I am the Speaker!',
   title: 'And this is my TALK',
-  twitter: '@speaker',
+  twitterId: '_cmwd',
   email: 'noope@noop.com',
   video: 'youtube',
   key: 'adsas'

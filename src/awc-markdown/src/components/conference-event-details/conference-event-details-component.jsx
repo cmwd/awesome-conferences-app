@@ -1,10 +1,10 @@
 import React from 'react';
-import { Input, Grid, Divider } from 'semantic-ui-react';
+import { Input, Grid, Divider, Item } from 'semantic-ui-react';
 
+import { Talk } from 'components';
 import { Geolocation } from 'components';
 
 function ConferenceEventDetails(props) {
-  console.log(props);
   const commonDescriptionProps = {
     fluid: true,
     onChange: ({ target: { value, name } }) =>
@@ -37,6 +37,16 @@ function ConferenceEventDetails(props) {
         </Grid.Row>
         <Grid.Row>
           <Geolocation {...props} />
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column width="16">
+            <Item.Group>
+              {
+                props.talks.map(talk =>
+                  (<Talk {...talk} />))
+              }
+            </Item.Group>
+          </Grid.Column>
         </Grid.Row>
       </Grid>
       {
