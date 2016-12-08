@@ -1,6 +1,7 @@
 export const DESCRIPTION_DEFAULT_STATE = {
   name: 'Enter event name',
-  date: [Date.now(), Date.now()]
+  startDate: '',
+  endDate: ''
 };
 
 export const TEST_TALK = {

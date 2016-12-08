@@ -1,5 +1,5 @@
-export { default as ContentEditable } from './content-editable/content-editable-component';
-export { default as ConferenceEventComponent } from './conference-event/conference-event-container';
-export { default as SectionEventsComponent } from './section-events/section-events-container';
-export { default as SectionHeaderComponent } from './section-header/section-header-container';
-export { default as SpeakersListComponent } from './speakers-list/speakers-list-container';
+export { default as ConferenceEventDetails } from './conference-event-details/conference-event-details-component';
+export { default as ConferenceEvents } from './conference-events/conference-events-container';
+export { default as Geolocation } from './geolocation/geolocation-component';
+export { default as ConferenceDetails } from './conference-details/conference-details-container';
+export { default as PageHeader } from './page-header/page-header-component';

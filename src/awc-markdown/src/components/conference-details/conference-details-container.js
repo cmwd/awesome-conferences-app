@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import SectionHeaderComponent from './section-header-component';
+import ConferenceDetailsComponent from './conference-details-component';
 import { getConference } from 'state/conference/conference-selectors';
 import * as actions from 'state/conference/conference-actions';
 
@@ -18,4 +18,4 @@ function mapActionsToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapActionsToProps)
-(SectionHeaderComponent);
+(ConferenceDetailsComponent);
