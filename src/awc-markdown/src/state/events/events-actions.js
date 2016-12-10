@@ -5,15 +5,15 @@ import {
   UPDATE_EVENT_DESCRIPTION,
   CREATE_EVENT_TALK,
   DESTROY_EVENT_TALK,
-  UPDATE_EVENT_TALK
+  UPDATE_EVENT_TALK,
 } from '../action-types';
 
 export const createEvent = (payload = {}) => ({
   type: CREATE_EVENT,
-  payload
+  payload,
 });
 
-export const destroyEvent = uuid => {
+export const destroyEvent = (uuid) => {
   const type = DESTROY_EVENT;
   validate.uuid(uuid);
 
@@ -27,22 +27,22 @@ export const updateEventDescription = (uuid, payload) => {
   return { type, uuid, payload };
 };
 
-export const createTalk = (uuid, payload) => {
+export const createEventTalk = (uuid, payload) => {
   const type = CREATE_EVENT_TALK;
   validate.uuid(uuid);
 
   return { type, uuid, payload };
-}
+};
 
-export const destroyTalk = uuid => {
-  const type = DESTROY_EVENT_TALK;
+export const updateEventTalk = (uuid, payload) => {
+  const type = UPDATE_EVENT_TALK;
   validate.uuid(uuid);
 
-  return { type, uuid };
-}
+  return { type, uuid, payload };
+};
 
-export const updateTalk = (uuid, payload) => {
-  const type = UPDATE_EVENT_TALK;
+export const destroyEventTalk = (uuid, payload) => {
+  const type = DESTROY_EVENT_TALK;
   validate.uuid(uuid);
 
   return { type, uuid, payload };

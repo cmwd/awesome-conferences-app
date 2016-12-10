@@ -16,5 +16,5 @@ function mapActionsToProps(dispatch) {
 
 export default connect(
   mapStateToProps,
-  mapActionsToProps)
-(ConferenceEvent);
+  mapActionsToProps
+)(ConferenceEvent);

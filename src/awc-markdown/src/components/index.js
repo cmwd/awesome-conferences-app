@@ -1,5 +1,6 @@
 export { default as ConferenceEventDetails } from './conference-event-details/conference-event-details-component';
 export { default as ConferenceEvents } from './conference-events/conference-events-container';
+export { default as TalkEditor } from './talk-editor/talk-editor-component';
 export { default as Talk } from './talk/talk-component';
 export { default as Geolocation } from './geolocation/geolocation-component';
 export { default as ConferenceDetails } from './conference-details/conference-details-container';

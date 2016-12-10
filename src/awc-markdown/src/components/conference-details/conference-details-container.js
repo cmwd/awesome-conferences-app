@@ -6,9 +6,7 @@ import { getConference } from 'state/conference/conference-selectors';
 import * as actions from 'state/conference/conference-actions';
 
 function mapStateToProps(props) {
-  return {
-    conference: getConference(props)
-  }
+  return getConference(props);
 }
 
 function mapActionsToProps(dispatch) {
@@ -17,5 +15,5 @@ function mapActionsToProps(dispatch) {
 
 export default connect(
   mapStateToProps,
-  mapActionsToProps)
-(ConferenceDetailsComponent);
+  mapActionsToProps)(
+ConferenceDetailsComponent);

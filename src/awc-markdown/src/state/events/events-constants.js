@@ -1,7 +1,7 @@
 export const DESCRIPTION_DEFAULT_STATE = {
   name: 'Enter event name',
   startDate: '',
-  endDate: ''
+  endDate: '',
 };
 
 export const TEST_TALK = {
@@ -10,5 +10,5 @@ export const TEST_TALK = {
   twitterId: '_cmwd',
   email: 'noope@noop.com',
   video: 'youtube',
-  key: 'adsas'
+  uuid: 'test'
 };

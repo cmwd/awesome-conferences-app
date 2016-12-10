@@ -1,30 +1,81 @@
-import React from 'react';
-import { Item } from 'semantic-ui-react';
+import React, { Component } from 'react';
+import { Table, Button } from 'semantic-ui-react';
 
-function Talk(props) {
-  console.log(props);
+import { TalkEditor } from 'components';
 
-  const avatarUrl = props.twitterId.length > 0
-    ? `https://twitter.com/${props.twitterId}/profile_image?size=bigger`
-    : 'http://semantic-ui.com/images/avatar/small/elliot.jpg';
+export default class Talk extends Component {
+  static defaultProps = {
+    editMode: false,
+  }
 
-  return (
-    <Item>
-      <Item.Image size="tiny" src={avatarUrl} />
+  constructor(props) {
+    super(props);
+    this.state = props;
+    this.toggleEditMode = this.toggleEditMode.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
 
-      <Item.Content>
-        <Item.Header>{props.title}</Item.Header>
-        <Item.Description>
-          <Item.Header as="h4">{props.speaker}</Item.Header>
-        </Item.Description>
+  componentWillReceiveProps(newProps) {
+    this.setState(newProps);
+  }
 
-        <Item.Extra>
-          
-        </Item.Extra>
-      </Item.Content>
+  getAvatar() {
+    const { twitterId } = this.state;
+    return twitterId.length > 0
+      ? `https://twitter.com/${twitterId}/profile_image?size=bigger`
+      : 'http://semantic-ui.com/images/avatar/small/elliot.jpg';
+  }
 
-    </Item>
-  );
+  toggleEditMode() {
+    this.setState({ editMode: !this.state.editMode });
+  }
+
+  handleSubmit(talkDetails) {
+    const { updateTalk, destroyTalk } = this.props;
+
+    // if (talkDetails.destroy) {
+    //   destroyTalk(talkDetails);
+    // } else {
+    //   updateTalk(talkDetails);
+    // }
+
+    this.toggleEditMode();
+  }
+
+  render() {
+    const { editMode, speaker, title } = this.state;
+
+    if (editMode) {
+      return (
+        <Table.Row>
+          <Table.Cell colSpan="3">
+            <TalkEditor
+              {...this.state}
+              onUpdate={this.props.updateTalk}
+              onDestroy={this.props.destroyTalk}
+              onClose={this.toggleEditMode}
+              componentMode={TalkEditor.COMPONENT_MODE.UPDATE}
+            />
+          </Table.Cell>
+        </Table.Row>
+      );
+    }
+
+    return (
+      <Table.Row>
+        <Table.Cell>{speaker}</Table.Cell>
+        <Table.Cell>{title}</Table.Cell>
+        <Table.Cell>
+          <Button
+            icon="edit"
+            color="orange"
+            size="mini"
+            floated="right"
+            onClick={this.toggleEditMode}
+          />
+        </Table.Cell>
+      </Table.Row>
+    );
+  }
 }
 
-export default Talk;
