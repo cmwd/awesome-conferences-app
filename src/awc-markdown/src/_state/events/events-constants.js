@@ -4,11 +4,15 @@ export const DESCRIPTION_DEFAULT_STATE = {
   endDate: '',
 };
 
+export const EVENT_UI_STATE = {
+  active: true,
+};
+
 export const TEST_TALK = {
   speaker: 'I am the Speaker!',
   title: 'And this is my TALK',
   twitterId: '_cmwd',
   email: 'noope@noop.com',
   video: 'youtube',
-  uuid: 'test'
+  uuid: 'test',
 };

@@ -7,6 +7,7 @@ import * as actions from 'state/events/events-actions';
 
 function mapStateToProps(state, props) {
   const events = selectors.getEvents(state);
+
   return { events };
 }
 

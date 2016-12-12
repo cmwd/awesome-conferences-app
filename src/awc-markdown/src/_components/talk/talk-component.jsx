@@ -12,7 +12,6 @@ export default class Talk extends Component {
     super(props);
     this.state = props;
     this.toggleEditMode = this.toggleEditMode.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentWillReceiveProps(newProps) {
@@ -28,18 +27,6 @@ export default class Talk extends Component {
 
   toggleEditMode() {
     this.setState({ editMode: !this.state.editMode });
-  }
-
-  handleSubmit(talkDetails) {
-    const { updateTalk, destroyTalk } = this.props;
-
-    // if (talkDetails.destroy) {
-    //   destroyTalk(talkDetails);
-    // } else {
-    //   updateTalk(talkDetails);
-    // }
-
-    this.toggleEditMode();
   }
 
   render() {

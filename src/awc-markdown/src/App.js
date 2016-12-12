@@ -1,23 +1,16 @@
-import React, { Component } from 'react';
-import { Provider } from 'react-redux';
+import React from 'react';
 
-// import { TalksComponent } from './talks';
-import { PageHeader, ConferenceDetails, ConferenceEvents } from './components';
-import { createReduxStore } from './state';
-import logo from './logo.svg';
+import { DescriptionPanel, EventsPanel } from './components';
 
-class App extends Component {
-  render() {
-    return (
-      <Provider store={createReduxStore()}>
-        <div>
-            <PageHeader />
-            <ConferenceDetails />
-            <ConferenceEvents />
-        </div>
-      </Provider>
-    );
-  }
+const store = new Map();
+
+function App() {
+  return (
+    <div>
+      <DescriptionPanel store={store} />
+      <EventsPanel store={store} />
+    </div>
+  );
 }
 
 export default App;

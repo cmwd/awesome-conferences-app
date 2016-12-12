@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Container, Form, Input, TextArea, Grid, Divider, Header } from 'semantic-ui-react';
+import React from 'react';
+import { Form, Grid } from 'semantic-ui-react';
 
 import { LayoutSection } from 'layouts';
 
@@ -11,7 +11,14 @@ function ConferenceDetails(props) {
   };
 
   return (
-    <LayoutSection name="details" header="" wrapper={Form}>
+    <LayoutSection
+      name="details"
+      header=""
+      wrapper={
+        ({ children }) =>
+          (<Form size="mini">{children}</Form>)
+      }
+    >
       <Grid.Row>
         <Grid.Column width="16">
           <Form.Input
@@ -27,28 +34,44 @@ function ConferenceDetails(props) {
 
       <Grid.Row>
         <Grid.Column width="16">
-            <TextArea rows="4" name="description"
-              onChange={commonProps.onChange}
-              value={props.description}
-            />
+          <Form.TextArea
+            rows="4"
+            name="description"
+            onChange={commonProps.onChange}
+            value={props.description}
+          />
         </Grid.Column>
       </Grid.Row>
       
       <Grid.Row>
         <Grid.Column width="8">
-          <Input type="text" name="url" icon="home" placeholder="www"
+          <Form.Input
+            type="text"
+            name="url"
+            icon="home"
+            placeholder="www"
             value={props.url} {...commonProps}
           />
-          <Input type="text" name="email" icon="at" placeholder="e-mail"
+          <Form.Input
+            type="text"
+            name="email"
+            icon="at"
+            placeholder="e-mail"
             value={props.email} {...commonProps}
           />
         </Grid.Column>
         <Grid.Column width="8">
-          <Input type="text" name="twitterId" icon="twitter"
+          <Form.Input
+            type="text"
+            name="twitterId"
+            icon="twitter"
             placeholder="twitter id" value={props.twitterId}
             {...commonProps}
           />
-          <Input type="text" name="facebookId" icon="facebook"
+          <Form.Input
+            type="text"
+            name="facebookId"
+            icon="facebook"
             placeholder="facebook account"
             value={props.facebookId} {...commonProps}
           />

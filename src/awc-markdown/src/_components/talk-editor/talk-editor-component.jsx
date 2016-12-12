@@ -42,13 +42,13 @@ export default class TalkEditor extends Component {
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this);
   }
 
-  handleSubmit(event, props) {
+  handleSubmit(event, { formData }) {
     const { uuid } = this.props;
-    const talkObject = Object.assign({}, sanitize(props), { uuid });
+    const talkObject = Object.assign({}, sanitize(formData), { uuid });
 
     event.preventDefault();
 
-    if (props.destroy) {
+    if (formData.destroy) {
       this.props.destroyTalk(talkObject);
     } else if (this.props.componentMode === TalkEditor.COMPONENT_MODE.UPDATE) {
       this.props.updateTalk(talkObject);
@@ -72,9 +72,16 @@ export default class TalkEditor extends Component {
 
   render() {
     return (
-      <Form onSubmit={this.handleSubmit} onReset={this.handleClose} size="mini">
+      <Form
+        size="mini"
+        onSubmit={this.handleSubmit}
+        onReset={this.handleClose}
+      >
         <Grid>
-          <Fields {...this.state} onFieldChange={this.handleFieldChange} />
+          <Fields
+            {...this.state}
+            onFieldChange={this.handleFieldChange}
+          />
           <ControlBar
             {...this.state}
             onCheckboxChange={this.handleCheckboxChange}

@@ -8,8 +8,9 @@ import {
   CREATE_EVENT_TALK,
   UPDATE_EVENT_TALK,
   DESTROY_EVENT_TALK,
+  SET_EVENT_UI,
 } from '../action-types';
-import { DESCRIPTION_DEFAULT_STATE, TEST_TALK } from './events-constants';
+import { TEST_TALK, EVENT_UI_STATE } from './events-constants';
 
 function uuid(state = uniqueId('uuid-')) {
   return state;
@@ -50,9 +51,18 @@ function talks(state = [TEST_TALK], action) {
   }
 }
 
-function description(state = DESCRIPTION_DEFAULT_STATE, { type, payload }) {
+function description(state = {}, { type, payload }) {
   switch (type) {
     case UPDATE_EVENT_DESCRIPTION:
+      return Object.assign({}, state, payload);
+    default:
+      return state;
+  }
+}
+
+function ui(state = EVENT_UI_STATE, { type, payload }) {
+  switch (type) {
+    case SET_EVENT_UI:
       return Object.assign({}, state, payload);
     default:
       return state;
@@ -70,7 +80,7 @@ function eventsReducer(state, action) {
   }
 }
 
-const eventReducerIterator = combineReducers({ talks, description, uuid });
+const eventReducerIterator = combineReducers({ talks, description, uuid, ui });
 
 export default function (state = [], action) {
   return eventsReducer(state, action)
