@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Menu } from 'semantic-ui-react';
+import { createEvent } from 'store';
 
-function Controllbar(props) {
+function EventsPanelSidebar(props) {
   const {
     items,
-    addEvent,
     setCurrent,
     activeIndex,
   } = props;
@@ -14,7 +14,7 @@ function Controllbar(props) {
       <Menu.Item
         name="Add event"
         icon="add"
-        onClick={addEvent}
+        onClick={() => createEvent()}
       />
       {
         items.map((event, index) =>
@@ -30,8 +30,14 @@ function Controllbar(props) {
   );
 }
 
-Controllbar.defaultProps = {
+EventsPanelSidebar.defaultProps = {
   items: [],
 };
 
-export default Controllbar;
+EventsPanelSidebar.propTypes = {
+  items: PropTypes.array,
+  setCurrent: PropTypes.func.isRequired,
+  activeIndex: PropTypes.number,
+};
+
+export default EventsPanelSidebar;

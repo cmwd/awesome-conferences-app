@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Form, Grid } from 'semantic-ui-react';
-import { omit } from 'lodash';
 
-class ConferenceDescription extends Component {
+import store from 'store';
+
+class DescriptionPanelComponent extends Component {
   static defaultProps = {
     name: '',
     description: '',
@@ -12,20 +13,24 @@ class ConferenceDescription extends Component {
     facebookId: '',
   };
 
-  constructor(props) {
-    const state = props.store.get('description');
+  static propTypes = {
+    name: PropTypes.string,
+    description: PropTypes.string,
+    url: PropTypes.string,
+    email: PropTypes.string,
+    twitterId: PropTypes.string,
+    facebookId: PropTypes.string,
+  };
 
+  constructor(props) {
     super(props);
-    this.state = Object.assign({}, omit(props, ['store']), state);
     this.handleChange = this.handleChange.bind(this);
   }
 
-
   handleChange(event) {
     const { name, value } = event.target;
-    this.setState({ [name]: value }, () => {
-      this.props.store.set('description', this.state);
-    });
+    store.set('description',
+      Object.assign({}, this.props, { [name]: value }));
   }
 
   render() {
@@ -36,13 +41,13 @@ class ConferenceDescription extends Component {
           label="Conference name"
           type="text"
           name="name"
-          value={this.state.name}
+          value={this.props.name}
         />
         <Form.TextArea
           rows="3"
           name="description"
           label="Conference description"
-          value={this.state.description}
+          value={this.props.description}
         />
         <Grid>
           <Grid.Column tablet="8" mobile="16">
@@ -51,14 +56,14 @@ class ConferenceDescription extends Component {
               name="url"
               icon="home"
               placeholder="www"
-              value={this.state.url}
+              value={this.props.url}
             />
             <Form.Input
               type="text"
               name="email"
               icon="at"
               placeholder="e-mail"
-              value={this.state.email}
+              value={this.props.email}
             />
           </Grid.Column>
           <Grid.Column tablet="8" mobile="16">
@@ -67,14 +72,14 @@ class ConferenceDescription extends Component {
               name="twitterId"
               icon="twitter"
               placeholder="twitter id"
-              value={this.state.twitterId}
+              value={this.props.twitterId}
             />
             <Form.Input
               type="text"
               name="facebookId"
               icon="facebook"
               placeholder="facebook account"
-              value={this.state.facebookId}
+              value={this.props.facebookId}
             />
           </Grid.Column>
         </Grid>
@@ -83,4 +88,5 @@ class ConferenceDescription extends Component {
   }
 }
 
-export default ConferenceDescription;
+export default DescriptionPanelComponent;
+

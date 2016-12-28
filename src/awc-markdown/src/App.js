@@ -1,16 +1,28 @@
-import React from 'react';
+import React, { Component } from 'react';
 
+import store from './store';
 import { DescriptionPanel, EventsPanel } from './components';
 
-const store = new Map();
+class App extends Component {
+  constructor() {
+    super();
+    this.state = store.toObject();
+    store.subscribe(() => this.setState(store.toObject()));
+  }
 
-function App() {
-  return (
-    <div>
-      <DescriptionPanel store={store} />
-      <EventsPanel store={store} />
-    </div>
-  );
+  render() {
+    return (
+      <div>
+        <DescriptionPanel
+          {...this.state.description}
+        />
+        <EventsPanel
+          events={this.state.events}
+        />
+      </div>
+    );
+  }
 }
 
 export default App;
+

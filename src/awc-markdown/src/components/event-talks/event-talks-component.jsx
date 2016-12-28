@@ -1,38 +1,61 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Table, Button } from 'semantic-ui-react';
 
+import EventTalk from 'components/event-talk/event-talk-component';
+import { createTalk } from 'store';
+
+const toggleEditMode = ({ editMode }) => ({ editMode: !editMode });
+
 class EventTalks extends Component {
-  state = {
-    speaker: 'asd',
-    title: 'asd',
+  static propTypes = {
+    talks: PropTypes.array.isRequired,
+    uuid: PropTypes.string.isRequired,
   };
+
+  state = {
+    editMode: false,
+  };
+
+  handleContentChanged = (event) => {
+    console.log(event);
+  }
 
   render() {
     return (
       <Table>
         <Table.Body>
+          {this.props.talks.map(talkInfo => console.log(talkInfo) ||
+            (
+            <EventTalk
+              {...talkInfo}
+              key={talkInfo.uuid}
+              editMode={this.state.editMode}
+              containerWrapper={Table.Row}
+              itemWrapper={Table.Cell}
+              onActionButtonTriggered={() => this.setState(toggleEditMode)}
+              onContentChanged={this.handleContentChanged}
+            />
+            ))
+          }
+        </Table.Body>
+        <Table.Footer>
           <Table.Row>
-            <Table.Cell>
-              <span>{this.state.speaker}</span>
-            </Table.Cell>
-            <Table.Cell>
-              <span>{this.state.title}</span>
-            </Table.Cell>
-            <Table.Cell textAlign="right">
+            <Table.Cell colSpan={3} textAlign="right">
               <Button
-                icon="edit"
-                color="orange"
-                size="mini"
-                content="edit"
-                // onClick={this.toggleEditMode}
+                content="Add talk"
+                onClick={
+                  (evt) => {
+                    evt.preventDefault();
+                    createTalk(this.props.uuid);
+                  }
+                }
               />
             </Table.Cell>
           </Table.Row>
-        </Table.Body>
+        </Table.Footer>
       </Table>
     );
   }
 }
-
 
 export default EventTalks;

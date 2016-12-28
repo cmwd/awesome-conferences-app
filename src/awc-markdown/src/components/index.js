@@ -4,3 +4,7 @@ export {
 export {
   default as EventsPanel,
 } from './events-panel/events-panel-component';
+export {
+  default as EventTalk
+} from './event-talk/event-talk-component';
+

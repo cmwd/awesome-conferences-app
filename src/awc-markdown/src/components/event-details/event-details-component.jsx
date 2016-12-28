@@ -1,46 +1,35 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Form, Grid, Header } from 'semantic-ui-react';
-import { omit } from 'lodash';
 
 import EventTalks from '../event-talks/event-talks-component';
+import { updateEvent, getTalks } from 'store';
 
-class EventDetails extends Component {
+class EventDetailsComponent extends Component {
   static defaultProps = {
-    name: '',
+    name: 'Event name',
     startDate: '',
     endDate: '',
   };
 
-  constructor(props) {
-    super(props);
-    this.state = omit(props, ['onChange']);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSave = this.handleSave.bind(this);
-  }
+  static propTypes = {
+    uuid: PropTypes.string.isRequired,
+    name: PropTypes.string,
+    startDate: PropTypes.string,
+    endDate: PropTypes.string,
+  };
 
-  handleChange(event, { name, value }) {
-    this.setState({ [name]: value });
-  }
-
-  handleSave() {
-    this.props.onChange(this.state);
+  handleChange= (event, { name, value }) => {
+    updateEvent(this.props.uuid, { [name]: value });
   }
 
   render() {
-    const {
-      name,
-      startDate,
-      endDate,
-    } = this.state;
-
     return (
       <Form
         size="mini"
-        onBlur={this.handleSave}
       >
         <Form.Input
           type="text"
-          value={name}
+          value={this.props.name}
           name="name"
           label="Event name"
           onChange={this.handleChange}
@@ -49,7 +38,7 @@ class EventDetails extends Component {
           <Grid.Column tablet="8" mobile="16">
             <Form.Input
               type="date"
-              value={startDate}
+              value={this.props.startDate}
               name="startDate"
               label="Start date"
               onChange={this.handleChange}
@@ -58,17 +47,20 @@ class EventDetails extends Component {
           <Grid.Column tablet="8" mobile="16">
             <Form.Input
               type="date"
-              value={endDate}
+              value={this.props.endDate}
               name="endDate"
               label="End date"
-              min={startDate}
+              min={this.props.startDate}
               onChange={this.handleChange}
             />
           </Grid.Column>
           <Grid.Row>
             <Grid.Column width="16">
-              <Header as="h6" content="Talks" />
-              <EventTalks />
+              <Header as="h5" content="Talks" />
+              <EventTalks
+                talks={getTalks(this.props.uuid)}
+                uuid={this.props.uuid}
+              />
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -77,4 +69,4 @@ class EventDetails extends Component {
   }
 }
 
-export default EventDetails;
+export default EventDetailsComponent;
