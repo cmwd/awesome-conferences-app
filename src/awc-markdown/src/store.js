@@ -13,6 +13,11 @@ function findAndModify(key, uuid, consumerFn) {
   store.set(key, events.filter(Boolean));
 }
 
+export function updateDescription(obj) {
+  store.set('description',
+    Object.assign({}, store.get('description'), obj));
+}
+
 export function createEvent(uuid = createUuid()) {
   const event = {
     uuid,
