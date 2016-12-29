@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import store from './store';
-import { DescriptionPanel, EventsPanel } from './components';
+import { DescriptionPanel, EventsPanel, Header } from './components';
 
 class App extends Component {
   constructor() {
@@ -13,6 +13,7 @@ class App extends Component {
   render() {
     return (
       <div>
+        <Header />
         <DescriptionPanel
           {...this.state.description}
         />

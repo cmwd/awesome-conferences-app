@@ -1,4 +1,4 @@
-export default function createStore() {
+export default function StoreFactory() {
   const store = new Map();
   const listeners = [];
 

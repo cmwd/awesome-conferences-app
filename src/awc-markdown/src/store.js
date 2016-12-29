@@ -56,5 +56,13 @@ export function removeTalk(uuid) {
   findAndModify('talks', uuid, () => null);
 }
 
+export function serialize() {
+  const description = store.get('description');
+  const events = (store.get('events') || [])
+    .map(event => Object.assign({}, event, { talks: getTalks(event.uuid) }));
+
+  return Object.assign({}, description, { events });
+}
+
 export default store;
 

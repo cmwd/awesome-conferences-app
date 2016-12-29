@@ -7,4 +7,6 @@ export {
 export {
   default as EventTalk
 } from './event-talk/event-talk-component';
-
+export {
+  default as Header
+} from './header/header-component';
