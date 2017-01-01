@@ -1,9 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import { Table, Button } from 'semantic-ui-react';
 
 import EventTalkComponent from 'components/event-talk/event-talk-component';
-
-const toggleEditMode = ({ editMode }) => ({ editMode: !editMode });
 
 function EventTalksComponent(props) {
   return (

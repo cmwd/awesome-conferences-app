@@ -71,12 +71,12 @@ DescriptionPanelComponent.defaultProps = {
 };
 
 DescriptionPanelComponent.propTypes = {
-  name: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  url: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
-  twitterId: PropTypes.string.isRequired,
-  facebookId: PropTypes.string.isRequired,
+  name: PropTypes.string,
+  description: PropTypes.string,
+  url: PropTypes.string,
+  email: PropTypes.string,
+  twitterId: PropTypes.string,
+  facebookId: PropTypes.string,
   updateDescription: PropTypes.func.isRequired,
 };
 
