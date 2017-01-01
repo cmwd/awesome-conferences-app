@@ -10,6 +10,10 @@ class EventTalkComponent extends Component {
   static defaultProps = {
     speaker: 'Speaker name',
     title: 'Talk title',
+    twitterId: '',
+    email: '',
+    video: '',
+    slides: '',
   };
 
   static propTypes = {

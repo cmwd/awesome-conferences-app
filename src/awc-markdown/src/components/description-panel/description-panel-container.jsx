@@ -13,9 +13,7 @@ class DescriptionPanelContainer extends Component {
   }
 
   updateDescription = (event, { name, value }) => {
-    this.setState(
-      () => ({ [name]: value })
-    );
+    this.setState(() => ({ [name]: value }));
   };
 
   render() {
