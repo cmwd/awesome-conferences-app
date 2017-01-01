@@ -1,43 +1,33 @@
 import React, { PropTypes } from 'react';
 import { Menu } from 'semantic-ui-react';
-import { createEvent } from 'store';
 
 function EventsPanelSidebar(props) {
-  const {
-    items,
-    setCurrent,
-    activeIndex,
-  } = props;
-
   return (
     <Menu vertical fluid secondary defaultActiveIndex={0}>
       <Menu.Item
         name="Add event"
         icon="add"
-        onClick={() => createEvent()}
+        onClick={() => props.createEvent()}
       />
       {
-        items.map((event, index) =>
+        props.events.map((event, index) =>
           <Menu.Item
             name={event.name}
             key={event.uuid}
-            onClick={() => setCurrent(index)}
+            onClick={() => props.selectEvent(index)}
             index={index}
-            active={activeIndex === index}
+            active={props.selectedEventIndex === index}
           />)
       }
     </Menu>
   );
 }
 
-EventsPanelSidebar.defaultProps = {
-  items: [],
-};
-
 EventsPanelSidebar.propTypes = {
-  items: PropTypes.array,
-  setCurrent: PropTypes.func.isRequired,
-  activeIndex: PropTypes.number,
+  events: PropTypes.array.isRequired,
+  selectedEventIndex: PropTypes.number.isRequired,
+  selectEvent: PropTypes.func.isRequired,
+  createEvent: PropTypes.func.isRequired,
 };
 
 export default EventsPanelSidebar;

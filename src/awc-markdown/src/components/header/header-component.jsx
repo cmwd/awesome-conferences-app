@@ -1,22 +1,25 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { Button } from 'semantic-ui-react';
 
-import { serialize } from 'store';
 import markdownSerializer from 'markdown-serializer';
 
-function Header(props) {
+function HeaderComponent(props) {
   return (
     <header>
       <Button
         content="download"
         onClick={(evt) => {
           evt.preventDefault();
-          console.log(markdownSerializer(serialize()));
+          console.log(props.getState());
         }}
       />
     </header>
   );
 }
 
-export default Header;
+HeaderComponent.propTypes = {
+  getState: PropTypes.func.isRequired,
+};
+
+export default HeaderComponent;
 

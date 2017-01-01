@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { Button } from 'semantic-ui-react';
 
 import Content from './content-component';
-import { updateTalk, removeTalk } from 'store';
 import './event-talk.css';
 
 const toggleEditMode = ({ editMode }) => ({ editMode: !editMode });
@@ -38,10 +37,10 @@ class EventTalkComponent extends Component {
     const contentProps = {
       inputMode: this.state.editMode,
       onChange: (event, { name, value }) =>
-        updateTalk(this.props.uuid, { [name]: value }),
+        this.props.updateTalk(this.props.uuid, { [name]: value }),
     };
 
-    const actionButtonLabel = this.state.editMode ? 'Save' : 'Edit';
+    const actionButtonLabel = this.state.editMode ? 'Done' : 'Edit';
     const destroyButton = !this.state.editMode ? null : (
       <Button
         icon="remove"
@@ -51,7 +50,7 @@ class EventTalkComponent extends Component {
         negative
         onClick={(evt) => {
           evt.preventDefault();
-          removeTalk(this.props.uuid);
+          this.props.removeTalk(this.props.uuid);
         }}
       />
     );

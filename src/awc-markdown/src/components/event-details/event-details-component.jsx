@@ -1,72 +1,72 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PropTypes } from 'react';
 import { Form, Grid, Header } from 'semantic-ui-react';
 
-import EventTalks from '../event-talks/event-talks-component';
-import { updateEvent, getTalks } from 'store';
+import EventTalks from '../event-talks/event-talks-container';
 
-class EventDetailsComponent extends Component {
-  static defaultProps = {
-    name: 'Event name',
-    startDate: '',
-    endDate: '',
-  };
+const onChangeProxy = next =>
+  (event, { name, value }) =>
+    next({ [name]: value });
 
-  static propTypes = {
-    uuid: PropTypes.string.isRequired,
-    name: PropTypes.string,
-    startDate: PropTypes.string,
-    endDate: PropTypes.string,
-  };
-
-  handleChange= (event, { name, value }) => {
-    updateEvent(this.props.uuid, { [name]: value });
-  }
-
-  render() {
-    return (
-      <Form
-        size="mini"
-      >
-        <Form.Input
-          type="text"
-          value={this.props.name}
-          name="name"
-          label="Event name"
-          onChange={this.handleChange}
-        />
-        <Grid>
-          <Grid.Column tablet="8" mobile="16">
-            <Form.Input
-              type="date"
-              value={this.props.startDate}
-              name="startDate"
-              label="Start date"
-              onChange={this.handleChange}
+function EventDetailsComponent(props) {
+  return (
+    <Form size="mini">
+      <Form.Input
+        type="text"
+        value={props.name}
+        name="name"
+        label="Event name"
+        onChange={onChangeProxy(props.updateEvent)}
+      />
+      <Grid>
+        <Grid.Column tablet="8" mobile="16">
+          <Form.Input
+            type="date"
+            value={props.startDate}
+            name="startDate"
+            label="Start date"
+            onChange={onChangeProxy(props.updateEvent)}
+          />
+        </Grid.Column>
+        <Grid.Column tablet="8" mobile="16">
+          <Form.Input
+            type="date"
+            value={props.endDate}
+            name="endDate"
+            label="End date"
+            min={props.startDate}
+            onChange={onChangeProxy(props.updateEvent)}
+          />
+        </Grid.Column>
+        <Grid.Row>
+          <Grid.Column width="16">
+            <Header as="h5" content="Talks" />
+            <EventTalks
+              talks={props.talks}
+              parentUuid={props.uuid}
+              updateEvent={props.updateEvent}
             />
           </Grid.Column>
-          <Grid.Column tablet="8" mobile="16">
-            <Form.Input
-              type="date"
-              value={this.props.endDate}
-              name="endDate"
-              label="End date"
-              min={this.props.startDate}
-              onChange={this.handleChange}
-            />
-          </Grid.Column>
-          <Grid.Row>
-            <Grid.Column width="16">
-              <Header as="h5" content="Talks" />
-              <EventTalks
-                talks={getTalks(this.props.uuid)}
-                uuid={this.props.uuid}
-              />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </Form>
-    );
-  }
+        </Grid.Row>
+      </Grid>
+    </Form>
+  );
 }
 
+EventDetailsComponent.defaultProps = {
+  name: 'Event name',
+  startDate: '',
+  endDate: '',
+  talks: [],
+};
+
+EventDetailsComponent.propTypes = {
+  uuid: PropTypes.string.isRequired,
+  name: PropTypes.string,
+  startDate: PropTypes.string,
+  endDate: PropTypes.string,
+  talks: PropTypes.array,
+  updateEvent: PropTypes.func.isRequired,
+};
+
 export default EventDetailsComponent;
+

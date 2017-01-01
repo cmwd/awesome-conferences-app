@@ -1,9 +1,9 @@
 export {
   default as DescriptionPanel,
-} from './description-panel/description-panel-component';
+} from './description-panel/description-panel-container';
 export {
   default as EventsPanel,
-} from './events-panel/events-panel-component';
+} from './events-panel/events-panel-container';
 export {
   default as EventTalk
 } from './event-talk/event-talk-component';

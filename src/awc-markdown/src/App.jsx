@@ -1,25 +1,22 @@
 import React, { Component } from 'react';
+import { uniqueId } from 'lodash';
 
-import store from './store';
 import { DescriptionPanel, EventsPanel, Header } from './components';
 
 class App extends Component {
-  constructor() {
-    super();
-    this.state = store.toObject();
-    store.subscribe(() => this.setState(store.toObject()));
-  }
+  getState = () => {
+    return {
+      description: this.refs.description.state,
+      events: this.refs.events.state,
+    };
+  };
 
   render() {
     return (
       <div>
-        <Header />
-        <DescriptionPanel
-          {...this.state.description}
-        />
-        <EventsPanel
-          events={this.state.events}
-        />
+        <Header getState={this.getState} />
+        <DescriptionPanel ref="description" />
+        <EventsPanel ref="events" />
       </div>
     );
   }
