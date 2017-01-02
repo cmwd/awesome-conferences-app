@@ -10,10 +10,10 @@ const talkTableHeaders = Object
 const createYamlObject = props => {
   const data = Object
     .keys(props)
-    .map(key => `${pad('', OFFSET_LENGTH, ' ')}${key}: "${props[key]}"`)
+    .map(key => `${pad('', OFFSET_LENGTH, ' ')}${key}: '${props[key]}'`)
     .join('\n');
 
-  return ['```yaml', data, '```'].join('\n');
+  return ['```yaml', '---', data, '```'].join('\n');
 }
 
 const renderTable = (itemsRaw, header) => {

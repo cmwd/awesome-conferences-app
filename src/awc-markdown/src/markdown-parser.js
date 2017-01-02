@@ -1,3 +1,5 @@
+import yaml from 'yaml';
+
 const REGEX_CONFERENCE_NAME = /^#{1}\s?(\w+)/gm;
 const REGEX_YAML_PART = /`{3}yaml([\s\S]+?)`{3}/g;
 const REGEX_YAML_CLEAR = /(```yaml|```)/g;
@@ -5,21 +7,7 @@ const REGEX_YAML_CLEAR = /(```yaml|```)/g;
 const extractYAML = text => {
   const [yamlRaw] = text.match(REGEX_YAML_PART);
 
-  return yamlRaw
-    .replace(REGEX_YAML_CLEAR, '')
-    .split('\n')
-    .reduce((result, line) => {
-      const [prop, value = ''] = line.split(':');
-
-      if (!prop.length) {
-        return result;
-      }
-
-      return {
-        ...result,
-        [prop.trim()]: value.trim()
-      };
-    }, {});
+  return yaml.eval(yamlRaw.replace(REGEX_YAML_CLEAR, ''));
 };
 
 function parseDescription(descriptionRaw) {
