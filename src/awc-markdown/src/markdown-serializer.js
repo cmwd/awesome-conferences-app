@@ -1,16 +1,20 @@
 import { pad, omit } from 'lodash';
+import EventTalkComponent from 'components/event-talk/event-talk-component';
 
-const OFFSET_LENGTH = 4;
+const OFFSET_LENGTH = 2;
 
-const talkTableHeaders = {
-  speaker: 'speaker',
-  title: 'talk_title',
-  twitterId: 'speaker_twitter_id',
-  email: 'speaker_email',
-  video: 'talk_video',
-  slides: 'talk_slides',
-  uuid: '',
-};
+const talkTableHeaders = Object
+  .keys(EventTalkComponent.defaultProps)
+  .reduce((result, key) => ({ ...result, [key]: key }), {});
+
+const createYamlObject = props => {
+  const data = Object
+    .keys(props)
+    .map(key => `${pad('', OFFSET_LENGTH, ' ')}${key}: "${props[key]}"`)
+    .join('\n');
+
+  return ['```yaml', data, '```'].join('\n');
+}
 
 const renderTable = (itemsRaw, header) => {
   if (!itemsRaw || !itemsRaw.length) {
@@ -36,7 +40,7 @@ const renderTable = (itemsRaw, header) => {
       (result, key) => ({
         ...result,
         [key]: Math.max(
-          ...items.map(props => props[key].length)) + OFFSET_LENGTH,
+          ...items.map(props => (props[key] || '').length)) + OFFSET_LENGTH,
       }), {});
 
   const paddedItems = items
@@ -69,31 +73,19 @@ const renderTable = (itemsRaw, header) => {
 
 export default function markdownSerializer({ description, events  }) {
   const markdown = [
-    description.name,
-    `${pad('', description.name.length, '=')}`,
+    `# ${description.conference_name}`,
     '',
-    '### Description',
-    description.description,
+    createYamlObject(description),
     '',
-    '```yaml',
-    `   conference_email: ${description.email}`,
-    `   conference_web: ${description.url}`,
-    `   conference_facebook: ${description.facebookId}`,
-    `   conference_twitter: ${description.twitterId}`,
-    '```',
-    '',
-    '### Events',
+    '## Events',
     '',
     events
       .map(event => [
+        createYamlObject(omit(event, ['talks', 'uuid'])),
         '',
-        '```yaml',
-        `   event_name: ${event.name}`,
-        `   event_date_start: ${event.startDate}`,
-        `   event_date_end: ${event.endDate}`,
-        '```',
+        renderTable(event.talks, talkTableHeaders),
         '',
-        renderTable(event.talks, talkTableHeaders)
+        '',
       ].join('\n'))
       .join('\n')
   ];

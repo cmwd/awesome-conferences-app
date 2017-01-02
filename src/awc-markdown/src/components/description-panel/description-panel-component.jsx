@@ -8,51 +8,51 @@ function DescriptionPanelComponent(props) {
         required
         label="Conference name"
         type="text"
-        name="name"
-        value={props.name}
+        name="conference_name"
+        value={props.conference_name}
         onChange={props.updateDescription}
       />
       <Form.TextArea
         rows="3"
-        name="description"
+        name="conference_description"
         label="Conference description"
-        value={props.description}
+        value={props.conference_description}
         onChange={props.updateDescription}
       />
       <Grid>
         <Grid.Column tablet="8" mobile="16">
           <Form.Input
             type="text"
-            name="url"
+            name="conference_web"
             icon="home"
             placeholder="www"
-            value={props.url}
+            value={props.conference_web}
             onChange={props.updateDescription}
           />
           <Form.Input
             type="text"
-            name="email"
+            name="conference_email"
             icon="at"
             placeholder="e-mail"
-            value={props.email}
+            value={props.conference_email}
             onChange={props.updateDescription}
           />
         </Grid.Column>
         <Grid.Column tablet="8" mobile="16">
           <Form.Input
             type="text"
-            name="twitterId"
+            name="conference_twitter_id"
             icon="twitter"
             placeholder="twitter id"
-            value={props.twitterId}
+            value={props.conference_twitter_id}
             onChange={props.updateDescription}
           />
           <Form.Input
             type="text"
-            name="facebookId"
+            name="conference_facebook_id"
             icon="facebook"
             placeholder="facebook account"
-            value={props.facebookId}
+            value={props.conference_facebook_id}
             onChange={props.updateDescription}
           />
         </Grid.Column>
@@ -62,21 +62,21 @@ function DescriptionPanelComponent(props) {
 }
 
 DescriptionPanelComponent.defaultProps = {
-  name: '',
-  description: '',
-  url: '',
-  email: '',
-  twitterId: '',
-  facebookId: '',
+  conference_name: '',
+  conference_description: '',
+  conference_web: '',
+  conference_email: '',
+  conference_twitter_id: '',
+  conference_facebook_id: '',
 };
 
 DescriptionPanelComponent.propTypes = {
-  name: PropTypes.string,
-  description: PropTypes.string,
-  url: PropTypes.string,
-  email: PropTypes.string,
-  twitterId: PropTypes.string,
-  facebookId: PropTypes.string,
+  conference_name: PropTypes.string,
+  conference_description: PropTypes.string,
+  conference_web: PropTypes.string,
+  conference_email: PropTypes.string,
+  conference_twitter_id: PropTypes.string,
+  conference_facebook_id: PropTypes.string,
   updateDescription: PropTypes.func.isRequired,
 };
 

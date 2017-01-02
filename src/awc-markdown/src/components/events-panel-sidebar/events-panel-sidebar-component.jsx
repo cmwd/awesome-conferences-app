@@ -12,7 +12,7 @@ function EventsPanelSidebar(props) {
       {
         props.events.map((event, index) =>
           <Menu.Item
-            name={event.name}
+            name={event.event_name}
             key={event.uuid}
             onClick={() => props.selectEvent(index)}
             index={index}

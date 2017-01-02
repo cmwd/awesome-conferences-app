@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { DescriptionPanel, EventsPanel, Header } from './components';
 import markdownSerializer from './markdown-serializer';
+import markdownParser from './markdown-parser';
 
 class App extends Component {
   getState = () => {
@@ -15,6 +16,7 @@ class App extends Component {
     const markdown = markdownSerializer(this.getState());
 
     console.log(markdown);
+    console.log(markdownParser(markdown));
   }
 
   render() {

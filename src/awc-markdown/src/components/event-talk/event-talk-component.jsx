@@ -8,24 +8,24 @@ const toggleEditMode = ({ editMode }) => ({ editMode: !editMode });
 
 class EventTalkComponent extends Component {
   static defaultProps = {
-    speaker: 'Speaker name',
-    title: 'Talk title',
-    twitterId: '',
-    email: '',
-    video: '',
-    slides: '',
+    talk_speaker_name: 'Speaker name',
+    talk_title: 'Talk title',
+    talk_speaker_twitter_id: '',
+    talk_speaker_email: '',
+    talk_video: '',
+    talk_slides: '',
   };
 
   static propTypes = {
     uuid: PropTypes.string.isRequired,
     containerWrapper: PropTypes.func,
     itemWrapper: PropTypes.func,
-    title: PropTypes.string,
-    speaker: PropTypes.string,
-    twitterId: PropTypes.string,
-    email: PropTypes.string,
-    video: PropTypes.string,
-    slides: PropTypes.string,
+    talk_title: PropTypes.string,
+    talk_speaker_name: PropTypes.string,
+    talk_speaker_twitter_id: PropTypes.string,
+    talk_speaker_email: PropTypes.string,
+    talk_video: PropTypes.string,
+    talk_slides: PropTypes.string,
   };
 
   state = {
@@ -65,22 +65,22 @@ class EventTalkComponent extends Component {
           <Content
             {...contentProps}
             className="event-talk__field"
-            name="speaker"
-            content={this.props.speaker}
+            name="talk_speaker_name"
+            content={this.props.talk_speaker_name}
           />
           <Content
             {...contentProps}
             className="event-talk__field"
-            name="twitterId"
+            name="talk_speaker_twitter_id"
             placeholder="Twitter ID"
-            content={this.props.twitterId}
+            content={this.props.talk_speaker_twitter_id}
           />
           <Content
             {...contentProps}
             className="event-talk__field"
-            name="email"
+            name="talk_speaker_email"
             placeholder="E-mail"
-            content={this.props.email}
+            content={this.props.talk_speaker_email}
           />
         </Item>
 
@@ -88,22 +88,22 @@ class EventTalkComponent extends Component {
           <Content
             {...contentProps}
             className="event-talk__field"
-            name="title"
-            content={this.props.title}
+            name="talk_title"
+            content={this.props.talk_title}
           />
           <Content
             {...contentProps}
             className="event-talk__field"
             placeholder="Video link"
-            name="video"
-            content={this.props.video}
+            name="talk_video"
+            content={this.props.talk_video}
           />
           <Content
             {...contentProps}
             className="event-talk__field"
             placeholder="Slides link"
-            name="slides"
-            content={this.props.slides}
+            name="talk_slides"
+            content={this.props.talk_slides}
           />
         </Item>
 
