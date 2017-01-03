@@ -1,24 +1,22 @@
-import yaml from 'yaml';
+import yaml from 'js-yaml';
+import DescriptionPanelComponent
+  from './components/description-panel/description-panel-component';
 
-const REGEX_CONFERENCE_NAME = /^#{1}\s?(\w+)/gm;
-const REGEX_YAML_PART = /`{3}yaml([\s\S]+?)`{3}/g;
-const REGEX_YAML_CLEAR = /(```yaml|```)/g;
+const REGEXP_YAML_PART = /`{3}yaml([\s\S]+?)`{3}/g;
+const REGEXP_YAML_CLEAR = /(```yaml|```)/g;
 
 const extractYAML = text => {
-  const [yamlRaw] = text.match(REGEX_YAML_PART);
+  const [yamlRaw] = text.match(REGEXP_YAML_PART);
 
-  return yaml.eval(yamlRaw.replace(REGEX_YAML_CLEAR, ''));
+  return yaml.safeLoad(yamlRaw.replace(REGEXP_YAML_CLEAR, ''));
 };
-
-function parseDescription(descriptionRaw) {
-  const [name] = descriptionRaw.match(REGEX_CONFERENCE_NAME);
-  console.log(extractYAML(descriptionRaw));
-}
 
 function markdowParser(markdown = '') {
   const [descriptionRaw, eventsRaw] = markdown.split('## Events');
-  const description = parseDescription(descriptionRaw);
+  const description = extractYAML(descriptionRaw);
 
+  console.log(description);
+  console.log(eventsRaw);
   return '[description]';
 }
 

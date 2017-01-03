@@ -5,12 +5,14 @@ const OFFSET_LENGTH = 2;
 
 const talkTableHeaders = Object
   .keys(EventTalkComponent.defaultProps)
-  .reduce((result, key) => ({ ...result, [key]: key }), {});
+  .reduce((result, key) =>
+    ({ ...result, [key]: key }), {});
 
 const createYamlObject = props => {
   const data = Object
     .keys(props)
-    .map(key => `${pad('', OFFSET_LENGTH, ' ')}${key}: '${props[key]}'`)
+    .map(key =>
+      `${pad('', OFFSET_LENGTH, ' ')}${key}: '${props[key]}'`)
     .join('\n');
 
   return ['```yaml', '---', data, '```'].join('\n');
@@ -40,7 +42,8 @@ const renderTable = (itemsRaw, header) => {
       (result, key) => ({
         ...result,
         [key]: Math.max(
-          ...items.map(props => (props[key] || '').length)) + OFFSET_LENGTH,
+          ...items.map(props =>
+            (props[key] || '').length)) + OFFSET_LENGTH,
       }), {});
 
   const paddedItems = items
