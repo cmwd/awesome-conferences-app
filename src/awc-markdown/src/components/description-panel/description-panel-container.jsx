@@ -19,12 +19,19 @@ class DescriptionPanelContainer extends Component {
     };
   }
 
+  reset() {
+    const { defaultProps } = DescriptionPanelComponent;
+    this.setState(defaultProps, this.storeInPeristentState);
+  }
+
   updateDescription = (event, { name, value }) => {
-    this.setState(() => ({ [name]: value }));
-    this.persistState();
+    this.setState(
+      () => ({ [name]: value }),
+      this.storeInPeristentState
+    );
   };
 
-  persistState = debounce(() => {
+  storeInPeristentState = debounce(() => {
     localStorage.setItem(PERSISTENT_STATE_KEY, JSON.stringify(this.state));
   }, PERSISTENT_STATE_DEBOUNCE_DELAY);
 

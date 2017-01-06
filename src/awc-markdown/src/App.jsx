@@ -20,6 +20,11 @@ class App extends Component {
     };
   };
 
+  resetState = () => {
+    this.conference.reset();
+    this.events.reset();
+  };
+
   serialize = () =>
     YAML.stringify(this.getFormData(), YAML_INLINE_DEPTH, YAML_INDENTION);
 
@@ -33,12 +38,12 @@ class App extends Component {
         talks: event.talks.map(createIdentifier),
       }))
     };
-  }
+  };
 
   render() {
     return (
       <div>
-        <Header getState={this.serialize} />
+        <Header getState={this.serialize} resetState={this.resetState} />
         <DescriptionPanel ref={conference => this.conference = conference} />
         <EventsPanel ref={events => this.events = events} />
       </div>

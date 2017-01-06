@@ -5,10 +5,12 @@ function HeaderComponent(props) {
   return (
     <header>
       <Button
-        content="download"
+        content="reset"
+        icon="refresh"
+        color="green"
         onClick={(evt) => {
           evt.preventDefault();
-          console.log(props.getState());
+          props.resetState();
         }}
       />
     </header>
@@ -17,6 +19,7 @@ function HeaderComponent(props) {
 
 HeaderComponent.propTypes = {
   getState: PropTypes.func.isRequired,
+  resetState: PropTypes.func.isRequired,
 };
 
 export default HeaderComponent;
