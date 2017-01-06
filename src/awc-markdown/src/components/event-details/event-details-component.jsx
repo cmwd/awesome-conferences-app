@@ -12,8 +12,8 @@ function EventDetailsComponent(props) {
     <Form size="mini">
       <Form.Input
         type="text"
-        value={props.event_name}
-        name="event_name"
+        value={props.name}
+        name="name"
         label="Event name"
         onChange={onChangeProxy(props.updateEvent)}
       />
@@ -21,8 +21,8 @@ function EventDetailsComponent(props) {
         <Grid.Column tablet="8" mobile="16">
           <Form.Input
             type="date"
-            value={props.event_start_date}
-            name="event_start_date"
+            value={props.start_date}
+            name="start_date"
             label="Start date"
             onChange={onChangeProxy(props.updateEvent)}
           />
@@ -30,10 +30,10 @@ function EventDetailsComponent(props) {
         <Grid.Column tablet="8" mobile="16">
           <Form.Input
             type="date"
-            value={props.event_end_date}
-            name="event_end_date"
+            value={props.end_date}
+            name="end_date"
             label="End date"
-            min={props.event_start_date}
+            min={props.start_date}
             onChange={onChangeProxy(props.updateEvent)}
           />
         </Grid.Column>
@@ -53,17 +53,17 @@ function EventDetailsComponent(props) {
 }
 
 EventDetailsComponent.defaultProps = {
-  event_name: 'Event name',
-  event_start_date: '',
-  event_end_date: '',
+  name: 'Event name',
+  start_date: '',
+  end_date: '',
   talks: [],
 };
 
 EventDetailsComponent.propTypes = {
   uuid: PropTypes.string.isRequired,
-  event_name: PropTypes.string,
-  event_start_date: PropTypes.string,
-  event_end_date: PropTypes.string,
+  name: PropTypes.string,
+  start_date: PropTypes.string,
+  end_date: PropTypes.string,
   talks: PropTypes.array,
   updateEvent: PropTypes.func.isRequired,
 };

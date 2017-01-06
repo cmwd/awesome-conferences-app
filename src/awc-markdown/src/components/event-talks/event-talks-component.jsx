@@ -44,7 +44,7 @@ EventTalksComponent.defaultProps = {
 };
 
 EventTalksComponent.propTypes = {
-  talks: PropTypes.array,
+  talks: PropTypes.arrayOf(PropTypes.object),
   parentUuid: PropTypes.string.isRequired,
   updateEvent: PropTypes.func.isRequired,
 };

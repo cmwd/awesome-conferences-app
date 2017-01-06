@@ -1,8 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Button } from 'semantic-ui-react';
 
-import markdownSerializer from 'markdown-serializer';
-
 function HeaderComponent(props) {
   return (
     <header>

@@ -4,11 +4,15 @@ import { uniqueId } from 'lodash';
 import EventTalksComponent from './event-talks-component';
 
 class EventTalksContainer extends Component {
-  createTalk = (props) => {
-    const uuid = uniqueId('uuid-');
-    const talks = [{ uuid, ...props }, ...this.props.talks];
+  createTalk = (props = {}) => {
+    const talk = {
+      ...props,
+      uuid: props.uuid || uniqueId(`uuid-${Date.now()}-`)
+    };
 
-    this.props.updateEvent({ talks });
+    this.props.updateEvent({
+      talks: [talk, ...this.props.talks],
+    });
   }
 
   updateTalk = (uuid, props) => {

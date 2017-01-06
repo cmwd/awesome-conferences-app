@@ -16,6 +16,7 @@ function EventsPanelComponent(props) {
             selectedEventIndex={props.selectedEventIndex}
             selectEvent={props.selectEvent}
             createEvent={props.createEvent}
+            removeEvent={props.removeEvent}
           />
         </Grid.Column>
         <Grid.Column width="12">
@@ -41,6 +42,7 @@ EventsPanelComponent.propTypes = {
   selectEvent: PropTypes.func.isRequired,
   createEvent: PropTypes.func.isRequired,
   updateEvent: PropTypes.func.isRequired,
+  removeEvent: PropTypes.func.isRequired,
 };
 
 export default EventsPanelComponent;

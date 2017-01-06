@@ -1,30 +1,46 @@
 import React, { Component } from 'react';
+import YAML from 'yamljs';
+import { uniqueId } from 'lodash';
 
 import { DescriptionPanel, EventsPanel, Header } from './components';
-import markdownSerializer from './markdown-serializer';
-import markdownParser from './markdown-parser';
+
+const YAML_INLINE_DEPTH = 5;
+const YAML_INDENTION = 2;
+
+const createIdentifier = props => ({
+  ...props,
+  uuid: props.uuid || uniqueId('uuid-'),
+});
 
 class App extends Component {
-  getState = () => {
+  getFormData() {
     return {
-      description: this.refs.description.state,
-      events: this.refs.events.state.events,
+      conference: this.conference.state,
+      events: this.events.getResult()
     };
   };
 
-  serialize = () => {
-    const markdown = markdownSerializer(this.getState());
+  serialize = () =>
+    YAML.stringify(this.getFormData(), YAML_INLINE_DEPTH, YAML_INDENTION);
 
-    console.log(markdown);
-    console.log(markdownParser(markdown));
+  parse = yamlString => {
+    const { conference, events } = YAML.parse(yamlString);
+
+    return {
+      conference,
+      events: events.map(event => ({
+        ...createIdentifier(event),
+        talks: event.talks.map(createIdentifier),
+      }))
+    };
   }
 
   render() {
     return (
       <div>
         <Header getState={this.serialize} />
-        <DescriptionPanel ref="description" />
-        <EventsPanel ref="events" />
+        <DescriptionPanel ref={conference => this.conference = conference} />
+        <EventsPanel ref={events => this.events = events} />
       </div>
     );
   }
