@@ -4,12 +4,8 @@ import { uniqueId, debounce } from 'lodash';
 import { Container } from 'semantic-ui-react';
 
 import { DescriptionPanel, EventsPanel } from './components';
-import ModalContainer
-  from './components/modal-container/modal-container-component';
 import Header from './components/header/header-component';
 
-const YAML_INLINE_DEPTH = 5;
-const YAML_INDENTION = 2;
 const PERSIST_STORE_KEY = 'editor-store';
 
 const createIdentifier = props => ({
@@ -27,7 +23,7 @@ class App extends Component {
     this.state = { conference, events };
   }
 
-  getData() {
+  getData = () => {
     return {
       conference: this.conference.state,
       events: this.events.getResult()
@@ -48,9 +44,6 @@ class App extends Component {
     this.events.reset();
   };
 
-  serialize = () =>
-    YAML.stringify(this.getData(), YAML_INLINE_DEPTH, YAML_INDENTION);
-
   parse = yamlString => {
     const { conference, events } = YAML.parse(yamlString);
 
@@ -69,6 +62,7 @@ class App extends Component {
         <Container>
           <Header
             resetState={this.resetState}
+            getData={this.getData}
           />
           <DescriptionPanel
             {...this.state.conference}

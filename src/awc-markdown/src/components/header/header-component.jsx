@@ -1,11 +1,15 @@
 import React, { PropTypes } from 'react';
-import { Button, Menu, Modal } from 'semantic-ui-react';
+import { Menu } from 'semantic-ui-react';
 
 import Importer from '../importer/importer-container';
+import Exporter from '../exporter/exporter-container';
 
 function HeaderComponent(props) {
   return (
     <Menu>
+      <Exporter
+        getData={props.getData}
+      />
       <Importer />
       <Menu.Item
         name="reset"
@@ -19,6 +23,7 @@ function HeaderComponent(props) {
 
 HeaderComponent.propTypes = {
   resetState: PropTypes.func.isRequired,
+  getData: PropTypes.func.isRequired,
 };
 
 export default HeaderComponent;
