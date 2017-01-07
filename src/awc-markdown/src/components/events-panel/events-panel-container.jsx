@@ -1,29 +1,34 @@
 import React, { Component } from 'react';
-import { uniqueId, omitBy, debounce } from 'lodash';
+import { uniqueId, omitBy, flowRight, debounce } from 'lodash';
 
 import EventsPanelComponent from './events-panel-component';
 import EventDetailsComponent from '../event-details/event-details-component';
 
-const PERSISTENT_STATE_KEY = 'events';
-const PERSISTENT_STATE_DEBOUNCE_DELAY = 250;
 const INITIAL_STATE = {
   events: [],
-  selectedEventIndex: 0,
+  selectedUuid: '',
 };
 
 const isUuid = (value, key) =>
   key === 'uuid';
 
+const sortByDate = (a, b) => {
+  const aStart = Date.parse(a.start_date) || 0;
+  const bStart = Date.parse(b.start_date) || 0;
+
+  if (aStart > bStart) return -1;
+  if (aStart < bStart) return 1;
+
+  return 0;
+};
+
 class EventsPanelContainer extends Component {
   constructor(props) {
     super(props);
 
-    const persistentState = JSON.parse(
-      localStorage.getItem(PERSISTENT_STATE_KEY) || '{}');
-
     this.state = {
       ...INITIAL_STATE,
-      ...persistentState,
+      ...props,
     };
   }
 
@@ -36,61 +41,73 @@ class EventsPanelContainer extends Component {
   }
 
   reset() {
-    this.setState(INITIAL_STATE, this.storeInPersistentState);
+    this.setState(INITIAL_STATE, this.props.storeInPersistentState);
   }
 
-  storeInPersistentState = debounce(() => {
-    localStorage.setItem(PERSISTENT_STATE_KEY, JSON.stringify(this.state));
-  }, PERSISTENT_STATE_DEBOUNCE_DELAY);
+  getSelectedEventIndex() {
+    const { selectedUuid, events } = this.state;
+    return events.findIndex(e => e.uuid === selectedUuid);
+  }
+
+  sortEventsByDate = debounce(() => {
+    this.setState(
+      ({ events }) => ({
+        events: events.sort(sortByDate),
+      }),
+      this.props.storeInPersistentState
+    );
+  }, 500);
 
   createEvent = (props = {}) => {
-    const { defaultProps } = EventDetailsComponent;
     const event = {
       ...props,
-      ...defaultProps,
+      ...EventDetailsComponent.defaultProps,
       uuid: props.uuid || uniqueId(`uuid-${Date.now()}-`),
-    }
+    };
 
     this.setState(
       ({ events }) => ({
         events: [event, ...events],
       }),
-      this.storeInPersistentState
+      this.props.storeInPersistentState
     );
   };
 
   removeEvent = uuid => {
-    const handler = ({ events: cEvents, selectedEventIndex: cIndex }) => {
+    const handler = ({ events: cEvents }) => {
       const events = cEvents.filter(e => e.uuid !== uuid);
-      const selectedEventIndex = cIndex === events.length
-        ? cIndex - 1
-        : cIndex;
+      const cIndex = this.getSelectedEventIndex();
+      const index = cIndex === events.length ? cIndex - 1 : cIndex;
+      const { uuid: selectedUuid } = events[index];
 
-      return { events, selectedEventIndex };
+      return { events, selectedUuid };
     };
 
-    this.setState(handler, this.storeInPersistentState);
+    this.setState(handler, this.props.storeInPersistentState);
   };
 
-  updateEvent = event => {
+  updateEvent = (uuid, prop) => {
     this.setState(
       ({ events }) => ({
-        events: events.map(e =>
-          e.uuid === event.uuid ? event : e),
+        events: events.map(event =>
+          event.uuid === uuid ? { ...event, ...prop } : event),
       }),
-      this.storeInPersistentState
+      flowRight([this.props.storeInPersistentState, this.sortEventsByDate])
      );
   };
 
-  selectEvent = selectedEventIndex => {
-    this.setState(() => ({ selectedEventIndex }));
+  selectEvent = selectedUuid => {
+    this.setState(() => ({ selectedUuid }));
   };
 
   render() {
+    const selectedEvent = this.state.events.find(e =>
+      e.uuid === this.state.selectedUuid);
+
     return (
       <EventsPanelComponent
         {...this.state}
-        selectedEvent={this.state.events[this.state.selectedEventIndex]}
+        selectedEvent={selectedEvent}
         createEvent={this.createEvent}
         updateEvent={this.updateEvent}
         selectEvent={this.selectEvent}

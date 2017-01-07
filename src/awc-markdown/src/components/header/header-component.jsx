@@ -8,6 +8,7 @@ function HeaderComponent(props) {
         content="reset"
         icon="refresh"
         color="green"
+        size="mini"
         onClick={(evt) => {
           evt.preventDefault();
           props.resetState();

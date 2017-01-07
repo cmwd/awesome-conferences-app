@@ -12,15 +12,15 @@ function EventsPanelSidebar(props) {
         onClick={() => props.createEvent()}
       />
       {
-        props.events.map((event, index) =>
+      props.events.map((event, index) =>
           <MenuItemComponent
             name={event.name}
             key={event.uuid}
             uuid={event.uuid}
-            onClick={() => props.selectEvent(index)}
+            onClick={() => props.selectEvent(event.uuid)}
             removeEvent={props.removeEvent}
             index={index}
-            active={props.selectedEventIndex === index}
+            active={props.selectedUuid === event.uuid}
           />)
       }
     </Menu>
@@ -34,7 +34,7 @@ const eventShape = PropTypes.shape({
 
 EventsPanelSidebar.propTypes = {
   events: PropTypes.arrayOf(eventShape).isRequired,
-  selectedEventIndex: PropTypes.number.isRequired,
+  selectedUuid: PropTypes.string.isRequired,
   selectEvent: PropTypes.func.isRequired,
   createEvent: PropTypes.func.isRequired,
   removeEvent: PropTypes.func.isRequired,

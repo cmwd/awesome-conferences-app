@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { Grid } from 'semantic-ui-react';
 
 import EventDetails
-  from '../event-details/event-details-container';
+  from '../event-details/event-details-component';
 import PanelSidebar
   from '../events-panel-sidebar/events-panel-sidebar-component';
 
@@ -13,7 +13,7 @@ function EventsPanelComponent(props) {
         <Grid.Column width="4">
           <PanelSidebar
             events={props.events}
-            selectedEventIndex={props.selectedEventIndex}
+            selectedUuid={props.selectedUuid}
             selectEvent={props.selectEvent}
             createEvent={props.createEvent}
             removeEvent={props.removeEvent}
@@ -25,7 +25,12 @@ function EventsPanelComponent(props) {
               ? <EventDetails
                 {...props.selectedEvent}
                 key={props.selectedEvent.uuid}
-                updateEvent={props.updateEvent}
+                updateEvent={
+                  eventProps => props.updateEvent(
+                    props.selectedEvent.uuid,
+                    eventProps
+                  )
+                }
               />
               : null
           }
@@ -37,7 +42,7 @@ function EventsPanelComponent(props) {
 
 EventsPanelComponent.propTypes = {
   events: PropTypes.array.isRequired,
-  selectedEventIndex: PropTypes.number.isRequired,
+  selectedUuid: PropTypes.string.isRequired,
   selectedEvent: PropTypes.object,
   selectEvent: PropTypes.func.isRequired,
   createEvent: PropTypes.func.isRequired,
