@@ -1,25 +1,23 @@
 import React, { PropTypes } from 'react';
-import { Button } from 'semantic-ui-react';
+import { Button, Menu, Modal } from 'semantic-ui-react';
+
+import Importer from '../importer/importer-container';
 
 function HeaderComponent(props) {
   return (
-    <header>
-      <Button
-        content="reset"
+    <Menu>
+      <Importer />
+      <Menu.Item
+        name="reset"
         icon="refresh"
-        color="green"
-        size="mini"
-        onClick={(evt) => {
-          evt.preventDefault();
-          props.resetState();
-        }}
+        position="right"
+        onClick={props.resetState}
       />
-    </header>
+    </Menu>
   );
 }
 
 HeaderComponent.propTypes = {
-  getState: PropTypes.func.isRequired,
   resetState: PropTypes.func.isRequired,
 };
 

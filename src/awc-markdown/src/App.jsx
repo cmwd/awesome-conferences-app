@@ -3,7 +3,10 @@ import YAML from 'yamljs';
 import { uniqueId, debounce } from 'lodash';
 import { Container } from 'semantic-ui-react';
 
-import { DescriptionPanel, EventsPanel, Header } from './components';
+import { DescriptionPanel, EventsPanel } from './components';
+import ModalContainer
+  from './components/modal-container/modal-container-component';
+import Header from './components/header/header-component';
 
 const YAML_INLINE_DEPTH = 5;
 const YAML_INDENTION = 2;
@@ -62,19 +65,23 @@ class App extends Component {
 
   render() {
     return (
-      <Container>
-        <Header getState={this.serialize} resetState={this.resetState} />
-        <DescriptionPanel
-          {...this.state.conference}
-          ref={conference => this.conference = conference}
-          storeInPersistentState={this.storeInPersistentState}
-        />
-        <EventsPanel
-          {...this.state.events}
-          ref={events => this.events = events}
-          storeInPersistentState={this.storeInPersistentState}
-        />
-      </Container>
+      <div>
+        <Container>
+          <Header
+            resetState={this.resetState}
+          />
+          <DescriptionPanel
+            {...this.state.conference}
+            ref={conference => this.conference = conference}
+            storeInPersistentState={this.storeInPersistentState}
+          />
+          <EventsPanel
+            {...this.state.events}
+            ref={events => this.events = events}
+            storeInPersistentState={this.storeInPersistentState}
+          />
+        </Container>
+      </div>
     );
   }
 }
