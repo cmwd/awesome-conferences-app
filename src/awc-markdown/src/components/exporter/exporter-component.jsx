@@ -8,7 +8,7 @@ function ExporterComponent(props) {
       onOpen={props.handleOpen}
     >
       <Modal.Header>
-        {props.fileName}
+        Save: <em>{props.fileName}</em>
       </Modal.Header>
       <Modal.Content>
         <Grid>

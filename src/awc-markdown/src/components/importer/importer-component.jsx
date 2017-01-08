@@ -12,7 +12,9 @@ function ImporterComponent(props) {
             type="file"
             onChange={props.setFilesList}
           />
-          <Form.Button>Import</Form.Button>
+          <Form.Button
+            positive
+          >Import</Form.Button>
         </Form>
       </Modal.Content>
     </Modal>
