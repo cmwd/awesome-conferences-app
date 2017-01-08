@@ -3,7 +3,9 @@ import YAML from 'yamljs';
 import { uniqueId, debounce } from 'lodash';
 import { Container } from 'semantic-ui-react';
 
-import { DescriptionPanel, EventsPanel } from './components';
+import DescriptionPanel
+  from './components/description-panel/description-panel-container';
+import EventsPanel from './components/events-panel/events-panel-container';
 import Header from './components/header/header-component';
 
 const PERSIST_STORE_KEY = 'editor-store';
@@ -17,7 +19,7 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    const { conference = {}, events = {} } = JSON.parse(
+    const { conference = {}, events = [] } = JSON.parse(
       localStorage.getItem(PERSIST_STORE_KEY) || '{}');
 
     this.state = { conference, events };
@@ -30,10 +32,14 @@ class App extends Component {
     };
   }
 
+  setData = (state) => {
+    this.setState(state, this.storeInPersistentState);
+  };
+
   storeInPersistentState = debounce(() => {
     const data = {
       conference: this.conference.state,
-      events: this.events.state,
+      events: this.events.state.events,
     };
 
     localStorage.setItem(PERSIST_STORE_KEY, JSON.stringify(data));
@@ -44,18 +50,6 @@ class App extends Component {
     this.events.reset();
   };
 
-  parse = yamlString => {
-    const { conference, events } = YAML.parse(yamlString);
-
-    return {
-      conference,
-      events: events.map(event => ({
-        ...createIdentifier(event),
-        talks: event.talks.map(createIdentifier),
-      }))
-    };
-  };
-
   render() {
     return (
       <div>
@@ -63,6 +57,7 @@ class App extends Component {
           <Header
             resetState={this.resetState}
             getData={this.getData}
+            setData={this.setData}
           />
           <DescriptionPanel
             {...this.state.conference}
@@ -70,7 +65,7 @@ class App extends Component {
             storeInPersistentState={this.storeInPersistentState}
           />
           <EventsPanel
-            {...this.state.events}
+            events={this.state.events}
             ref={events => this.events = events}
             storeInPersistentState={this.storeInPersistentState}
           />

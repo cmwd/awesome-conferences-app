@@ -10,7 +10,9 @@ function HeaderComponent(props) {
       <Exporter
         getData={props.getData}
       />
-      <Importer />
+      <Importer
+        setData={props.setData}
+      />
       <Menu.Item
         name="reset"
         icon="refresh"
@@ -24,6 +26,7 @@ function HeaderComponent(props) {
 HeaderComponent.propTypes = {
   resetState: PropTypes.func.isRequired,
   getData: PropTypes.func.isRequired,
+  setData: PropTypes.func.isRequired,
 };
 
 export default HeaderComponent;

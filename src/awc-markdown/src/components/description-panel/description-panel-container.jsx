@@ -13,6 +13,10 @@ class DescriptionPanelContainer extends Component {
     };
   }
 
+  componentWillReceiveProps(props) {
+    this.setState(props);
+  }
+
   reset() {
     this.setState(
       DescriptionPanelComponent.defaultProps,

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { uniqueId, omitBy, flowRight, debounce } from 'lodash';
+import { uniqueId, omitBy, flowRight, debounce, pick } from 'lodash';
 
 import EventsPanelComponent from './events-panel-component';
 import EventDetailsComponent from '../event-details/event-details-component';
@@ -11,6 +11,9 @@ const INITIAL_STATE = {
 
 const isUuid = (value, key) =>
   key === 'uuid';
+
+const selectUuid = ({ selectedUuid, events }) =>
+  !selectedUuid.length && events.length ? events[0].uuid : selectedUuid;
 
 const sortByDate = (a, b) => {
   const aStart = Date.parse(a.start_date) || 0;
@@ -28,8 +31,19 @@ class EventsPanelContainer extends Component {
 
     this.state = {
       ...INITIAL_STATE,
-      ...props,
+      ...pick(props, Object.keys(INITIAL_STATE)),
     };
+    this.state.selectedUuid = selectUuid(this.state);
+  }
+
+  componentWillReceiveProps(props) {
+    const { events } = props;
+    const { selectedUuid } = this.state;
+
+    this.setState({
+      ...props,
+      selectedUuid: selectUuid({ events, selectedUuid }),
+    });
   }
 
   getResult() {
@@ -66,9 +80,14 @@ class EventsPanelContainer extends Component {
     };
 
     this.setState(
-      ({ events }) => ({
-        events: [event, ...events],
-      }),
+      ({ events: cEvents, selectedUuid }) => {
+        const events = [event, ...cEvents];
+
+        return {
+          events,
+          selectedUuid: selectUuid({ events, selectedUuid }),
+        };
+      },
       this.props.storeInPersistentState
     );
   };

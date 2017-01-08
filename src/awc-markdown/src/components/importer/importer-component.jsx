@@ -3,14 +3,10 @@ import { Form, Modal, Menu } from 'semantic-ui-react';
 
 function ImporterComponent(props) {
   return (
-    <Modal
-      trigger={<Menu.Item name="import" />}
-    >
+    <Modal trigger={<Menu.Item name="import" />}>
       <Modal.Header children="Import data from markdown file" />
       <Modal.Content>
-        <Form
-          onSubmit={props.handleFormSubmit}
-        >
+        <Form onSubmit={props.handleFormSubmit}>
           <Form.Input
             name="filePath"
             type="file"

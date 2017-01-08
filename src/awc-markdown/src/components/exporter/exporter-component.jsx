@@ -7,16 +7,11 @@ function ExporterComponent(props) {
       trigger={<Menu.Item name="Export" />}
       onOpen={props.handleOpen}
     >
+      <Modal.Header>
+        {props.fileName}
+      </Modal.Header>
       <Modal.Content>
         <Grid>
-          <Grid.Row>
-            <Grid.Column textAlign="center">
-              <Header
-                content={props.fileName}
-                size="small"
-              />
-            </Grid.Column>
-          </Grid.Row>
           <Grid.Row>
             <Grid.Column textAlign="center">
               <Button
