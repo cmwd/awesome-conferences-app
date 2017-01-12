@@ -8,25 +8,25 @@ function HeaderComponent(props) {
   return (
     <Menu>
       <Exporter
-        getData={props.getData}
+        getGlobalState={props.getGlobalState}
       />
       <Importer
-        setData={props.setData}
+        setGlobalState={props.setGlobalState}
       />
       <Menu.Item
         name="reset"
         icon="refresh"
         position="right"
-        onClick={props.resetState}
+        onClick={props.resetGlobalState}
       />
     </Menu>
   );
 }
 
 HeaderComponent.propTypes = {
-  resetState: PropTypes.func.isRequired,
-  getData: PropTypes.func.isRequired,
-  setData: PropTypes.func.isRequired,
+  resetGlobalState: PropTypes.func.isRequired,
+  getGlobalState: PropTypes.func.isRequired,
+  setGlobalState: PropTypes.func.isRequired,
 };
 
 export default HeaderComponent;

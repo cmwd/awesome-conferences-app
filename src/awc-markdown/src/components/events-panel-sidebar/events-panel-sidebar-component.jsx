@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Menu } from 'semantic-ui-react';
 
-import MenuItemComponent from './menu-item-component';
+import MenuItem from './menu-item-component';
 
 function EventsPanelSidebar(props) {
   return (
@@ -13,7 +13,7 @@ function EventsPanelSidebar(props) {
       />
       {
       props.events.map((event, index) =>
-          <MenuItemComponent
+          <MenuItem
             name={event.name}
             key={event.uuid}
             uuid={event.uuid}

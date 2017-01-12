@@ -6,6 +6,7 @@ function MenuItemComponent({ removeEvent, uuid, ...props }) {
     <Menu.Item {...props}>
       <Button
         negative
+        compact
         icon="minus"
         size="mini"
         onClick={

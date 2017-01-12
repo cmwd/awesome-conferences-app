@@ -26,13 +26,13 @@ const parseToJSObject = fileContent => {
 
 class ImporterContainer extends Component {
   static propTypes = {
-    setData: PropTypes.func.isRequired,
+    setGlobalState: PropTypes.func.isRequired,
   };
 
   importFile() {
     const reader = new FileReader();
     const loadHandler = ({ target }) =>
-    this.props.setData(parseToJSObject(target.result));
+    this.props.setGlobalState(parseToJSObject(target.result));
 
     reader.addEventListener('load', loadHandler);
     reader.readAsText(this.file, 'utf-8');

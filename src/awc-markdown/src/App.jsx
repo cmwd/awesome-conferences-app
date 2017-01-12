@@ -1,76 +1,78 @@
 import React, { Component } from 'react';
-import YAML from 'yamljs';
-import { uniqueId, debounce } from 'lodash';
 import { Container } from 'semantic-ui-react';
 
 import DescriptionPanel
   from './components/description-panel/description-panel-container';
 import EventsPanel from './components/events-panel/events-panel-container';
 import Header from './components/header/header-component';
+import LocalStorage from './components/local-storage/local-storage-container';
 
-const PERSIST_STORE_KEY = 'editor-store';
-
-const createIdentifier = props => ({
-  ...props,
-  uuid: props.uuid || uniqueId('uuid-'),
-});
+const PERSISTENT_STORE_KEY = 'editor-store';
 
 class App extends Component {
+  state = {
+    conference: {},
+    events: [],
+  };
+
   constructor(props) {
     super(props);
 
-    const { conference = {}, events = [] } = JSON.parse(
-      localStorage.getItem(PERSIST_STORE_KEY) || '{}');
-
-    this.state = { conference, events };
+    this.setGlobalState = this.setGlobalState.bind(this);
+    this.getGlobalState = this.getGlobalState.bind(this);
+    this.resetGlobalState = this.resetGlobalState.bind(this);
+    this.storeInPersistentData = this.storeInPersistentData.bind(this);
   }
 
-  getData = () => {
+  setGlobalState(state) {
+    this.setState(state);
+  }
+
+  getGlobalState() {
     return {
-      conference: this.conference.state,
-      events: this.events.getResult()
-    };
-  }
-
-  setData = (state) => {
-    this.setState(state, this.storeInPersistentState);
-  };
-
-  storeInPersistentState = debounce(() => {
-    const data = {
       conference: this.conference.state,
       events: this.events.state.events,
     };
+  }
 
-    localStorage.setItem(PERSIST_STORE_KEY, JSON.stringify(data));
-  }, 250);
-
-  resetState = () => {
+  resetGlobalState() {
     this.conference.reset();
     this.events.reset();
-  };
+  }
+
+  storeInPersistentData() {
+    this.storeFn(this.getGlobalState());
+  }
 
   render() {
     return (
-      <div>
+      <LocalStorage
+        storeKey={PERSISTENT_STORE_KEY}
+        ready={state => this.setState(state)}
+        storeFn={(fn) => { this.storeFn = fn; }}
+      >
         <Container>
           <Header
-            resetState={this.resetState}
-            getData={this.getData}
-            setData={this.setData}
+            resetGlobalState={this.resetGlobalState}
+            getGlobalState={this.getGlobalState}
+            setGlobalState={this.setGlobalState}
           />
           <DescriptionPanel
             {...this.state.conference}
-            ref={conference => this.conference = conference}
-            storeInPersistentState={this.storeInPersistentState}
+            ref={(conference) => {
+              this.conference = conference;
+            }}
+            saveInPersistentStore={this.storeInPersistentData}
           />
           <EventsPanel
             events={this.state.events}
-            ref={events => this.events = events}
-            storeInPersistentState={this.storeInPersistentState}
+            ref={(events) => {
+              this.events = events;
+            }}
+            saveInPersistentStore={this.storeInPersistentData}
           />
         </Container>
-      </div>
+      </LocalStorage>
     );
   }
 }

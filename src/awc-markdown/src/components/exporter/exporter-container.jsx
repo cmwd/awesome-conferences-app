@@ -6,7 +6,7 @@ import ExporterComponent from './exporter-component';
 
 class ExporterContainer extends Component {
   static propTypes = {
-    getData: PropTypes.func.isRequired,
+    getGlobalState: PropTypes.func.isRequired,
   };
 
   state = {
@@ -14,11 +14,11 @@ class ExporterContainer extends Component {
   };
 
   serialize = () => {
-    const data = this.props.getData();
-    const fileName = `${snakeCase(data.conference.name)}.md`;
+    const state = this.props.getGlobalState();
+    const fileName = `${snakeCase(state.conference.name)}.md`;
     const result = [
       '```yaml',
-      YAML.stringify(data, 5, 2),
+      YAML.stringify(state, 5, 2),
       '```',
     ].join('\n');
 

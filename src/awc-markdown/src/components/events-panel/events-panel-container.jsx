@@ -29,21 +29,22 @@ class EventsPanelContainer extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
+    const state = {
       ...INITIAL_STATE,
       ...pick(props, Object.keys(INITIAL_STATE)),
     };
-    this.state.selectedUuid = selectUuid(this.state);
+    state.selectedUuid = selectUuid(state);
+
+    this.state = state;
   }
 
   componentWillReceiveProps(props) {
     const { events } = props;
-    const { selectedUuid } = this.state;
 
-    this.setState({
-      ...props,
+    this.setState(({ selectedUuid }) => ({
+      events,
       selectedUuid: selectUuid({ events, selectedUuid }),
-    });
+    }));
   }
 
   getResult() {
@@ -55,7 +56,7 @@ class EventsPanelContainer extends Component {
   }
 
   reset() {
-    this.setState(INITIAL_STATE, this.props.storeInPersistentState);
+    this.setState(INITIAL_STATE, this.props.saveInPersistentStore);
   }
 
   getSelectedEventIndex() {
@@ -68,7 +69,7 @@ class EventsPanelContainer extends Component {
       ({ events }) => ({
         events: events.sort(sortByDate),
       }),
-      this.props.storeInPersistentState
+      this.props.saveInPersistentStore
     );
   }, 500);
 
@@ -88,7 +89,7 @@ class EventsPanelContainer extends Component {
           selectedUuid: selectUuid({ events, selectedUuid }),
         };
       },
-      this.props.storeInPersistentState
+      this.props.saveInPersistentStore
     );
   };
 
@@ -102,7 +103,7 @@ class EventsPanelContainer extends Component {
       return { events, selectedUuid };
     };
 
-    this.setState(handler, this.props.storeInPersistentState);
+    this.setState(handler, this.props.saveInPersistentStore);
   };
 
   updateEvent = (uuid, prop) => {
@@ -111,7 +112,7 @@ class EventsPanelContainer extends Component {
         events: events.map(event =>
           event.uuid === uuid ? { ...event, ...prop } : event),
       }),
-      flowRight([this.props.storeInPersistentState, this.sortEventsByDate])
+      flowRight([this.props.saveInPersistentStore, this.sortEventsByDate])
      );
   };
 

@@ -20,7 +20,11 @@ function DescriptionPanelComponent(props) {
         onChange={props.updateDescription}
       />
       <Grid>
-        <Grid.Column tablet="8" mobile="16">
+        <Grid.Column
+          computer="8"
+          tablet="8"
+          mobile="16"
+        >
           <Form.Input
             type="text"
             name="web"
@@ -38,7 +42,11 @@ function DescriptionPanelComponent(props) {
             onChange={props.updateDescription}
           />
         </Grid.Column>
-        <Grid.Column tablet="8" mobile="16">
+        <Grid.Column
+          computer="8"
+          tablet="8"
+          mobile="16"
+        >
           <Form.Input
             type="text"
             name="twitter_id"

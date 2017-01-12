@@ -14,20 +14,21 @@ class DescriptionPanelContainer extends Component {
   }
 
   componentWillReceiveProps(props) {
-    this.setState(props);
+    this.setState(
+      pick(props, Object.keys(DescriptionPanelComponent.defaultProps)));
   }
 
   reset() {
     this.setState(
       DescriptionPanelComponent.defaultProps,
-      this.props.storeInPersistentState
+      this.props.saveInPersistentStore
     );
   }
 
   updateDescription = (event, { name, value }) => {
     this.setState(
       () => ({ [name]: value }),
-      this.props.storeInPersistentState
+      this.props.saveInPersistentStore
     );
   };
 
