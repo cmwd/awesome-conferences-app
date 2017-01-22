@@ -17,12 +17,9 @@ services:
       - NODE_ENV=production
   editor:
     build: ./src/editor/
-    restart: on-failure:20
     volumes:
       - ./src/editor:/var/www/editor
       - /var/www/editor/node_modules
-    ports:
-      - "8003"
   mongo:
     image: mongo
     restart: unless-stopped
@@ -45,3 +42,4 @@ services:
       - editor
     links:
       - editor
+      - api

@@ -1,7 +1,7 @@
 server {
   listen 80;
   server_name editor.awc.local;
-  access_log /var/log/nginx/awesome_conferences_development.log;
+  access_log /var/log/nginx/awesome_conferences_editor_development.log;
   charset utf-8;
   error_page 404 /404.html;
   error_page 500 502 503 504 /50x.html;
@@ -23,3 +23,21 @@ server {
     index index.html index.htm;
   }
 }
+
+server {
+  listen 80;
+  server_name api.awc.local;
+  access_log /var/log/awesome_conferences_api_development.log;
+  charset utf-8;
+
+  location / {
+    include 'common-config/base_api';
+
+    add_header 'Access-Control-Allow-Origin' 'http://api.awc.local';
+
+    if ($request_method = OPTIONS) {
+      return 204;
+    }
+  }
+}
+

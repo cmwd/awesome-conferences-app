@@ -34,20 +34,20 @@ server {
   }
 }
 
-#server {
-  #listen 80;
-  #server_name api.awesome-conferences.com;
+server {
+  listen 80;
+  server_name api.awesome-conferences.com;
 
-  #location / {
-    #include 'common-config/base_api';
+  location / {
+    include 'common-config/base_api';
 
-    #add_header 'Access-Control-Allow-Origin' 'http://www.awesome-conferences.com';
+    add_header 'Access-Control-Allow-Origin' 'http://www.awesome-conferences.com';
 
-    #if ($request_method = OPTIONS) {
-      #return 204;
-    #}
- #}
-#}
+    if ($request_method = OPTIONS) {
+      return 204;
+    }
+ }
+}
 
 server {
   listen 80;
