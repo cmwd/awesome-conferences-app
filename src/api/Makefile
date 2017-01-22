@@ -1,7 +1,7 @@
 # APP CONFIG
 APP_DIR=.
 # TOOLS
-MOCHA=./node_modules/.bin/mocha
+JEST=./node_modules/.bin/jest
 NODEMON=./node_modules/.bin/nodemon
 
 # APP
@@ -34,13 +34,7 @@ test:
 	NODE_PATH=$(APP_DIR) \
 	DB_NAME=$(TEST_DB_NAME) \
 	APP_PORT=$(TEST_APP_PORT) \
-	$(MOCHA) \
-		--reporter $(REPORTER) \
-		--ui tdd \
-		--require co-mocha \
-		--full-trace \
-		$(if $(grep), --grep $(grep)) \
-		$(TEST_PATH)
+	$(JEST)
 
 test-watch:
 	$(info Run tests and set watch for $(TEST_PATH))
@@ -49,15 +43,9 @@ test-watch:
 	NODE_PATH=$(APP_DIR) \
 	DB_NAME=$(TEST_DB_NAME) \
 	APP_PORT=$(TEST_APP_PORT) \
-	$(NODEMON) \
-		--quiet \
-		--exec " \
-				$(MOCHA) \
-		 			--reporter $(REPORTER) \
-		 			--ui tdd \
-					--require co-mocha \
-					$(if $(grep), --grep $(grep)) \
-		 			--growl $(TEST_PATH) || true"
+	$(JEST) \
+		--watch
+
 
 test-inspector:
 	$(info Run tests inspector for $(TEST_PATH))
@@ -65,13 +53,8 @@ test-inspector:
 	@NODE_ENV=$(ENV_TEST) \
 	NODE_PATH=$(APP_DIR) \
 	DB_NAME=$(TEST_DB_NAME) \
-	$(MOCHA) \
+	$(JEST) \
 		--inspect \
-		--debug-brk \
-		--reporter $(REPORTER) \
-		--ui tdd \
-		--require co-mocha \
-		$(if $(grep), --grep $(grep)) \
-		$(TEST_PATH)
+		--debug-brk
 
 .PHONY: run run-dev run-inspector test test-watch test-inspector

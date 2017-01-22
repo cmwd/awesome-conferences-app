@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "make run",
+    "start-dev": "make run-dev",
     "test": "make test"
   },
   "author": "",
@@ -19,27 +20,33 @@
     "express-pino-logger": "^1.1.0",
     "global": "^4.3.0",
     "http-errors": "^1.5.0",
+    "jest": "^18.1.0",
     "jsonwebtoken": "^7.1.9",
     "lodash": "^4.13.1",
     "mongoose": "^4.6.6",
     "mongoose-url-slugs": "^0.2.1",
     "node-fetch": "^1.5.3",
+    "node-yaml": "^3.0.3",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "pino": "^2.9.0",
+    "supertest": "^2.0.1",
     "validator": "^6.0.0"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
-    "co-mocha": "^1.1.3",
-    "mocha": "^3.1.2",
-    "nodemon": "^1.11.0",
-    "proxyquire": "^1.7.10",
-    "sinon": "^1.17.6",
-    "sinon-as-promised": "^4.0.2",
-    "supertest": "^2.0.1"
+    "nodemon": "^1.11.0"
   },
   "engines": {
     "node": "6.6.0"
+  },
+  "jest": {
+    "rootDir": "",
+    "testRegex": "/__test__/",
+    "moduleFileExtensions": [
+      "js",
+      "jsx"
+    ],
+    "testEnvironment": "node",
+    "verbose": true
   }
 }
