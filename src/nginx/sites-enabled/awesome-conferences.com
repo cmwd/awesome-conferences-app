@@ -1,6 +1,25 @@
+#server {
+  #listen 80;
+  #server_name www.awesome-conferences.com;
+  #access_log /var/log/nginx/awesome_conferences_production.log;
+  #charset utf-8;
+  #error_page 404 /404.html;
+  #error_page 500 502 503 504 /50x.html;
+
+  #location /404.html {
+    #root /var/www/web/error;
+    #internal;
+  #}
+
+  #location /50x.html {
+    #root /var/www/web/error;
+    #internal;
+  #}
+#}
+
 server {
   listen 80;
-  server_name www.awesome-conferences.com;
+  server_name editor.awesome-conferences.com;
   access_log /var/log/nginx/awesome_conferences_production.log;
   charset utf-8;
   error_page 404 /404.html;
@@ -15,16 +34,6 @@ server {
     root /var/www/web/error;
     internal;
   }
-
-  location /public/ {
-    root /var/www/web;
-    index index.html index.htm;
-  }
-}
-
-server {
-  listen 80;
-  server_name editor.awesome-conferences.com;
 
   location / {
     auth_basic "Restricted";

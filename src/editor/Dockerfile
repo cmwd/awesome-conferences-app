@@ -1,4 +1,4 @@
-FROM node:6.6.0-wheezy
+FROM node:7.4.0-wheezy
 
 MAINTAINER cmwd <pwojtkowiak@gmail.com>
 
@@ -7,6 +7,7 @@ RUN mkdir -p /var/www/editor && \
 COPY . /var/www/editor
 WORKDIR /var/www/editor
 
-RUN $HOME/.yarn/bin/yarn install
+RUN $HOME/.yarn/bin/yarn --pure-lockfile
 
-CMD ["npm", "build"]
+CMD npm run build
+

@@ -4,9 +4,14 @@ MAINTAINER cmwd <pwojtkowiak@gmail.com>
 
 RUN mkdir -p /var/www/api && \
   curl -o- -L https://yarnpkg.com/install.sh | bash
-COPY . /var/www/api
-WORKDIR /var/www/api
 
-RUN $HOME/.yarn/bin/yarn install
+ADD package.json yarn.lock /tmp/
+RUN cd /tmp && $HOME/.yarn/bin/yarn --pure-lockfile && \
+  mkdir -p /opt/app && cp -a /tmp/node_modules /opt/app/
+
+WORKDIR /opt/app
+ADD . /opt/app
+
+EXPOSE 8002
 
 CMD ["npm", "start"]
