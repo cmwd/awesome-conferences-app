@@ -4,5 +4,9 @@ MAINTAINER cmwd <pwojtkowiak@gmail.com>
 
 RUN mkdir -p /app
 ADD ./temp/build.tar.gz /app/
+WORKDIR /app
 
-ENTRYPOINT /app
+ENV NODE_PATH=.
+ENV NODE_ENV=production
+
+ENTRYPOINT node ./index.js

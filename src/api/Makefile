@@ -20,18 +20,18 @@ install:
 
 run:
 	@NODE_PATH=$(APP_DIR) \
-		node ./server.js
+		node ./index.js
 
 run-dev:
 	@NODE_PATH=$(APP_DIR) \
-		supervisor -n -w src ./server.js
+		supervisor -n -w src ./index.js
 
 run-inspector:
 	@NODE_PATH=$(APP_DIR) \
 		node \
 			--inspect \
 			--debug-brk \
-			./server.js
+			./index.js
 
 # TESTS
 TEST_PATH=./test/**/*.test.js
