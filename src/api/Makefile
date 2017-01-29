@@ -3,8 +3,21 @@ APP_DIR=.
 # TOOLS
 JEST=./node_modules/.bin/jest
 NODEMON=./node_modules/.bin/nodemon
+REPO=cmwd/awesome-conferences-api
+BUILD_IMAGE=$(REPO)_build
+BUILD_NUMBER=$(TRAVIS_BUILD_NUMBER)
 
-# APP
+ifndef TAG
+  TAG=local-env__$(shell git rev-parse --abbrev-ref HEAD)
+endif
+
+ifndef TRAVIS_BUILD_NUMBER
+  BUILD_NUMBER=local-env__$(shell date +'%y-%m-%d_%H%M%S')
+endif
+
+install:
+	yarn install
+
 run:
 	@NODE_PATH=$(APP_DIR) \
 		node ./server.js
@@ -57,4 +70,15 @@ test-inspector:
 		--inspect \
 		--debug-brk
 
-.PHONY: run run-dev run-inspector test test-watch test-inspector
+build:
+	$(info Build docker image)
+	mkdir -p ./temp/
+	docker build -t $(BUILD_IMAGE)-$(BUILD_NUMBER) -f dockerfile.build .
+	docker run $(BUILD_IMAGE)-$(BUILD_NUMBER) > ./temp/build.tar.gz
+	docker build -t $(REPO):$(BUILD_NUMBER) -f dockerfile.dist .
+
+push:
+	docker tag $(REPO):$(BUILD_NUMBER) $(REPO):$(TAG)
+	docker push $(REPO)
+
+.PHONY: run run-dev run-inspector test test-watch test-inspector install build push

@@ -1,0 +1,8 @@
+FROM node:7.4.0-wheezy
+
+MAINTAINER cmwd <pwojtkowiak@gmail.com>
+
+RUN mkdir -p /app
+ADD ./temp/build.tar.gz /app/
+
+ENTRYPOINT /app

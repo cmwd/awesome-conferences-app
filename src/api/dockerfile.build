@@ -1,0 +1,14 @@
+FROM node:7.4.0-wheezy
+
+MAINTAINER cmwd <pwojtkowiak@gmail.com>
+
+RUN mkdir -p /tmp/build
+ADD . /tmp/build
+
+RUN npm install -g yarn
+
+WORKDIR /tmp/build
+RUN yarn --pure-lockfile
+
+CMD tar -czf - .
+

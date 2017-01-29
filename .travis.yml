@@ -1,0 +1,30 @@
+sudo: required
+language: node_js
+cache: yarn
+node_js: '7'
+env:
+  global:
+    - COMMIT=${TRAVIS_COMMIT::8}
+services:
+  - docker
+before_install:
+  - npm install -g yarn
+  - yarn --version
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "$MASTER_BRANCH" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+install:
+  - make -C ./src/api install
+  - make -C ./src/editor install
+script:
+  - make -C ./src/editor test
+  - make -C ./src/api test
+  - if [ "$TRAVIS_BRANCH" == "$MASTER_BRANCH" ];
+    then
+      docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD";
+      make -C ./src/editor build;
+      make -C ./src/api build;
+      make -C ./src/webserver build;
+      make -C ./src/editor push;
+      make -C ./src/api push;
+      make -C ./src/webserver push;
+    fi
+

@@ -6,3 +6,4 @@ editor-project-file.sublime-*
 docker-compose.override.yml
 docker-compose.production.yml
 *.swp
+temp/
