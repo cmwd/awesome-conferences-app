@@ -1,8 +1,8 @@
 const { Promise, process } = require('global');
 const mongoose = require('mongoose');
-const { DB_NAME, DB_URL } = require('config');
+const { DB_NAME, DB_ADDRESS } = require('config');
 
-const ADDRESS = `${DB_URL}/${DB_NAME}`;
+const ADDRESS = `${DB_ADDRESS}/${DB_NAME}`;
 
 mongoose.Promise = Promise;
 

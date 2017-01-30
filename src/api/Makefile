@@ -44,31 +44,31 @@ test:
 	$(info Run tests for $(TEST_PATH))
 
 	@NODE_ENV=$(ENV_TEST) \
-	NODE_PATH=$(APP_DIR) \
-	DB_NAME=$(TEST_DB_NAME) \
-	APP_PORT=$(TEST_APP_PORT) \
-	$(JEST)
+    NODE_PATH=$(APP_DIR) \
+    DB_NAME=$(TEST_DB_NAME) \
+    APP_PORT=$(TEST_APP_PORT) \
+    $(JEST)
 
 test-watch:
 	$(info Run tests and set watch for $(TEST_PATH))
 
 	@NODE_ENV=$(ENV_TEST) \
-	NODE_PATH=$(APP_DIR) \
-	DB_NAME=$(TEST_DB_NAME) \
-	APP_PORT=$(TEST_APP_PORT) \
-	$(JEST) \
-		--watch
+    NODE_PATH=$(APP_DIR) \
+    DB_NAME=$(TEST_DB_NAME) \
+    APP_PORT=$(TEST_APP_PORT) \
+    $(JEST) \
+      --watch
 
 
 test-inspector:
 	$(info Run tests inspector for $(TEST_PATH))
 
 	@NODE_ENV=$(ENV_TEST) \
-	NODE_PATH=$(APP_DIR) \
-	DB_NAME=$(TEST_DB_NAME) \
-	$(JEST) \
-		--inspect \
-		--debug-brk
+    NODE_PATH=$(APP_DIR) \
+    DB_NAME=$(TEST_DB_NAME) \
+    $(JEST) \
+      --inspect \
+      --debug-brk
 
 build:
 	$(info Build docker image)

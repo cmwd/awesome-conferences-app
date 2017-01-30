@@ -5,8 +5,10 @@ node_js: '7'
 env:
   global:
     - COMMIT=${TRAVIS_COMMIT::8}
+    - DB_ADDRESS=mongodb://127.0.0.1:27017
 services:
   - docker
+  - mongodb
 before_install:
   - npm install -g yarn
   - yarn --version
