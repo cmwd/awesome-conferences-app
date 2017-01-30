@@ -2,4 +2,4 @@ FROM debian:jessie
 
 RUN mkdir -p /var/www/editor
 ADD ./temp/build.tar.gz /var/www/editor
-ENTRYPOINT /var/www/editor
+ENTRYPOINT echo "Done" && exit 0;

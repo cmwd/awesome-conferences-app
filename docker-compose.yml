@@ -1,25 +1,19 @@
 version: "2"
 services:
   api:
-    build: ./src/api/
+    image: cmwd/awesome-conferences-api
     restart: on-failure:20
-    volumes:
-      - ./src/api/:/var/www/api
-      - /var/www/api/node_modules
     ports:
       - "8002"
     links:
       - mongo
     environment:
       - DB_URL=mongodb://mongo:27017
-      - COLLECTORS_ADDRESS=http://collectors:8001
       - APP_PORT=8002
-      - NODE_ENV=production
   editor:
-    build: ./src/editor/
+    image: cmwd/awesome-conferences-editor
     volumes:
-      - ./src/editor:/var/www/editor
-      - /var/www/editor/node_modules
+      - /var/www/editor
   mongo:
     image: mongo
     restart: unless-stopped
@@ -31,13 +25,11 @@ services:
       image: tianon/true
       volumes:
         - /data/db
-  nginx:
-    build: ./src/nginx/
+  webserver:
+    image: cmwd/awesome-conferences-webserver
     restart: unless-stopped
     ports:
       - "80:80"
-    volumes:
-      - /var/www/editor
     volumes_from:
       - editor
     links:

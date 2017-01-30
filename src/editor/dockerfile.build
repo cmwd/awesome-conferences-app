@@ -7,8 +7,8 @@ ADD . /tmp/build
 
 RUN npm install -g yarn
 
-WORKDIR /tmp/build
+WORKDIR /tmp/build/
 RUN yarn --pure-lockfile && npm run build
 
-CMD tar -czf - build
+CMD tar -czf - build/
 

@@ -17,7 +17,7 @@ server {
   }
 
   location / {
-    root /var/www/editor/build/;
+    root /var/www/editor/build;
     index index.html index.htm;
   }
 }
