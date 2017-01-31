@@ -1,16 +1,11 @@
 const HTTPError = require('http-errors');
-const {
-  userController,
-  authenticateController,
-  githubIntegrationController,
-  conferenceController,
-} = require('./controller/index');
+const ConferenceController = require('./controller/conference-controller');
+const GithubIntegrationController =
+  require('./controller/github-integration-controller');
 
 module.exports = (app) => {
   app
-    .use('/user', userController)
-    .use('/authenticate', authenticateController)
-    .use('/github', githubIntegrationController)
-    .use('/conference', conferenceController)
+    .use('/github', GithubIntegrationController)
+    .use('/conference', ConferenceController)
     .get('*', (req, res, next) => next(HTTPError.NotFound()));
 };
