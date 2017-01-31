@@ -7,7 +7,6 @@ const { APP_PORT, NODE_ENV } = require('config');
 const app = express()
   .use(pinoMiddleware({ logger }));
 
-require('middleware/authentication')(app);
 require('router')(app);
 
 database({
