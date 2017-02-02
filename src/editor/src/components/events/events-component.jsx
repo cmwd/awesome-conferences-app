@@ -1,62 +1,53 @@
 import React, { PropTypes } from 'react';
-import { Table, Button } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
+import EventsTable from './events-table-component';
+import EventEditor from './event-editor-component';
 
 function EventsComponent(props) {
-  const addButton = (
-    <Button
-      positive
-      as={Link}
-      to={`/event/create`}
-      floated="right"
-      size="mini"
-      icon="plus"
-      content="Event"
-    />
-  );
-  const tableBody = props.events.map(event => (
-    <Table.Row key={event.uuid}>
-      <Table.Cell>{event.name}</Table.Cell>
-      <Table.Cell>
-        <Button
-          primary
-          as={Link}
-          to={`/event/${event.uuid}`}
-          floated="right"
-          size="mini"
-          icon="edit"
-          content="edit"
-        />
-        <Button
-          negative
-          floated="right"
-          size="mini"
-          icon="minus"
-          onClick={
-            () => props.removeEvent(event.uuid)
-          }
-        />
-      </Table.Cell>
-    </Table.Row>
-  ));
-
   return (
-    <Table>
-      <Table.Header>
-        <Table.Row>
-          <Table.HeaderCell colSpan="2">{addButton}</Table.HeaderCell>
-        </Table.Row>
-      </Table.Header>
-      <Table.Body>{tableBody}</Table.Body>
-    </Table>
+    <div>
+      <Switch>
+        <Route
+          exact
+          path="/event/create"
+          component={(route) => {
+            const onSave = (event) => {
+              props.createEvent(event);
+              route.push('/');
+            };
+
+            return (<EventEditor onSave={onSave} create />);
+          }}
+        />
+        <Route
+          path="/event/:uuid"
+          component={(route) => {
+            const { uuid } = route.match.params;
+            const event = props.find(uuid);
+            const onSave = (newEventState) => {
+              props.updateEvent(Object.assign({ uuid }, newEventState));
+              route.push('/');
+            };
+
+            return event
+              ? (<EventEditor {...event} onSave={onSave} />)
+              : (<Redirect to="/event/create" />);
+          }}
+        />
+        <Route
+          path="/"
+          component={() => (
+            <EventsTable {...props} />
+          )}
+        />
+      </Switch>
+    </div>
   );
 }
 
 EventsComponent.propTypes = {
-  events: PropTypes.array.isRequired,
-  createEvent: PropTypes.func.isRequired,
-  updateEvent: PropTypes.func.isRequired,
-  removeEvent: PropTypes.func.isRequired,
+  find: PropTypes.func.isRequired,
 };
 
 export default EventsComponent;
+

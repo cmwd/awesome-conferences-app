@@ -7,17 +7,23 @@ const INITIAL_STATE = {
   events: [],
 };
 
-class EventsPanelContainer extends Component {
+class EventsContainer extends Component {
   constructor(props) {
     super(props);
     this.createEvent = this.createEvent.bind(this);
     this.updateEvent = this.updateEvent.bind(this);
     this.removeEvent = this.removeEvent.bind(this);
+    this.find = this.find.bind(this);
     this.state = INITIAL_STATE;
   }
 
+  find(uuid) {
+    return this.state.events.find(event =>
+      event.uuid === uuid);
+  }
+
   createEvent(props) {
-    const event = Object.assign({}, { uuid: uniqueId('uuid-') }, props);
+    const event = Object.assign({}, { uuid: uniqueId('event-') }, props);
     this.setState(({ events }) =>
       ({ events: [event, ...events] }));
   }
@@ -28,11 +34,11 @@ class EventsPanelContainer extends Component {
     }));
   }
 
-  updateEvent(uuid, prop) {
+  updateEvent(event) {
     this.setState(
       ({ events }) => ({
-        events: events.map(event =>
-          event.uuid === uuid ? { ...event, ...prop } : event),
+        events: events.map(stateEvent =>
+          stateEvent.uuid === event.uuid ? event : stateEvent),
       }));
   }
 
@@ -40,6 +46,7 @@ class EventsPanelContainer extends Component {
     return (
       <EventsComponent
         {...this.state}
+        find={this.find}
         createEvent={this.createEvent}
         updateEvent={this.updateEvent}
         removeEvent={this.removeEvent}
@@ -48,5 +55,5 @@ class EventsPanelContainer extends Component {
   }
 }
 
-export default EventsPanelContainer;
+export default EventsContainer;
 
