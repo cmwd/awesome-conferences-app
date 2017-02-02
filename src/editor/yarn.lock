@@ -233,7 +233,7 @@ babel-code-frame@^6.11.0, babel-code-frame@^6.16.0, babel-code-frame@^6.22.0:
     esutils "^2.0.2"
     js-tokens "^3.0.0"
 
-babel-core@6.17.0:
+babel-core@6.17.0, babel-core@^6.0.0:
   version "6.17.0"
   resolved "https://registry.yarnpkg.com/babel-core/-/babel-core-6.17.0.tgz#6c4576447df479e241e58c807e4bc7da4db7f425"
   dependencies:
@@ -259,7 +259,7 @@ babel-core@6.17.0:
     slash "^1.0.0"
     source-map "^0.5.0"
 
-babel-core@^6.0.0, babel-core@^6.22.0:
+babel-core@^6.22.0:
   version "6.22.1"
   resolved "https://registry.yarnpkg.com/babel-core/-/babel-core-6.22.1.tgz#9c5fd658ba1772d28d721f6d25d968fc7ae21648"
   dependencies:
@@ -313,7 +313,7 @@ babel-helper-builder-binary-assignment-operator-visitor@^6.22.0:
     babel-runtime "^6.22.0"
     babel-types "^6.22.0"
 
-babel-helper-builder-react-jsx@^6.22.0, babel-helper-builder-react-jsx@^6.8.0:
+babel-helper-builder-react-jsx@^6.8.0:
   version "6.22.0"
   resolved "https://registry.yarnpkg.com/babel-helper-builder-react-jsx/-/babel-helper-builder-react-jsx-6.22.0.tgz#aafb31913e47761fd4d0b6987756a144a65fca0d"
   dependencies:
@@ -617,7 +617,7 @@ babel-plugin-transform-es2015-object-super@^6.22.0, babel-plugin-transform-es201
     babel-helper-replace-supers "^6.22.0"
     babel-runtime "^6.22.0"
 
-babel-plugin-transform-es2015-parameters@6.18.0:
+babel-plugin-transform-es2015-parameters@6.18.0, babel-plugin-transform-es2015-parameters@^6.6.0:
   version "6.18.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-es2015-parameters/-/babel-plugin-transform-es2015-parameters-6.18.0.tgz#9b2cfe238c549f1635ba27fc1daa858be70608b1"
   dependencies:
@@ -628,7 +628,7 @@ babel-plugin-transform-es2015-parameters@6.18.0:
     babel-traverse "^6.18.0"
     babel-types "^6.18.0"
 
-babel-plugin-transform-es2015-parameters@^6.22.0, babel-plugin-transform-es2015-parameters@^6.6.0:
+babel-plugin-transform-es2015-parameters@^6.22.0:
   version "6.22.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-es2015-parameters/-/babel-plugin-transform-es2015-parameters-6.22.0.tgz#57076069232019094f27da8c68bb7162fe208dbb"
   dependencies:
@@ -728,7 +728,7 @@ babel-plugin-transform-react-jsx-source@6.9.0, babel-plugin-transform-react-jsx-
     babel-plugin-syntax-jsx "^6.8.0"
     babel-runtime "^6.9.0"
 
-babel-plugin-transform-react-jsx@6.8.0:
+babel-plugin-transform-react-jsx@6.8.0, babel-plugin-transform-react-jsx@^6.3.13:
   version "6.8.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-react-jsx/-/babel-plugin-transform-react-jsx-6.8.0.tgz#94759942f70af18c617189aa7f3593f1644a71ab"
   dependencies:
@@ -736,15 +736,7 @@ babel-plugin-transform-react-jsx@6.8.0:
     babel-plugin-syntax-jsx "^6.8.0"
     babel-runtime "^6.0.0"
 
-babel-plugin-transform-react-jsx@^6.3.13:
-  version "6.22.0"
-  resolved "https://registry.yarnpkg.com/babel-plugin-transform-react-jsx/-/babel-plugin-transform-react-jsx-6.22.0.tgz#48556b7dd4c3fe97d1c943bcd54fc3f2561c1817"
-  dependencies:
-    babel-helper-builder-react-jsx "^6.22.0"
-    babel-plugin-syntax-jsx "^6.8.0"
-    babel-runtime "^6.22.0"
-
-babel-plugin-transform-regenerator@6.16.1:
+babel-plugin-transform-regenerator@6.16.1, babel-plugin-transform-regenerator@^6.6.0:
   version "6.16.1"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-regenerator/-/babel-plugin-transform-regenerator-6.16.1.tgz#a75de6b048a14154aae14b0122756c5bed392f59"
   dependencies:
@@ -752,7 +744,7 @@ babel-plugin-transform-regenerator@6.16.1:
     babel-types "^6.16.0"
     private "~0.1.5"
 
-babel-plugin-transform-regenerator@^6.22.0, babel-plugin-transform-regenerator@^6.6.0:
+babel-plugin-transform-regenerator@^6.22.0:
   version "6.22.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-regenerator/-/babel-plugin-transform-regenerator-6.22.0.tgz#65740593a319c44522157538d690b84094617ea6"
   dependencies:
@@ -1032,14 +1024,14 @@ browserify-zlib@^0.1.4:
   dependencies:
     pako "~0.2.0"
 
-browserslist@^1.0.1, browserslist@^1.4.0, browserslist@^1.5.2:
+browserslist@^1.0.1, browserslist@^1.5.2:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-1.7.0.tgz#738df5b2971354d198b2fbd5a22c560d2d896084"
   dependencies:
     caniuse-db "^1.0.30000617"
     electron-to-chromium "^1.2.1"
 
-browserslist@~1.4.0:
+browserslist@^1.4.0, browserslist@~1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-1.4.0.tgz#9cfdcf5384d9158f5b70da2aa00b30e8ff019049"
   dependencies:
@@ -2417,6 +2409,16 @@ he@1.1.x:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/he/-/he-1.1.1.tgz#93410fd21b009735151f8868c2f271f3427e23fd"
 
+history@^4.5.1:
+  version "4.5.1"
+  resolved "https://registry.yarnpkg.com/history/-/history-4.5.1.tgz#44935a51021e3b8e67ebac267a35675732aba569"
+  dependencies:
+    invariant "^2.2.1"
+    loose-envify "^1.2.0"
+    resolve-pathname "^2.0.0"
+    value-equal "^0.2.0"
+    warning "^3.0.0"
+
 hoek@2.x.x:
   version "2.16.3"
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-2.16.3.tgz#20bb7403d3cea398e91dc4710a8ff1b8274a25ed"
@@ -2592,7 +2594,7 @@ interpret@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.0.1.tgz#d579fb7f693b858004947af39fa0db49f795602c"
 
-invariant@^2.2.0:
+invariant@^2.2.0, invariant@^2.2.1, invariant@^2.2.2:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.2.tgz#9e1f56ac0acdb6bf303306f338be3b204ae60360"
   dependencies:
@@ -3323,7 +3325,7 @@ longest@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/longest/-/longest-1.0.1.tgz#30a0b2da38f73770e8294a0d22e6625ed77d0097"
 
-loose-envify@^1.0.0, loose-envify@^1.1.0:
+loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.2.0, loose-envify@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.3.1.tgz#d1a8ad33fa9ce0e713d65fdd0ac8b748d478c848"
   dependencies:
@@ -3802,6 +3804,12 @@ path-to-regexp@0.1.7:
   version "0.1.7"
   resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-0.1.7.tgz#df604178005f522f15eb4490e7247a1bfaa67f8c"
 
+path-to-regexp@^1.5.3:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-1.7.0.tgz#59fde0f435badacba103a84e9d3bc64e96b9937d"
+  dependencies:
+    isarray "0.0.1"
+
 path-type@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-1.1.0.tgz#59c44f7ee491da704da415da5a4070ba4f8fe441"
@@ -4253,6 +4261,23 @@ react-dom@^15.4.1:
     loose-envify "^1.1.0"
     object-assign "^4.1.0"
 
+react-router-dom@next:
+  version "4.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-4.0.0-beta.4.tgz#788f26a8cfd2669e6d615380da0ccefb33a941b1"
+  dependencies:
+    history "^4.5.1"
+    react-router "^4.0.0-beta.4"
+
+react-router@^4.0.0-beta.4:
+  version "4.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/react-router/-/react-router-4.0.0-beta.4.tgz#6ab21755525ae3dfe7cca5e0176b05385a7b854d"
+  dependencies:
+    history "^4.5.1"
+    invariant "^2.2.2"
+    loose-envify "^1.3.1"
+    path-to-regexp "^1.5.3"
+    warning "^3.0.0"
+
 react-scripts@^0.8.5:
   version "0.8.5"
   resolved "https://registry.yarnpkg.com/react-scripts/-/react-scripts-0.8.5.tgz#5dc154617be7addef5022c261b96b3e3068418cb"
@@ -4539,6 +4564,10 @@ requires-port@1.0.x, requires-port@1.x.x:
 resolve-from@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/resolve-from/-/resolve-from-1.0.1.tgz#26cbfe935d1aeeeabb29bc3fe5aeb01e93d44226"
+
+resolve-pathname@^2.0.0:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/resolve-pathname/-/resolve-pathname-2.0.2.tgz#e55c016eb2e9df1de98e85002282bfb38c630436"
 
 resolve@1.1.7, resolve@1.1.x:
   version "1.1.7"
@@ -5155,6 +5184,10 @@ validate-npm-package-license@^3.0.1:
     spdx-correct "~1.0.0"
     spdx-expression-parse "~1.0.0"
 
+value-equal@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/value-equal/-/value-equal-0.2.0.tgz#4f41c60a3fc011139a2ec3d3340a8998ae8b69c0"
+
 vary@~1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.0.tgz#e1e5affbbd16ae768dd2674394b9ad3022653140"
@@ -5180,6 +5213,12 @@ walker@~1.0.5:
   resolved "https://registry.yarnpkg.com/walker/-/walker-1.0.7.tgz#2f7f9b8fd10d677262b18a884e28d19618e028fb"
   dependencies:
     makeerror "1.0.x"
+
+warning@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/warning/-/warning-3.0.0.tgz#32e5377cb572de4ab04753bdf8821c01ed605b7c"
+  dependencies:
+    loose-envify "^1.0.0"
 
 watch@~0.10.0:
   version "0.10.0"
