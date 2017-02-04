@@ -17,6 +17,11 @@ function EventsEditor(props) {
         className="row"
         onSubmit={onSubmit}
       >
+        <Form.Input
+          type="hidden"
+          name="uuid"
+          value={props.uuid}
+        />
         <Grid.Column width="16">
           <Header
             as="h2"
@@ -71,19 +76,20 @@ function EventsEditor(props) {
           <Switch>
             <Route
               exact
-              path={`${props.path}`}
+              path={props.path}
               component={EventTalks}
             />
             <Route
-              path={`${props.path}/talk/add`}
+              path={`${props.path}/talk`}
               component={() => (
                 <EventTalkEditor
                   previousRoute={props.path}
+                  talks={props.talks}
                 />
               )}
             />
             <Route
-              path={`${props.path}/talk/:uuid`}
+              path={`${props.path}/:uuid`}
               component={EventTalkEditor}
             />
           </Switch>
@@ -104,6 +110,8 @@ EventsEditor.propTypes = {
   name: PropTypes.string,
   talks: PropTypes.array,
   onSave: PropTypes.func.isRequired,
+  uuid: PropTypes.string.isRequired,
+  path: PropTypes.string.isRequired,
 };
 
 export default EventsEditor;

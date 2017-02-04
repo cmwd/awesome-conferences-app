@@ -10,7 +10,7 @@ function TableRow(props) {
         <Button
           primary
           as={Link}
-          to={`/event/${props.uuid}`}
+          to={`/${props.uuid}`}
           floated="right"
           size="mini"
           icon="edit"
@@ -49,7 +49,7 @@ function EventsTableComponent(props) {
             <Button
               positive
               as={Link}
-              to={'/event/create'}
+              to={'/create'}
               floated="right"
               size="mini"
               icon="plus"
@@ -78,7 +78,7 @@ function EventsTableComponent(props) {
 }
 
 EventsTableComponent.propTypes = {
-  events: PropTypes.array
+  events: PropTypes.array,
 };
 
 export default EventsTableComponent;

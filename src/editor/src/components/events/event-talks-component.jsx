@@ -4,16 +4,20 @@ import { Link } from 'react-router-dom';
 
 
 function EventTalks(props) {
-  console.log(props);
   return (
     <Grid>
       <Grid.Row>
         <Grid.Column>
           <Button
             as={Link}
-            to={`${props.path}/talk/add`}
+            to={`${props.path}/talk`}
             content="add"
           />
+        </Grid.Column>
+      </Grid.Row>
+      <Grid.Row>
+        <Grid.Column>
+          {JSON.stringify(props.talks)}
         </Grid.Column>
       </Grid.Row>
     </Grid>
