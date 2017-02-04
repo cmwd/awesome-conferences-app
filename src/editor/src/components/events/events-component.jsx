@@ -8,7 +8,6 @@ function EventsComponent(props) {
     <div>
       <Switch>
         <Route
-          exact
           path="/event/create"
           component={(route) => {
             const onSave = (event) => {
@@ -16,7 +15,7 @@ function EventsComponent(props) {
               route.push('/');
             };
 
-            return (<EventEditor onSave={onSave} create />);
+            return (<EventEditor path={route.path} onSave={onSave} create />);
           }}
         />
         <Route
@@ -30,7 +29,7 @@ function EventsComponent(props) {
             };
 
             return event
-              ? (<EventEditor {...event} onSave={onSave} />)
+              ? (<EventEditor {...event} path={route.path} onSave={onSave} />)
               : (<Redirect to="/event/create" />);
           }}
         />

@@ -24,8 +24,7 @@ class EventsContainer extends Component {
 
   createEvent(props) {
     const event = Object.assign({}, { uuid: uniqueId('event-') }, props);
-    this.setState(({ events }) =>
-      ({ events: [event, ...events] }));
+    this.setState(({ events }) => ({ events: [event, ...events] }));
   }
 
   removeEvent(uuid) {
