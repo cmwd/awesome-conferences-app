@@ -1,10 +1,11 @@
 import React, { PropTypes } from 'react';
 import { Button, Grid, Header, Form } from 'semantic-ui-react';
-import { Link, Switch, Route } from 'react-router-dom';
-import EventTalks from './event-talks-component';
-import EventTalkEditor from './event-talk-editor-component';
+import { Link } from 'react-router-dom';
 
 function EventsEditor(props) {
+  const {
+    talksComponent: TalksComponent,
+  } = props;
   const onSubmit = (event, { formData }) => {
     event.preventDefault();
     props.onSave(formData);
@@ -73,26 +74,7 @@ function EventsEditor(props) {
       </Form>
       <Grid.Row>
         <Grid.Column>
-          <Switch>
-            <Route
-              exact
-              path={props.path}
-              component={EventTalks}
-            />
-            <Route
-              path={`${props.path}/talk`}
-              component={() => (
-                <EventTalkEditor
-                  previousRoute={props.path}
-                  talks={props.talks}
-                />
-              )}
-            />
-            <Route
-              path={`${props.path}/:uuid`}
-              component={EventTalkEditor}
-            />
-          </Switch>
+          <TalksComponent />
         </Grid.Column>
       </Grid.Row>
     </Grid>
@@ -102,16 +84,18 @@ function EventsEditor(props) {
 EventsEditor.defaultProps = {
   create: false,
   name: 'Event name',
-  talks: [],
+  startDate: '2017-01-01',
+  endDate: '2017-01-02',
 };
 
 EventsEditor.propTypes = {
   create: PropTypes.bool,
   name: PropTypes.string,
-  talks: PropTypes.array,
   onSave: PropTypes.func.isRequired,
   uuid: PropTypes.string.isRequired,
-  path: PropTypes.string.isRequired,
+  startDate: PropTypes.string.isRequired,
+  endDate: PropTypes.string.isRequired,
+  talksComponent: PropTypes.func.isRequired,
 };
 
 export default EventsEditor;

@@ -3,6 +3,8 @@ import { uniqueId } from 'lodash';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import EventsTable from './events-table-component';
 import EventEditor from './event-editor-component';
+import EventTalkEditor from './event-talk-editor-component';
+import EventTalks from './event-talks-component';
 
 const INITIAL_STATE = {
   events: [],
@@ -17,12 +19,12 @@ class EventsContainer extends Component {
     this.createEventComponent = this.createEventComponent.bind(this);
     this.updateEventComponent = this.updateEventComponent.bind(this);
     this.eventsListComponent = this.eventsListComponent.bind(this);
+    this.eventTalkComponent = this.eventTalkComponent.bind(this);
     this.state = INITIAL_STATE;
   }
 
   createEvent(props) {
-    const event = Object.assign({}, { uuid: uniqueId('event-') }, props);
-    this.setState(({ events }) => ({ events: [event, ...events] }));
+    this.setState(({ events }) => ({ events: [props, ...events] }));
   }
 
   removeEvent(uuid) {
@@ -44,11 +46,15 @@ class EventsContainer extends Component {
       this.createEvent(event);
       route.push('/');
     };
+    const { path } = route;
+    const uuid = uniqueId('event-');
 
     return (<EventEditor
-      path={route.path}
+      path={path}
       onSave={onSave}
-      uuid={uniqueId('event-')}
+      uuid={uuid}
+      talksComponent={params =>
+        this.renderTalks({ ...params, path, uuid })}
       create
     />);
   }
@@ -60,15 +66,47 @@ class EventsContainer extends Component {
       this.updateEvent(Object.assign({ uuid }, newEventState));
       route.push('/');
     };
+    const path = `/${uuid}`;
 
     return event
-      ? (<EventEditor {...event} path={`/${uuid}`} onSave={onSave} />)
+      ? (<EventEditor
+        {...event}
+        path={path}
+        onSave={onSave}
+        talksComponent={params =>
+          this.renderTalks({ ...params, path, uuid })}
+      />)
       : (<Redirect to="/create" />);
   }
 
   eventsListComponent() {
     return (
       <EventsTable {...this.state} removeEvent={this.removeEvent} />
+    );
+  }
+
+  eventTalkComponent(props) {
+    const event = this.state.events.find(e => e.uuid === props.uuid);
+    const talks = event ? event.talks : [];
+
+    return (
+      <EventTalkEditor previousRoute={props.path} talks={talks} />
+    );
+  }
+
+  renderTalks(props) {
+    return (
+      <Switch>
+        <Route exact path={props.path} component={EventTalks} />
+        <Route
+          path={`${props.path}/talk`}
+          component={() => this.eventTalkComponent(props)}
+        />
+        <Route
+          path={`${props.path}/:uuid`}
+          component={() => this.eventTalkComponent(props)}
+        />
+      </Switch>
     );
   }
 
